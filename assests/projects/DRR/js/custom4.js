@@ -35651,7 +35651,7 @@
                     children: (0, St.jsx)("div", {
                         className: "container",
                         children: (0, St.jsxs)("div", {
-                            className: "row g-4 align-items-center",
+                            className: "row g-4 align-items-start",
                             children: [
                                 (0, St.jsx)("div", {
                                     className: "col-12 col-lg-8 order-2 order-lg-1",
@@ -35662,8 +35662,8 @@
                                             children: (0, St.jsx)("div", {
                                                 "data-aos": "zoom-in",
                                                 children: (0, St.jsx)("img", {
-                                                    src: "/assests/projects/DRR/images/route.png",
-                                                    className: "w-100 pt-4",
+                                                    src: "/assests/projects/Rj-retreat/gallery/route.png",
+                                                    className: "w-100",
                                                     alt: "Regional connectivity map",
                                                     loading: "lazy",
                                                 }),
@@ -35680,7 +35680,7 @@
                                         }),
                                         (0, St.jsx)("p", {
                                             className: "text-muted",
-                                            children: "RJ Retreat is envisioned as a nature-centric countryside destination where peaceful surroundings, meaningful experiences and the opportunity to own premium farm land come together.",
+                                            children: "",
                                         }),
                                         (0, St.jsx)("p", {
                                             className: "fw-semibold",
@@ -35707,88 +35707,111 @@
             const Fh = [
                     {
                         src: "/assests/projects/Rj-retreat/gallery/image1.jpeg",
-                        name: "Gallery",
-                        alt: "Gallery",
+                        name: "Resort & clubhouse",
+                        alt: "Aerial view of the resort and landscaped grounds at RJ Retreat",
                     },
                     {
                         src: "/assests/projects/Rj-retreat/gallery/image2.jpeg",
-                        name: "Gallery",
-                        alt: "Gallery",
+                        name: "A retreat in nature",
+                        alt: "Aerial view of greenery and clubhouse at RJ Retreat",
                     },
                     {
                         src: "/assests/projects/Rj-retreat/gallery/image3.jpeg",
-                        name: "Gallery",
-                        alt: "Gallery",
+                        name: "The mango orchard",
+                        alt: "Top-down aerial view of the mango orchard at RJ Retreat",
                     },
                     {
                         src: "/assests/projects/Rj-retreat/gallery/image4.jpeg",
-                        name: "Gallery",
-                        alt: "Gallery",
+                        name: "Open countryside",
+                        alt: "Aerial view of the open countryside surrounding RJ Retreat",
                     }
                 ],
                 Ih = (0, t.memo)((e) => {
-                    let { img: t, index: n, total: i, progress: r } = e;
-                    const o = n / i,
-                        a = (n + 0.5) / i,
-                        s = (n + 1) / i,
-                        l = Wi(r, [o, a, s], n === i - 1 ? [0, 1, 1] : [0, 1, 0]),
-                        c = Wi(r, [o, a, s], [0.8, 1, 0.8]);
-                    return (0, St.jsxs)(_u.div, {
-                        className: "gallery-item d-flex flex-column align-items-center justify-content-center",
-                        style: {
-                            position: "absolute",
-                            top: 0,
-                            left: 0,
-                            width: "100%",
-                            height: "100vh",
-                            opacity: l,
-                            scale: c,
-                            willChange: "opacity, transform",
-                        },
+                    let { img: t, index: n } = e;
+                    return (0, St.jsxs)("a", {
+                        className: "retreat-gallery-card",
+                        href: t.src,
+                        target: "_blank",
+                        rel: "noopener noreferrer",
+                        "aria-label": "View image: ".concat(t.name),
                         children: [
                             (0, St.jsx)("img", {
                                 src: t.src,
                                 alt: t.alt,
-                                loading: "lazy",
+                                loading: 0 === n ? "eager" : "lazy",
                                 decoding: "async",
                                 fetchpriority: 0 === n ? "high" : "low",
-                                style: {
-                                    maxWidth: "80%",
-                                    maxHeight: "70%",
-                                    objectFit: "cover",
-                                    borderRadius: "20px",
-                                    boxShadow: "0 8px 20px rgba(0,0,0,0.2)",
-                                },
                             }),
-                            (0, St.jsxs)(_u.div, {
-                                style: { marginTop: "1.5rem", fontSize: "1.5rem", fontWeight: "bold", color: "#000" },
-                                children: [t.name, " "],
+                            (0, St.jsxs)("span", {
+                                className: "retreat-gallery-caption",
+                                children: [
+                                    (0, St.jsx)("span", {
+                                        className: "retreat-gallery-number",
+                                        children: String(n + 1).padStart(2, "0"),
+                                    }),
+                                    (0, St.jsx)("span", { className: "retreat-gallery-name", children: t.name }),
+                                    (0, St.jsx)("span", {
+                                        className: "retreat-gallery-view",
+                                        "aria-hidden": !0,
+                                        children: "VIEW IMAGE",
+                                    }),
+                                ],
                             }),
                         ],
                     });
                 });
             function Rh() {
-                const e = (0, t.useRef)(null),
-                    { scrollYProgress: n } = Bi({ target: e, offset: ["start start", "end end"] });
-                return (0, St.jsx)("section", {
+                return (0, St.jsxs)("section", {
                     id: "gallery",
-                    ref: e,
-                    style: { height: "".concat(100 * Fh.length, "vh"), position: "relative", background: "#f3f3f3" },
-                    children: (0, St.jsxs)("div", {
-                        style: { position: "sticky", top: 0, height: "100vh", overflow: "hidden" },
-                        children: [
-                            (0, St.jsx)("div", {
-                                className: "position-absolute top-0 w-100 text-center py-4 z-10",
-                                children: (0, St.jsx)("h2", { className: "section-title mt-2", children: "Gallery" }),
-                            }),
-                            (0, St.jsx)(t.Suspense, {
-                                fallback: (0, St.jsx)("div", { children: "Loading..." }),
-                                children: Fh.map((e, t) =>
-                                    (0, St.jsx)(Ih, { img: e, index: t, total: Fh.length, progress: n }, t)
-                                ),
-                            }),
-                        ],
-                    }),
+                    className: "retreat-gallery",
+                    children: [
+                        (0, St.jsx)("style", {
+                            children:
+                                ".retreat-gallery{padding:clamp(64px,8vw,108px) 0;background:#f5f3ee;color:#17382f;overflow:hidden}.retreat-gallery-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:32px;margin:0 0 34px}.retreat-gallery-eyebrow{display:flex;align-items:center;gap:10px;margin:0 0 14px;color:#92744f;font-size:.74rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase}.retreat-gallery-eyebrow:before{content:'';width:25px;height:1px;background:#b99a6b}.retreat-gallery-title{margin:0;color:#17382f;font-size:clamp(2rem,4.6vw,3.4rem);font-weight:700;line-height:1.08;letter-spacing:-.045em}.retreat-gallery-copy{max-width:470px;margin:0;color:#69716b;font-size:1rem;line-height:1.7}.retreat-gallery-count{display:flex;align-items:center;gap:10px;margin-top:20px;color:#69716b;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}.retreat-gallery-count strong{display:grid;width:36px;height:36px;place-items:center;border:1px solid #c9baa1;border-radius:50%;color:#17382f;font-size:.72rem}.retreat-gallery-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:clamp(170px,18vw,280px);gap:16px}.retreat-gallery-card{position:relative;display:block;min-width:0;min-height:100%;overflow:hidden;border-radius:24px;background:#17382f;box-shadow:0 18px 42px rgba(25,44,34,.13);isolation:isolate;color:#fff;text-decoration:none}.retreat-gallery-card:first-child{grid-column:span 2;grid-row:span 2}.retreat-gallery-card:nth-child(2){grid-column:span 2}.retreat-gallery-card:before{position:absolute;z-index:1;inset:35% 0 0;background:linear-gradient(180deg,transparent 0%,rgba(8,24,18,.12) 38%,rgba(8,24,18,.82) 100%);content:'';pointer-events:none}.retreat-gallery-card img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.2,.7,.2,1),filter .4s ease}.retreat-gallery-card:hover img,.retreat-gallery-card:focus-visible img{transform:scale(1.045);filter:saturate(1.08)}.retreat-gallery-card:focus-visible{outline:3px solid #c7a56b;outline-offset:4px}.retreat-gallery-caption{position:absolute;z-index:2;right:22px;bottom:20px;left:22px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px}.retreat-gallery-number{color:#e3c274;font-size:.72rem;font-weight:700;letter-spacing:.12em}.retreat-gallery-name{color:#fff;font-size:clamp(.9rem,1.25vw,1.08rem);font-weight:600;line-height:1.3}.retreat-gallery-view{padding:7px 10px;border:1px solid rgba(255,255,255,.48);border-radius:999px;color:#fff;font-size:.58rem;font-weight:700;letter-spacing:.1em;white-space:nowrap}@media(max-width:767px){.retreat-gallery{padding:58px 0 68px}.retreat-gallery-heading{display:block;margin-bottom:24px}.retreat-gallery-copy{margin-top:14px;font-size:.92rem;line-height:1.6}.retreat-gallery-count{margin-top:16px}.retreat-gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:clamp(145px,42vw,220px);gap:12px}.retreat-gallery-card{border-radius:18px}.retreat-gallery-card:first-child{grid-column:span 2;grid-row:span 1}.retreat-gallery-card:nth-child(2){grid-column:span 1}.retreat-gallery-card:nth-child(4){grid-column:span 2}.retreat-gallery-caption{right:12px;bottom:12px;left:12px;grid-template-columns:auto 1fr;gap:8px}.retreat-gallery-name{font-size:.88rem}.retreat-gallery-view{grid-column:2;justify-self:start;padding:6px 9px;font-size:.53rem}}@media(prefers-reduced-motion:reduce){.retreat-gallery-card img{transition:none}}",
+                        }),
+                        (0, St.jsxs)("div", {
+                            className: "container",
+                            children: [
+                                (0, St.jsxs)("div", {
+                                    className: "retreat-gallery-heading",
+                                    children: [
+                                        (0, St.jsxs)("div", {
+                                            children: [
+                                                (0, St.jsx)("p", {
+                                                    className: "retreat-gallery-eyebrow",
+                                                    children: "THE RJ RETREAT EXPERIENCE",
+                                                }),
+                                                (0, St.jsx)("h2", {
+                                                    className: "retreat-gallery-title",
+                                                    children: "Gallery",
+                                                }),
+                                            ],
+                                        }),
+                                        (0, St.jsxs)("div", {
+                                            children: [
+                                                (0, St.jsx)("p", {
+                                                    className: "retreat-gallery-copy",
+                                                    children:
+                                                        "Explore the landscapes, spaces and everyday moments that make RJ Retreat feel like a world of its own.",
+                                                }),
+                                                (0, St.jsxs)("div", {
+                                                    className: "retreat-gallery-count",
+                                                    children: [
+                                                        (0, St.jsx)("strong", { children: "04" }),
+                                                        " curated views",
+                                                    ],
+                                                }),
+                                            ],
+                                        }),
+                                    ],
+                                }),
+                                (0, St.jsx)("div", {
+                                    className: "retreat-gallery-grid",
+                                    children: Fh.map((e, t) => (0, St.jsx)(Ih, { img: e, index: t }, e.src)),
+                                }),
+                            ],
+                        }),
+                    ],
                 });
             }
             const zh = {
