@@ -17,14 +17,14 @@
         <meta property="og:url" content="https://paanchajanyareality.com/project.php" />
         <meta property="og:title" content="Urban Trilla Apartments - Luxury Living in Hyderabad | Paanchajanya Reality" />
         <meta property="og:description" content="Discover Urban Trilla Apartments by Paanchajanya Reality. Luxury living with modern amenities in the heart of Hyderabad." />
-        <meta property="og:image" content="https://paanchajanyareality.com/assests/image/paanchajanya-logo-new.png" />
+        <meta property="og:image" content="/assests/projects/Rj-retreat/logo-rj-retreat.png" />
 
         <!-- Twitter -->
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://paanchajanyareality.com/project.php" />
         <meta property="twitter:title" content="Urban Trilla Apartments - Luxury Living in Hyderabad | Paanchajanya Reality" />
         <meta property="twitter:description" content="Discover Urban Trilla Apartments by Paanchajanya Reality. Luxury living with modern amenities in the heart of Hyderabad." />
-        <meta property="twitter:image" content="https://paanchajanyareality.com/assests/image/paanchajanya-logo-new.png" />
+        <meta property="twitter:image" content="/assests/projects/Rj-retreat/logo-rj-retreat.png" />
 
         <link rel="canonical" href="https://paanchajanyareality.com/project.php" />
         <meta name="robots" content="index, follow" />
@@ -1722,7 +1722,7 @@
     <div id="whatsapp-popup">
         <div class="popup-header">
             <button class="close-btn" id="close-popup">×</button>
-            <img src="assests/image/paanchajanya-logo-new.png" alt="Paanchajanya Realty" class="brand-logo">
+            <img src="/assests/projects/Rj-retreat/logo-rj-retreat.png" alt="Paanchajanya Realty" class="brand-logo">
             <div class="header-content">
                 <div class="title">Paanchajanya Realty</div>
                 <div class="status">Online now</div>

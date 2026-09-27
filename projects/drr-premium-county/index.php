@@ -17,14 +17,14 @@
         <meta property="og:url" content="https://paanchajanyareality.com/projects/drr-premium-county/" />
         <meta property="og:title" content="DRR Premium County - Premium Plots in Hyderabad | Paanchajanya Reality" />
         <meta property="og:description" content="Explore DRR Premium County by Paanchajanya Reality. Premium residential plots in Hyderabad with modern amenities." />
-        <meta property="og:image" content="https://paanchajanyareality.com/assests/image/paanchajanya-logo-new.png" />
+        <meta property="og:image" content="/assests/projects/Rj-retreat/logo-rj-retreat.png" />
 
         <!-- Twitter -->
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://paanchajanyareality.com/projects/drr-premium-county/" />
         <meta property="twitter:title" content="DRR Premium County - Premium Plots in Hyderabad | Paanchajanya Reality" />
         <meta property="twitter:description" content="Explore DRR Premium County by Paanchajanya Reality. Premium residential plots in Hyderabad with modern amenities." />
-        <meta property="twitter:image" content="https://paanchajanyareality.com/assests/image/paanchajanya-logo-new.png" />
+        <meta property="twitter:image" content="/assests/projects/Rj-retreat/logo-rj-retreat.png" />
 
         <link rel="canonical" href="https://paanchajanyareality.com/projects/drr-premium-county/" />
         <meta name="robots" content="index, follow" />
@@ -1305,7 +1305,7 @@
                     <div class="footer-logo text-center mb-3">
                         <img
                             alt="Official Urban Trilla Apartments coloured logo"
-                            src="/assests/image/paanchajanya-logo-new.png"
+                            src="/assests/projects/Rj-retreat/logo-rj-retreat.png"
                             style="width: 190px"
                         />
                     </div>
@@ -1642,7 +1642,7 @@
     <div id="whatsapp-popup">
         <div class="popup-header">
             <button class="close-btn" id="close-popup">×</button>
-            <img src="../../assests/image/paanchajanya-logo-new.png" alt="Paanchajanya Realty" class="brand-logo">
+            <img src="../../assests/projects/Rj-retreat/logo-rj-retreat.png" alt="Paanchajanya Realty" class="brand-logo">
             <div class="header-content">
                 <div class="title">Paanchajanya Realty</div>
                 <div class="status">Online now</div>

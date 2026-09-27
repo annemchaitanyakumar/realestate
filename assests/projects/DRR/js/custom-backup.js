@@ -24372,7 +24372,7 @@
                                     }),
                                     (0, St.jsx)("div", { className: "overlay" }),
                                     (0, St.jsx)(_u.img, {
-                                        src: "/assests/image/paanchajanya-logo-new.png",
+                                        src: "/assests/projects/Rj-retreat/logo-rj-retreat.png",
                                         alt: "Logo",
                                         width: "160",
                                         height: "60",
@@ -36226,7 +36226,7 @@
                         (0, St.jsx)("div", {
                             className: "footer-logo text-center mb-3",
                             children: (0, St.jsx)("img", {
-                                src: "/assests/image/paanchajanya-logo-new.png",
+                                src: "/assests/projects/Rj-retreat/logo-rj-retreat.png",
                                 alt: "Official Urban Trilla Apartments coloured logo",
                                 style: { width: "190px" },
                             }),

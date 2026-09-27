@@ -101,7 +101,7 @@
                 <header class="header shadow-sm">
                     <div class="container d-flex align-items-center">
                          <a href="/projects/drr-premium-county/" class="navbar-brand ms-3">
-                            <img src="/assests/image/paanchajanya-logo-new.png" alt="Paanchajanya Logo" style="height: 60px;">
+                            <img src="/assests/projects/Rj-retreat/logo-rj-retreat.png" alt="Paanchajanya Logo" style="height: 60px;">
                          </a>
                     </div>
                 </header>
