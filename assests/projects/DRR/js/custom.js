@@ -24373,7 +24373,7 @@
                                     (0, St.jsx)("div", { className: "overlay" }),
                                     (0, St.jsx)(_u.img, {
                                         src: "/assests/projects/Rj-retreat/logo-rj-retreat.png",
-                                        alt: "Logo",
+                                        alt: "RJ Retreat logo",
                                         width: "160",
                                         height: "60",
                                         className: "hero-logos",
@@ -24396,12 +24396,12 @@
                                             style: { y: n, opacity: i },
                                             className: "parallax-heading sticky-heading",
                                             children: [
-                                                "",
+                                                "RJ Retreat",
                                                 (0, St.jsxs)("p", {
                                                     className: "location_name",
                                                     children: [
-                                                        (0, St.jsx)("span", { className: "at", children: "" }),
-                                                        "",
+                                                        (0, St.jsx)("span", { className: "at", children: "Live closer to nature!" }),
+                                                        "A Premium Countryside Retreat for Living, Leisure & Ownership. RJ Retreat is envisioned as a nature-centric countryside destination where peaceful surroundings, meaningful experiences and the opportunity to own premium farm land come together. Gauraram, Near Wargal Saraswati Temple, Shamirpet, Hyderabad, Telangana",
                                                     ],
                                                 }),
                                             ],
@@ -24411,7 +24411,7 @@
                                             src: s
                                                 ? "https://ankurahomes.com/urban-trilla-apartments/assets/img/mobile-parallax.webp"
                                                 : "/assests/projects/DRR/images/panch2.png",
-                                            alt: "Urban Trilla Apartments exterior view",
+                                            alt: "Project lifestyle image",
                                             width: "800",
                                             height: "600",
                                             className: "parallax-img",
@@ -24773,25 +24773,25 @@
             };
             var Xu;
             const Ku = [
-                    { title: 17, suffix: " Acres", text: "Spread Across" },
-                    { title: 0, suffix: "HMDA", text: "Approved Layout" },
-                    { title: 40, suffix: " & 33 ft", text: "Black Top Roads" },
-                    { title: 100, suffix: "% Vaastu", text: "Compliant" },
-                    { title: 100, suffix: "% Clear", text: "Title" },
-                    { title: 24, suffix: "/7 Security", text: "Gated Community" },
+                    { title: 6, suffix: " Acres", text: "Total Project Area" },
+                    { title: 28, suffix: "", text: "Numbered Plots" },
+                    { title: 30, suffix: "'", text: "Internal Roads" },
+                    { title: "Natural Fishing Lake", suffix: "", text: "Nature & Recreation" },
+                    { title: "Gou Shala", suffix: "", text: "Traditional Farm Experience" },
+                    { title: "Bicycle Track", suffix: "", text: "Outdoor Recreation" },
                 ],
                 $u = (0, t.memo)((e) => {
                     let { value: n, suffix: i, inView: r } = e;
                     const [o, a] = (0, t.useState)(0);
                     return (
                         (0, t.useEffect)(() => {
-                            if (!r || !n) return;
+                            if (!r || "number" !== typeof n || !n) return;
                             const e = Yu(0, n, { duration: 1.5, onUpdate: (e) => a(Math.floor(e)) });
                             return () => e.stop();
                         }, [r, n]),
                         (0, St.jsxs)("span", {
                             style: { fontWeight: 700, fontSize: ".9rem", color: "#1b1b1b" },
-                            children: [n ? o : "", i],
+                            children: ["number" === typeof n ? (n ? o : "") : n, i],
                         })
                     );
                 });
@@ -30719,82 +30719,20 @@
                     },
                 },
                 Xf = [
-                    {
-                        icon: "fas fa-archway",
-                        label: "Gated Community",
-                    },
-                    {
-                        icon: "fas fa-user-shield",
-                        label: "24/7 security",
-                    },
-                    {
-                        icon: "fas fa-road",
-                        label: "RCC internal roads",
-                    },
-                    {
-                        icon: "fas fa-seedling",
-                        label: "Tree plantations",
-                    },
-                    {
-                        icon: "fas fa-tree",
-                        label: "Landscaping",
-                    },
-                    {
-                        icon: "fas fa-bolt",
-                        label: "Electrification",
-                    },
-                    {
-                        icon: "fas fa-plug",
-                        label: "Utility connections",
-                    },
-                    {
-                        icon: "fas fa-building",
-                        label: "Clubhouse",
-                    },
-                    {
-                        icon: "fas fa-swimming-pool",
-                        label: "Swimming Pool",
-                    },
-                    {
-                        icon: "fas fa-dumbbell",
-                        label: "Fitness Center",
-                    },
-                    {
-                        icon: "fas fa-leaf",
-                        label: "Landscaped Gardens",
-                    },
-                    {
-                        icon: "fas fa-walking",
-                        label: "Walking and Biking Trails",
-                    },
-                    {
-                        icon: "fas fa-child",
-                        label: "Children\u2019s Play Area",
-                    },
-                    {
-                        icon: "fas fa-basketball-ball",
-                        label: "Tennis or Basketball Courts",
-                    },
-                    {
-                        icon: "fas fa-users",
-                        label: "Community Hall",
-                    },
-                    {
-                        icon: "fas fa-parking",
-                        label: "Ample Parking Facilities",
-                    },
-                    {
-                        icon: "fas fa-utensils",
-                        label: "Retail and dining options",
-                    },
-                    {
-                        icon: "fas fa-paw",
-                        label: "Pet-friendly areas",
-                    },
-                    {
-                        icon: "fas fa-tools",
-                        label: "Maintenance services",
-                    },
+                    { icon: "fas fa-archway", label: "Grand Entrance Arch" },
+                    { icon: "fas fa-tree", label: "Mango Orchard" },
+                    { icon: "fas fa-lightbulb", label: "Elegant Street Lighting" },
+                    { icon: "fas fa-tint", label: "Drip Irrigation" },
+                    { icon: "fas fa-cloud-rain", label: "Rainwater Harvesting" },
+                    { icon: "fas fa-swimming-pool", label: "Swimming Pool" },
+                    { icon: "fas fa-spa", label: "Yoga & Meditation Zone" },
+                    { icon: "fas fa-futbol", label: "Sports & Recreation Area" },
+                    { icon: "fas fa-child", label: "Children's Play Area" },
+                    { icon: "fas fa-walking", label: "Nature & Walking Trails" },
+                    { icon: "fas fa-video", label: "Gated Security & CCTV" },
+                    { icon: "fas fa-plug", label: "Power & Water Infrastructure" },
+                    { icon: "fas fa-seedling", label: "Landscaped Avenue" },
+                    { icon: "fas fa-map-marked-alt", label: "Farm Plot Demarcation" },
                 ],
                 Kf = (0, t.memo)((e) => {
                     let { icon: t, label: n, index: r } = e;
@@ -35289,13 +35227,14 @@
                     Object.assign(i.autoplay, { start: _, stop: E, pause: S, resume: k });
             }
             Eh.displayName = "SwiperSlide";
+            // TODO: Replace with RJ Retreat master layout image
             const Ph = [
                     {
                         key: "master",
                         label: "Master Plan",
                         type: "single",
-                        img: "/assests/projects/DRR/images/layout/plan1.png",
-                        alt: "Layout For DRR Premium County",
+                        img: "/assests/projects/Rj-retreat/layout.png",
+                        alt: "Project layout plan",
                     },
                     // {
                     //     key: "blockA",
@@ -35471,10 +35410,22 @@
                                 children: [
                                     (0, St.jsx)("div", {
                                         className: "text-center mb-4",
-                                        children: (0, St.jsx)("h2", {
-                                            className: "section-title mt-2",
-                                            "data-aos": "zoom-in",
-                                            children: "Project Layout",
+                                        children: (0, St.jsxs)("div", {
+                                            children: [
+                                                (0, St.jsx)("h2", {
+                                                    className: "section-title mt-2",
+                                                    "data-aos": "zoom-in",
+                                                    children: "Project Layout",
+                                                }),
+                                                (0, St.jsx)("p", {
+                                                    className: "text-muted",
+                                                    children: "A thoughtfully planned countryside retreat where nature, leisure and private farm land come together.",
+                                                }),
+                                                (0, St.jsx)("p", {
+                                                    className: "text-muted",
+                                                    children: "6 Acres Total Project Area · 28 Numbered Plots · 30' Internal Roads · Bicycle Track · Natural Fishing Lake · Gou Shala · Resort Area: 24.66 Guntas",
+                                                }),
+                                            ],
                                         }),
                                     }),
                                     (0, St.jsx)("div", {
@@ -35537,7 +35488,7 @@
                             children: [
                                 (0, St.jsx)(_u.img, {
                                     src: "/assests/projects/DRR/images/Living-and-dining.webp",
-                                    alt: "Modern apartment interior at DRR Premium County",
+                                    alt: "Lifestyle image",
                                     className: "scaling-image",
                                     style: { scale: i },
                                     loading: "lazy",
@@ -35545,14 +35496,15 @@
                                 (0, St.jsx)(_u.div, {
                                     className: "luxury-text",
                                     style: { opacity: r, y: o },
-                                    children: (0, St.jsxs)("h1", {
+                                    children: (0, St.jsxs)(St.Fragment, {
                                         children: [
-                                            "Where",
-                                            (0, St.jsx)("span", { children: ". " }),
-                                            "Comfort Meets",
-                                            (0, St.jsx)("span", { children: ". " }),
-                                            "Space",
-                                            (0, St.jsx)("span", { children: ". " }),
+                                            (0, St.jsx)("h1", { children: "A Different Way of Living" }),
+                                            (0, St.jsx)("p", {
+                                                children: "Where nature, leisure and ownership come together. Stay. Experience. Reconnect.",
+                                            }),
+                                            (0, St.jsx)("p", {
+                                                children: "",
+                                            }),
                                         ],
                                     }),
                                 }),
@@ -35566,24 +35518,22 @@
                 });
             }
             const jh = [
-                    ["Regional Ring Road", "6 min / 2.5 km"],
-                    ["Prestigious 4th City", "10 min / 5 km"],
-                    ["Maisigandi Temple", "5 min / 8 km"],
-                    ["Srisailam Highway", "1 min / 1 km"],
-                    ["Maheshwara Maha Pyramid", "3.5 min / 5 km"],
-                    ["Proposed Kandukur Metro Rail", "12 min / 13 km"],
-                    ["Amazon Data Center", "19 min / 12 km"],
-                    ["Pharma City", "15 min / 8 km"],
-                    ["Sreenidhi Serengeti", "15 min / 13.5 km"],
-                    ["Habitat Highlands", "20 min / 15 km"],
-                    ["MGM School", "29 min / 22 km"],
-                    ["Kavuri Forest Nest Villas", "25 min / 22 km"],
-                    ["ORR Exit 14", "25 min / 22.5 km"],
-                    ["Fab City", "26 min / 23 km"],
-                    ["Ramky Discovery City", "32 min / 26 km"],
-                    ["Collectorate Office", "40 min / 31 km"],
-                    ["Foxconn", "40 min / 31 km"],
-                    ["RGI Airport", "41 min / 32 km"],
+                    ["Regional Ring Road", "1 KM"],
+                    ["Wargal Saraswati Temple", "3 KM"],
+                    ["Kondapochamma Reservoir", "5 KM"],
+                    ["KCR Farm House, Erravelli", "5 KM"],
+                    ["Konda Laxman Telangana State Horticultural University", "7 KM"],
+                    ["Sri Lakshmi Narasimha Swamy Temple, Nacharam", "7 KM"],
+                    ["Kaveri University — 100+ Acre Campus", "Regional Highlight"],
+                    ["RVM Medical College", "Regional Highlight"],
+                    ["Agricultural Research Centre", "Regional Highlight"],
+                    ["600+ Acre Government Satellite Township", "Regional Highlight"],
+                    ["Mallanna Sagar Project", "Regional Highlight"],
+                    ["3,000+ Acre Reserve Forest", "Regional Highlight"],
+                    ["Genome Valley", "Regional Highlight"],
+                    ["450-Acre Food Processing Units", "Regional Highlight"],
+                    ["Hilton Resort", "Regional Highlight"],
+                    ["Heritage Industry", "Regional Highlight"],
                 ],
                 Dh = (0, t.memo)((e) => {
                     let { label: t, time: n, index: i } = e;
@@ -35622,7 +35572,7 @@
                                                 children: (0, St.jsx)("img", {
                                                     src: "/assests/projects/DRR/images/route.png",
                                                     className: "w-100 pt-4",
-                                                    alt: "Location map showing DRR Premium County",
+                                                    alt: "Regional connectivity map",
                                                     loading: "lazy",
                                                 }),
                                             }),
@@ -35634,7 +35584,15 @@
                                     children: [
                                         (0, St.jsx)("h2", {
                                             className: "section-title mt-2 main_headings",
-                                            children: "Location Highlights",
+                                            children: "Well Connected. Naturally Peaceful.",
+                                        }),
+                                        (0, St.jsx)("p", {
+                                            className: "text-muted",
+                                            children: "RJ Retreat is envisioned as a nature-centric countryside destination where peaceful surroundings, meaningful experiences and the opportunity to own premium farm land come together.",
+                                        }),
+                                        (0, St.jsx)("p", {
+                                            className: "fw-semibold",
+                                            children: "Location Connectivity & Regional Highlights",
                                         }),
                                         (0, St.jsx)("ul", {
                                             className: "list-group list-group-flush mt-3",
@@ -35642,6 +35600,10 @@
                                                 let [n, i] = e;
                                                 return (0, St.jsx)(Dh, { label: n, time: i, index: t }, t);
                                             }),
+                                        }),
+                                        (0, St.jsx)("p", {
+                                            className: "text-muted mt-3",
+                                            children: "Connected to the region. Closer to nature.",
                                         }),
                                     ],
                                 }),
@@ -35743,25 +35705,20 @@
                 });
             }
             const zh = {
-                    "GATED COMMUNITY": ["Secured access with controlled entry/exit points"],
-                    "24/7 SECURITY": ["Professional security personnel and surveillance systems"],
-                    "RCC INTERNAL ROADS": ["High-quality internal road infrastructure"],
-                    "TREE PLANTATIONS": ["Lush green tree plantations throughout the project"],
-                    LANDSCAPING: ["Beautifully landscaped environments"],
-                    ELECTRIFICATION: ["Entire venture is provided with standard electricity connection"],
-                    "UTILITY CONNECTIONS": ["Access to water, electricity, and sewage systems"],
-                    CLUBHOUSE: ["Recreation place to socialize with friends & family"],
-                    "SWIMMING POOL": ["Pristine pool to relax and rejuvenate yourself"],
-                    "FITNESS CENTER": ["To workout and keep yourself fit and healthy"],
-                    "LANDSCAPED GARDENS": ["Alluring and soothing green spaces and parks"],
-                    "WALKING AND BIKING TRAILS": ["Defined paths for outdoor activities"],
-                    "CHILDREN'S PLAY AREA": ["Safe play zones for kids"],
-                    "TENNIS OR BASKETBALL COURTS": ["Games & Sports facilities for residents"],
-                    "COMMUNITY HALL": ["Celebrate every occasion of life"],
-                    "PARKING FACILITIES": ["Ample parking for residents and guests."],
-                    "RETAIL & DINING OPTIONS": ["Shops and restaurants within the vicinity"],
-                    "PET-FRIENDLY AREAS": ["Dedicated spaces for your pets"],
-                    "MAINTENANCE SERVICES": ["On-site support for landscaping & repairs"],
+                    "GRAND ENTRANCE ARCH": ["A dedicated entrance feature for the project."],
+                    "MANGO ORCHARD": ["An orchard area featuring mango trees."],
+                    "ELEGANT STREET LIGHTING": ["Decorative street lighting along the project."],
+                    "DRIP IRRIGATION": ["Drip irrigation infrastructure."],
+                    "RAINWATER HARVESTING": ["A rainwater collection and harvesting system."],
+                    "SWIMMING POOL": ["A swimming pool facility."],
+                    "YOGA & MEDITATION ZONE": ["A dedicated wellness space."],
+                    "SPORTS & RECREATION AREA": ["Space for sports and recreational activities."],
+                    "CHILDREN'S PLAY AREA": ["A dedicated children's recreation area."],
+                    "NATURE & WALKING TRAILS": ["Walking paths through the natural surroundings."],
+                    "GATED SECURITY & CCTV": ["Gated project security and CCTV surveillance."],
+                    "POWER & WATER INFRASTRUCTURE": ["Power and water infrastructure."],
+                    "LANDSCAPED AVENUE": ["Landscaped internal avenue and roadside areas."],
+                    "FARM PLOT DEMARCATION": ["Defined individual farm plots."],
                 },
                 Bh = (0, t.memo)((e) => {
                     let { title: t, list: n, index: i } = e;
@@ -35817,7 +35774,7 @@
                                     "data-aos": "zoom-in",
                                     children: (0, St.jsx)("h2", {
                                         className: "section-title mt-2 text-white",
-                                        children: "LIVE LARGER THAN LIFE",
+                                        children: "Essential Amenities",
                                     }),
                                 }),
                                 (0, St.jsx)("div", {
@@ -35892,6 +35849,7 @@
                         alert("Error submitting form. Please check your internet connection.");
                 }
             }
+            // TODO: Configure RJ Retreat map coordinates
             const Gh = (0, t.memo)(() =>
                 (0, St.jsx)("div", {
                     className: "map-container shadow-sm rounded-4 overflow-hidden",
@@ -35922,10 +35880,14 @@
                             (0, St.jsxs)("div", {
                                 className: "text-center mb-5",
                                 children: [
-                                    (0, St.jsx)("h2", { className: "fw-bold section-title", children: "Contact Us" }),
+                                    (0, St.jsx)("h2", { className: "fw-bold section-title", children: "Visit RJ Retreat" }),
                                     (0, St.jsx)("p", {
                                         className: "text-muted",
-                                        children: "Have questions? We\u2019d love to hear from you. Drop us a message!",
+                                        children: "Interested in RJ Retreat?",
+                                    }),
+                                    (0, St.jsx)("p", {
+                                        className: "text-muted",
+                                        children: "Gauraram, Near Wargal Saraswati Temple, Shamirpet, Hyderabad, Telangana",
                                     }),
                                 ],
                             }),
@@ -35997,7 +35959,7 @@
                                                             className:
                                                                 "btn btn-warning px-5 py-2 fw-bold rounded-pill shadow-lg",
                                                             disabled: e,
-                                                            children: e ? "Submitting..." : "Submit",
+                                                            children: e ? "Submitting..." : "Enquire Now",
                                                         }),
                                                     }),
                                                 ],
@@ -36197,7 +36159,7 @@
                             className: "footer-logo text-center mb-3",
                             children: (0, St.jsx)("img", {
                                 src: "/assests/projects/Rj-retreat/logo-rj-retreat.png",
-                                alt: "Official Urban Trilla Apartments coloured logo",
+                                alt: "RJ Retreat logo",
                                 style: { width: "190px" },
                             }),
                         }),
@@ -36210,7 +36172,7 @@
                                     (0, St.jsx)("li", {
                                         children: (0, St.jsx)("a", {
                                             href: "#highlights",
-                                            children: "Projects Highlights",
+                                            children: "Project Highlights",
                                         }),
                                     }),
                                     (0, St.jsx)("li", {
@@ -36220,17 +36182,29 @@
                                         }),
                                     }),
                                     (0, St.jsx)("li", {
-                                        children: (0, St.jsx)("a", { href: "Tel:+917237997999", children: "Contact" }),
+                                        children: (0, St.jsx)("a", { href: "#contact", children: "Contact" }),
                                     }),
                                 ],
                             }),
                         }),
-                        (0, St.jsxs)("p", { children: [(0, St.jsx)("b", { children: "" }), " "] }),
-                        (0, St.jsx)("a", {
-                            href: "tel:+917237997999",
-                            children: (0, St.jsxs)("p", {
-                                children: [(0, St.jsx)("b", { children: "Call:" }), " +91 723 799 7999"],
-                            }),
+                        (0, St.jsx)("p", { children: "Live closer to nature!" }),
+                        (0, St.jsx)("p", {
+                            children: "A Premium Countryside Retreat for Living, Leisure & Ownership",
+                        }),
+                        (0, St.jsxs)("p", {
+                            children: [
+                                (0, St.jsx)("b", { children: "Location: " }),
+                                "Gauraram, Near Wargal Saraswati Temple, Shamirpet, Hyderabad, Telangana",
+                            ],
+                        }),
+                        (0, St.jsxs)("p", {
+                            children: [(0, St.jsx)("b", { children: "Developer: " }), "Sahaja Properties"],
+                        }),
+                        (0, St.jsxs)("p", {
+                            children: [
+                                (0, St.jsx)("b", { children: "Developer Address: " }),
+                                "Plot No. 457, First Floor, Road No. 9, Kakathiya Hills, Madhapur, Hyderabad - 500 033",
+                            ],
                         }),
                         (0, St.jsxs)("div", {
                             className: "social-icons d-flex justify-content-center gap-3 mb-3",
@@ -36264,7 +36238,7 @@
                         (0, St.jsx)("div", {
                             className: "footer-bottom text-center",
                             children: (0, St.jsxs)("small", {
-                                children: ["\xa9 ", e, " Paanchajanya Reality | DRR Premium County. All rights reserved."],
+                                children: ["\xa9 ", e, " RJ Retreat | Sahaja Properties. All rights reserved."],
                             }),
                         }),
                         (0, St.jsx)("style", {
