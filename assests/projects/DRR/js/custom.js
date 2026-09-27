@@ -24409,7 +24409,7 @@
                                         (0, St.jsx)(_u.img, {
                                             style: { y: r, opacity: o },
                                             src: s
-                                                ? "https://ankurahomes.com/urban-trilla-apartments/assets/img/mobile-parallax.webp"
+                                                ? "/assests/projects/DRR/images/panch2.png"
                                                 : "/assests/projects/DRR/images/panch2.png",
                                             alt: "Project lifestyle image",
                                             width: "800",
@@ -35614,30 +35614,25 @@
             }
             const Fh = [
                     {
-                        src: "https://ankurahomes.com/urban-trilla-apartments/assets/img/gallery/gallery-4.webp",
-                        name: "Clubhouse - Gym",
-                        alt: "Clubhouse Gym Set-up at Urban Trilla Apartments ",
+                        src: "/assests/projects/Rj-retreat/gallery/image1.jpeg",
+                        name: "Gallery",
+                        alt: "Gallery",
                     },
                     {
-                        src: "https://ankurahomes.com/urban-trilla-apartments/assets/img/gallery/gallery-8.webp",
-                        name: "Clubhouse - Terrace",
-                        alt: "Clubhouse Terrace at Urban Trilla Apartments ",
+                        src: "/assests/projects/Rj-retreat/gallery/image2.jpeg",
+                        name: "Gallery",
+                        alt: "Gallery",
                     },
                     {
-                        src: "https://ankurahomes.com/urban-trilla-apartments/assets/img/gallery/gallery-2.webp",
-                        name: "Living Room",
-                        alt: "Living Room Interiors at Urban Trilla Apartments",
+                        src: "/assests/projects/Rj-retreat/gallery/image3.jpeg",
+                        name: "Gallery",
+                        alt: "Gallery",
                     },
                     {
-                        src: "https://ankurahomes.com/urban-trilla-apartments/assets/img/gallery/gallery-3.webp",
-                        name: "Dining Hall",
-                        alt: "Dining Area Interiors at Urban Trilla Apartments ",
-                    },
-                    {
-                        src: "https://ankurahomes.com/urban-trilla-apartments/assets/img/gallery/gallery-7.webp",
-                        name: "Clubhouse - Meditation Centre | Yoga Centre",
-                        alt: "Community amenities and recreational space at Urban Trilla Apartments ",
-                    },
+                        src: "/assests/projects/Rj-retreat/gallery/image4.jpeg",
+                        name: "Gallery",
+                        alt: "Gallery",
+                    }
                 ],
                 Ih = (0, t.memo)((e) => {
                     let { img: t, index: n, total: i, progress: r } = e;
@@ -35855,7 +35850,7 @@
                     className: "map-container shadow-sm rounded-4 overflow-hidden",
                     children: (0, St.jsx)("iframe", {
                         title: "Google Map",
-                        src: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3806.27315183063!2d78.39123831487713!3d17.4363251880503!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb9158f201b205%3A0x11bbe7be7792411b!2sKavuri%20Hills%2C%20Madhapur%2C%20Hyderabad%2C%20Telangana%20500033!5e0!3m2!1sen!2sin!4v1625123456789!5m2!1sen!2sin",
+                        src: "https://www.google.com/maps?q=Gauraram,+Near+Wargal+Saraswati+Temple,+Shamirpet,+Hyderabad,+Telangana&output=embed",
                         width: "100%",
                         height: "350",
                         style: { border: 0, minHeight: "100%" },
