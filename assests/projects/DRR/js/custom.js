@@ -24342,8 +24342,8 @@
                 const { scrollY: e } = Bi(),
                     n = Wi(e, [0, 900], [1e3, 0]),
                     i = Wi(e, [0, 300], [0, 1]),
-                    r = Wi(e, [0, 700], [600, 0]),
-                    o = Wi(e, [0, 300], [0.5, 1]),
+                    r = Wi(e, [0, 700], [420, 0]),
+                    o = Wi(e, [0, 300], [1, 1]),
                     a = Wi(e, [0, 300], [1, 0]),
                     [s, l] = (0, t.useState)(!1);
                 return (
@@ -24365,25 +24365,106 @@
                                         preload: "metadata",
                                         poster: "",
                                         className: "video-bg",
+                                        style: s
+                                            ? {
+                                                  background:
+                                                      "radial-gradient(ellipse at 50% 30%, rgba(220, 184, 105, 0.24), transparent 38%), linear-gradient(150deg, #17382f 0%, #244b3b 55%, #8a7146 100%)",
+                                              }
+                                            : undefined,
                                         children: (0, St.jsx)("source", {
                                             src: s ? "" : "",
                                             type: "video/mp4",
                                         }),
                                     }),
-                                    (0, St.jsx)("div", { className: "overlay" }),
+                                    (0, St.jsx)("div", {
+                                        className: "overlay",
+                                        style: s
+                                            ? {
+                                                  background:
+                                                      "linear-gradient(180deg, rgba(20, 35, 28, 0.18) 0%, rgba(20, 35, 28, 0.04) 45%, rgba(20, 35, 28, 0.56) 100%)",
+                                              }
+                                            : undefined,
+                                    }),
                                     (0, St.jsx)(_u.img, {
                                         src: "/assests/projects/Rj-retreat/logo-rj-retreat.png",
                                         alt: "RJ Retreat logo",
                                         width: "160",
                                         height: "60",
                                         className: "hero-logos",
-                                        initial: { scale: 0 },
-                                        animate: { scale: 1.2 },
-                                        transition: { duration: 1.5, ease: "easeOut", repeat: 1 / 0, repeatDelay: 2.5 },
-                                        style: { opacity: a },
+                                        initial: { scale: 1 },
+                                        animate: { scale: 1 },
+                                        transition: { duration: 0 },
+                                        style: { opacity: a, y: s ? -200 : -120 },
                                         loading: "eager",
                                         decoding: "async",
                                         fetchpriority: "high",
+                                    }),
+                                    (0, St.jsxs)("div", {
+                                        style: s
+                                            ? {
+                                                  position: "absolute",
+                                                  left: "18px",
+                                                  right: "18px",
+                                                  bottom: "16%",
+                                                  zIndex: 3,
+                                                  padding: "24px 18px",
+                                                  border: "1px solid rgba(220, 184, 105, 0.6)",
+                                                  borderRadius: "20px",
+                                                  background: "rgba(14, 35, 28, 0.84)",
+                                                  boxShadow: "0 16px 42px rgba(0, 0, 0, 0.24)",
+                                                  color: "#fff",
+                                                  textAlign: "center",
+                                              }
+                                            : { display: "none" },
+                                        children: [
+                                            (0, St.jsx)("p", {
+                                                style: {
+                                                    margin: "0 0 10px",
+                                                    color: "#e3c274",
+                                                    fontSize: "11px",
+                                                    fontWeight: 700,
+                                                    letterSpacing: "2px",
+                                                },
+                                                children: "LIVE CLOSER TO NATURE",
+                                            }),
+                                            (0, St.jsx)("h1", {
+                                                style: {
+                                                    margin: "0 0 8px",
+                                                    color: "#fff",
+                                                    fontSize: "32px",
+                                                    fontWeight: 600,
+                                                    lineHeight: 1.1,
+                                                },
+                                                children: "RJ Retreat",
+                                            }),
+                                            (0, St.jsx)("p", {
+                                                style: {
+                                                    margin: "0 0 6px",
+                                                    color: "#fff",
+                                                    fontSize: "16px",
+                                                    lineHeight: 1.4,
+                                                },
+                                                children: "A Premium Countryside Retreat",
+                                            }),
+                                            (0, St.jsx)("p", {
+                                                style: {
+                                                    margin: "0 0 12px",
+                                                    color: "rgba(255, 255, 255, 0.82)",
+                                                    fontSize: "13px",
+                                                    lineHeight: 1.4,
+                                                },
+                                                children: "For Living, Leisure & Ownership",
+                                            }),
+                                            (0, St.jsx)("p", {
+                                                style: {
+                                                    margin: 0,
+                                                    color: "#e3c274",
+                                                    fontSize: "12px",
+                                                    lineHeight: 1.5,
+                                                },
+                                                children: "Gauraram · Shamirpet · Hyderabad",
+                                            }),
+                                        ],
                                     }),
                                 ],
                             }),
@@ -24396,12 +24477,12 @@
                                             style: { y: n, opacity: i },
                                             className: "parallax-heading sticky-heading",
                                             children: [
-                                                "RJ Retreat",
+                                                "",
                                                 (0, St.jsxs)("p", {
                                                     className: "location_name",
                                                     children: [
-                                                        (0, St.jsx)("span", { className: "at", children: "Live closer to nature!" }),
-                                                        "A Premium Countryside Retreat for Living, Leisure & Ownership. RJ Retreat is envisioned as a nature-centric countryside destination where peaceful surroundings, meaningful experiences and the opportunity to own premium farm land come together. Gauraram, Near Wargal Saraswati Temple, Shamirpet, Hyderabad, Telangana",
+                                                        (0, St.jsx)("span", { className: "at", children: "" }),
+                                                        "",
                                                     ],
                                                 }),
                                             ],
@@ -30745,7 +30826,14 @@
                                     className: "amenity-icon mb-3",
                                     children: (0, St.jsx)("i", {
                                         className: t + " fa-2x",
-                                        style: { color: "#ffffff" }
+                                        style: {
+                                            backgroundImage: "linear-gradient(135deg, #f8e7a1 0%, #d4af37 48%, #a77718 100%)",
+                                            backgroundClip: "text",
+                                            WebkitBackgroundClip: "text",
+                                            color: "transparent",
+                                            WebkitTextFillColor: "transparent",
+                                            filter: "drop-shadow(0 1px 1px rgba(110, 78, 20, 0.35))",
+                                        }
                                     }),
                                 }),
                                 (0, St.jsx)("div", { className: "fw-semibold mt-1", children: n }),
