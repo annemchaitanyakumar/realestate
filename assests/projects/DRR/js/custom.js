@@ -24399,14 +24399,15 @@
                                         decoding: "async",
                                         fetchpriority: "high",
                                     }),
-                                    (0, St.jsxs)("div", {
+                                    (0, St.jsxs)(_u.div, {
                                         style: s
                                             ? {
                                                   position: "absolute",
                                                   left: "18px",
                                                   right: "18px",
-                                                  bottom: "16%",
+                                                  bottom: "23%",
                                                   zIndex: 3,
+                                                  opacity: a,
                                                   padding: "24px 18px",
                                                   border: "1px solid rgba(220, 184, 105, 0.6)",
                                                   borderRadius: "20px",
@@ -24488,7 +24489,7 @@
                                             ],
                                         }),
                                         (0, St.jsx)(_u.img, {
-                                            style: { y: r, opacity: o },
+                                            style: { y: s ? -180 : r, opacity: o },
                                             src: s
                                                 ? "/assests/projects/DRR/images/panch2.png"
                                                 : "/assests/projects/DRR/images/panch2.png",
