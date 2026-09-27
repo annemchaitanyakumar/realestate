@@ -24405,8 +24405,8 @@
                                                   position: "absolute",
                                                   left: "18px",
                                                   right: "18px",
-                                                  bottom: "23%",
-                                                  zIndex: 3,
+                                                  bottom: "29%",
+                                                  zIndex: 10,
                                                   opacity: a,
                                                   padding: "24px 18px",
                                                   border: "1px solid rgba(220, 184, 105, 0.6)",
@@ -24489,7 +24489,7 @@
                                             ],
                                         }),
                                         (0, St.jsx)(_u.img, {
-                                            style: { y: s ? -180 : r, opacity: o },
+                                            style: { y: s ? -80 : r, opacity: o },
                                             src: s
                                                 ? "/assests/projects/DRR/images/panch2.png"
                                                 : "/assests/projects/DRR/images/panch2.png",
