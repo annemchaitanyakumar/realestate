@@ -148,15 +148,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::delete('/channel-partners/{channelPartner}', [ChannelPartnerController::class, 'destroy'])->name('channel-partners.destroy');
 
         // DRR Premium County
-        Route::get('/drr-premium-county', [DrrPremiumCountyController::class, 'index'])->name('drr.index');
-        Route::get('/drr-premium-county/enquiry/{enquiry}', [DrrPremiumCountyController::class, 'showEnquiry'])->name('drr.enquiry.show');
-        Route::put('/drr-premium-county/enquiry/{enquiry}', [DrrPremiumCountyController::class, 'updateEnquiry'])->name('drr.enquiry.update');
-        Route::delete('/drr-premium-county/enquiry/{enquiry}', [DrrPremiumCountyController::class, 'destroyEnquiry'])->name('drr.enquiry.destroy');
-        Route::get('/drr-premium-county/brochure/{brochureDownload}', [DrrPremiumCountyController::class, 'showBrochure'])->name('drr.brochure.show');
-        Route::put('/drr-premium-county/brochure/{brochureDownload}', [DrrPremiumCountyController::class, 'updateBrochure'])->name('drr.brochure.update');
-        Route::delete('/drr-premium-county/brochure/{brochureDownload}', [DrrPremiumCountyController::class, 'destroyBrochure'])->name('drr.brochure.destroy');
-        Route::get('/drr-premium-county/export/enquiries', [DrrPremiumCountyController::class, 'exportEnquiries'])->name('drr.export.enquiries');
-        Route::get('/drr-premium-county/export/brochure', [DrrPremiumCountyController::class, 'exportBrochure'])->name('drr.export.brochure');
+        Route::get('/rj-retreat', [DrrPremiumCountyController::class, 'index'])->name('drr.index');
+        Route::get('/rj-retreat/enquiry/{enquiry}', [DrrPremiumCountyController::class, 'showEnquiry'])->name('drr.enquiry.show');
+        Route::put('/rj-retreat/enquiry/{enquiry}', [DrrPremiumCountyController::class, 'updateEnquiry'])->name('drr.enquiry.update');
+        Route::delete('/rj-retreat/enquiry/{enquiry}', [DrrPremiumCountyController::class, 'destroyEnquiry'])->name('drr.enquiry.destroy');
+        Route::get('/rj-retreat/brochure/{brochureDownload}', [DrrPremiumCountyController::class, 'showBrochure'])->name('drr.brochure.show');
+        Route::put('/rj-retreat/brochure/{brochureDownload}', [DrrPremiumCountyController::class, 'updateBrochure'])->name('drr.brochure.update');
+        Route::delete('/rj-retreat/brochure/{brochureDownload}', [DrrPremiumCountyController::class, 'destroyBrochure'])->name('drr.brochure.destroy');
+        Route::get('/rj-retreat/export/enquiries', [DrrPremiumCountyController::class, 'exportEnquiries'])->name('drr.export.enquiries');
+        Route::get('/rj-retreat/export/brochure', [DrrPremiumCountyController::class, 'exportBrochure'])->name('drr.export.brochure');
     });
 });
 

@@ -8,28 +8,28 @@
         <meta name="theme-color" content="#000000" />
         
         <!-- SEO Meta Tags -->
-        <title>DRR Premium County - Premium Plots in Hyderabad | Paanchajanya Reality</title>
-        <meta name="description" content="Explore DRR Premium County by Paanchajanya Reality. Premium residential plots in Hyderabad with modern amenities and great connectivity." />
+        <title>RJ Retreat - Premium Plots in Hyderabad | Paanchajanya Reality</title>
+        <meta name="description" content="Explore RJ Retreat by Paanchajanya Reality. Premium residential plots in Hyderabad with modern amenities and great connectivity." />
         <meta name="keywords" content="DRR Premium County, Residential Plots Hyderabad, Buy Plots Hyderabad, Paanchajanya Reality" />
 
         <!-- Open Graph / Facebook -->
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://paanchajanyareality.com/projects/drr-premium-county/" />
+        <meta property="og:url" content="https://paanchajanyareality.com/projects/rj-retreat/" />
         <meta property="og:title" content="DRR Premium County - Premium Plots in Hyderabad | Paanchajanya Reality" />
         <meta property="og:description" content="Explore DRR Premium County by Paanchajanya Reality. Premium residential plots in Hyderabad with modern amenities." />
         <meta property="og:image" content="/assests/projects/Rj-retreat/logo-rj-retreat.png" />
 
         <!-- Twitter -->
         <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content="https://paanchajanyareality.com/projects/drr-premium-county/" />
+        <meta property="twitter:url" content="https://paanchajanyareality.com/projects/rj-retreat/" />
         <meta property="twitter:title" content="DRR Premium County - Premium Plots in Hyderabad | Paanchajanya Reality" />
         <meta property="twitter:description" content="Explore DRR Premium County by Paanchajanya Reality. Premium residential plots in Hyderabad with modern amenities." />
         <meta property="twitter:image" content="/assests/projects/Rj-retreat/logo-rj-retreat.png" />
 
-        <link rel="canonical" href="https://paanchajanyareality.com/projects/drr-premium-county/" />
+        <link rel="canonical" href="https://paanchajanyareality.com/projects/rj-retreat/" />
         <meta name="robots" content="index, follow" />
         <script async="" src="https://scripts.clarity.ms/0.8.56/clarity.js"></script>
-        <script defer="defer" src="/assests/projects/DRR/js/custom4.js"></script>
+        <script defer="defer" src="/assests/projects/DRR/js/custom5.js"></script>
         <link href="/assests/projects/DRR/css/main.e54e2a16.css" rel="stylesheet" />
     
        
@@ -1704,7 +1704,7 @@ function submitDrrForm(formId, endpoint, successId, errorId, btnId) {
             if (result.ok) {
                 successDiv.style.display = 'block';
                 form.reset();
-                window.location.href = '/projects/drr-premium-county/thank-you/';
+                window.location.href = '/projects/rj-retreat/thank-you/';
             } else {
                 var msg = result.data.message || 'Something went wrong. Please try again.';
                 if (result.data.errors) {

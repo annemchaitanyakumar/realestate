@@ -739,9 +739,9 @@ $sliders = $stmt->fetchAll();
                                                                                     decoding="async"
                                                                                     width="962"
                                                                                     height="720"
-                                                                                    src="assests/image/projects/project1.jpg"
+                                                                                    src="assests/image/projects/landing-banner.jpeg"
                                                                                     class="attachment-large size-large wp-image-26618"
-                                                                                    alt="DRR Premium County"
+                                                                                    alt="RJ Retreat"
                                                                                 />
                                                                             </div>
                                                                         </div>
@@ -755,7 +755,7 @@ $sliders = $stmt->fetchAll();
                                                                                 <h2
                                                                                     class="elementor-heading-title elementor-size-default"
                                                                                 >
-                                                                                    DRR Premium County
+                                                                                    RJ Retreat
                                                                                 </h2>
                                                                             </div>
                                                                         </div>
@@ -781,7 +781,7 @@ $sliders = $stmt->fetchAll();
                                                                                 <div class="elementor-button-wrapper">
                                                                                     <a
                                                                                         class="elementor-button elementor-button-link elementor-size-sm"
-                                                                                        href="projects/drr-premium-county/"
+                                                                                        href="projects/rj-retreat/"
                                                                                     >
                                                                                         <span
                                                                                             class="elementor-button-content-wrapper"

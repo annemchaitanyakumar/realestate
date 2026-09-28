@@ -35295,7 +35295,7 @@
                         label: "Master Plan",
                         type: "single",
                         img: "/assests/projects/DRR/images/layout/plan1.png",
-                        alt: "Layout For DRR Premium County",
+                        alt: "Layout For RJ Retreat",
                     },
                     {
                         key: "blockA",
@@ -35567,7 +35567,7 @@
                             children: [
                                 (0, St.jsx)(_u.img, {
                                     src: "/assests/projects/DRR/images/Living-and-dining.webp",
-                                    alt: "Modern apartment interior at DRR Premium County",
+                                    alt: "Modern apartment interior at RJ Retreat",
                                     className: "scaling-image",
                                     style: { scale: i },
                                     loading: "lazy",
@@ -35652,7 +35652,7 @@
                                                 children: (0, St.jsx)("img", {
                                                     src: "/assests/projects/DRR/images/route.png",
                                                     className: "w-100 pt-4",
-                                                    alt: "Location map showing DRR Premium County",
+                                                    alt: "Location map showing RJ Retreat",
                                                     loading: "lazy",
                                                 }),
                                             }),
@@ -35911,7 +35911,7 @@
                         body: n.toString(),
                     });
                     if (r.ok) {
-                        window.location.href = "/projects/drr-premium-county/thank-you/";
+                        window.location.href = "/projects/rj-retreat/thank-you/";
                     } else {
                         const e = await r.text();
                         console.error("Sell.Do error response:", e),
@@ -36294,7 +36294,7 @@
                         (0, St.jsx)("div", {
                             className: "footer-bottom text-center",
                             children: (0, St.jsxs)("small", {
-                                children: ["\xa9 ", e, " Paanchajanya Reality | DRR Premium County. All rights reserved."],
+                                children: ["\xa9 ", e, " Paanchajanya Reality | RJ Retreat. All rights reserved."],
                             }),
                         }),
                         (0, St.jsx)("style", {
@@ -40399,7 +40399,7 @@
                                             children: "Download Brochure",
                                         }),
                                         (0, St.jsx)("a", {
-                                            href: "/projects/drr-premium-county/",
+                                            href: "/projects/rj-retreat/",
                                             style: {
                                                 background: "#6f4e37",
                                                 color: "#fff",
@@ -40465,7 +40465,7 @@
                         Et().init({ duration: 1e3, offset: 100, once: !1, mirror: !0 });
                     }, []),
                     (0, St.jsxs)(ft, {
-                        basename: "projects/drr-premium-county",
+                        basename: "projects/rj-retreat",
                         children: [
                             " ",
                             (0, St.jsxs)(je, {

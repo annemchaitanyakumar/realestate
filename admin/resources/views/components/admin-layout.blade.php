@@ -142,7 +142,7 @@
 
                 <a href="{{ route('admin.drr.index') }}" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition {{ request()->routeIs('admin.drr.*') ? 'active' : '' }}">
                     <i class="fas fa-building w-5"></i>
-                    <span>DRR Premium County</span>
+                    <span>RJ Retreat</span>
                     @php
                         $newDrrCount = \App\Models\DrrEnquiry::where('status', 'new')->count() + \App\Models\DrrBrochureDownload::where('status', 'new')->count();
                     @endphp

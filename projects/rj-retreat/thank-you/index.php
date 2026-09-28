@@ -8,7 +8,7 @@
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <meta name="theme-color" content="#000000" />
         
-        <title>Thank You - DRR Premium County | Paanchajanya Reality</title>
+        <title>Thank You - RJ Retreat | Paanchajanya Reality</title>
         
         <link href="/assests/projects/DRR/css/main.e54e2a16.css" rel="stylesheet" />
         <link rel="stylesheet" href="/assests/css/whatsapp-widget.css">
@@ -100,7 +100,7 @@
             <div id="wrapper">
                 <header class="header shadow-sm">
                     <div class="container d-flex align-items-center">
-                         <a href="/projects/drr-premium-county/" class="navbar-brand ms-3">
+                         <a href="/projects/rj-retreat/" class="navbar-brand ms-3">
                             <img src="/assests/projects/Rj-retreat/logo-rj-retreat.png" alt="Paanchajanya Logo" style="height: 60px;">
                          </a>
                     </div>
@@ -118,7 +118,7 @@
                         </p>
                         
                         <div class="mt-4">
-                            <a href="/projects/drr-premium-county/" class="btn-home">Back to Project</a>
+                            <a href="/projects/rj-retreat/" class="btn-home">Back to Project</a>
                         </div>
 
                         <div class="download-status" id="download-status">

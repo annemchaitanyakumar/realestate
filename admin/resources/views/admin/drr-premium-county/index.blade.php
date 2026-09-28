@@ -1,4 +1,4 @@
-<x-admin-layout title="DRR Premium County" pageTitle="DRR Premium County" pageSubtitle="Manage enquiry and brochure download submissions">
+<x-admin-layout title="RJ Retreat" pageTitle="RJ Retreat" pageSubtitle="Manage enquiry and brochure download submissions">
     <div class="space-y-6">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200">
@@ -137,7 +137,7 @@
                                     <td colspan="7" class="px-6 py-12 text-center text-gray-500">
                                         <i class="fas fa-envelope text-4xl text-gray-300 mb-3 block"></i>
                                         <p class="text-lg">No enquiries found</p>
-                                        <p class="text-sm text-gray-400 mt-1">Enquiries from the DRR Premium County page will appear here</p>
+                                        <p class="text-sm text-gray-400 mt-1">Enquiries from the RJ Retreat page will appear here</p>
                                     </td>
                                 </tr>
                             @endforelse

@@ -1,13 +1,13 @@
 <x-admin-layout 
-    title="DRR Brochure Download" 
+    title="RJ Retreat Brochure Download" 
     pageTitle="Brochure Download Details" 
-    pageSubtitle="DRR Premium County - View and manage brochure request">
+    pageSubtitle="RJ Retreat - View and manage brochure request">
     
     <div class="max-w-5xl mx-auto py-6">
         <div class="mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
             <a href="{{ route('admin.drr.index', ['tab' => 'brochure']) }}" class="w-full sm:w-auto inline-flex items-center justify-center text-sm font-bold text-gray-600 hover:text-blue-600 transition-all bg-white px-6 py-3 rounded-xl shadow-sm border border-gray-200">
                 <i class="fas fa-arrow-left mr-2 text-green-500"></i>
-                Back to DRR Premium County
+                Back to RJ Retreat
             </a>
             
             <form action="{{ route('admin.drr.brochure.destroy', $brochureDownload) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this record?');" class="w-full sm:w-auto">
@@ -104,7 +104,7 @@
                             Quick Actions
                         </h3>
                         <div class="flex flex-col gap-3">
-                            <a href="mailto:{{ $brochureDownload->email }}?subject=DRR Premium County - Brochure&body=Hi {{ $brochureDownload->name }},%0D%0A%0D%0AThank you for your interest in DRR Premium County. Please find the brochure attached." 
+                            <a href="mailto:{{ $brochureDownload->email }}?subject=RJ Retreat - Brochure&body=Hi {{ $brochureDownload->name }},%0D%0A%0D%0AThank you for your interest in RJ Retreat. Please find the brochure attached." 
                                 class="flex items-center justify-center px-4 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition shadow-sm font-bold text-sm">
                                 <i class="fas fa-reply mr-2"></i>Send Brochure via Email
                             </a>
@@ -113,7 +113,7 @@
                                     class="flex items-center justify-center px-4 py-3 bg-white border border-gray-200 text-gray-700 rounded-xl hover:bg-gray-50 transition shadow-sm font-bold text-sm">
                                     <i class="fas fa-phone mr-2 text-green-500"></i>Call
                                 </a>
-                                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $brochureDownload->phone) }}?text=Hi {{ $brochureDownload->name }}, Thank you for your interest in DRR Premium County. Here is the brochure link:" 
+                                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $brochureDownload->phone) }}?text=Hi {{ $brochureDownload->name }}, Thank you for your interest in RJ Retreat. Here is the brochure link:" 
                                     target="_blank"
                                     class="flex items-center justify-center px-4 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 transition shadow-sm font-bold text-sm">
                                     <i class="fab fa-whatsapp mr-2"></i>WhatsApp

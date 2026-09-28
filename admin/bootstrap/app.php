@@ -21,7 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'api/*',
             'admin/api/*',
             'drr/*',
-            'drr-premium-county/*',
+            'rj-retreat/*',
         ]);
 
         // Redirect guests to admin login (use function to avoid redirect loop)
