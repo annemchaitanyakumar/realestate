@@ -24388,7 +24388,7 @@
                                             : undefined,
                                     }),
                                     (0, St.jsx)(_u.img, {
-                                        src: "/assests/projects/Rj-retreat/logo-rj-retreat.png",
+                                        src: "/assests/projects/Rj-retreat/rj-retreat.png",
                                         alt: "RJ Retreat logo",
                                         width: "160",
                                         height: "60",
@@ -36268,7 +36268,7 @@
                         (0, St.jsx)("div", {
                             className: "footer-logo text-center mb-3",
                             children: (0, St.jsx)("img", {
-                                src: "/assests/projects/Rj-retreat/logo-rj-retreat.png",
+                                src: "/assests/projects/Rj-retreat/lrj-retreat.png",
                                 alt: "RJ Retreat logo",
                                 style: { width: "190px" },
                             }),
