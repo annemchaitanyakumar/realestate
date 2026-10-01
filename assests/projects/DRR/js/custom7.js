@@ -24492,8 +24492,8 @@
                                         (0, St.jsx)(_u.img, {
                                             style: { y: s ? -80 : r, opacity: o },
                                             src: s
-                                                ? "/assests/projects/DRR/images/panch2.png"
-                                                : "/assests/projects/DRR/images/panch2.png",
+                                                ? "/assests/projects/Rj-retreat/punch4.png"
+                                                : "/assests/projects/Rj-retreat/punch4.png",
                                             alt: "Project lifestyle image",
                                             width: "800",
                                             height: "600",
