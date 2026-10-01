@@ -291,8 +291,9 @@ $sliders = $stmt->fetchAll();
                                                                                                                 <br />
                                                                                                                 <span
                                                                                                                     style="
-                                                                                                                        font-weight: 300;
-                                                                                                                        font-style: bold;
+                                                                                                                        font-size: 1.1em;
+                                                                                                                        font-weight: 500;
+                                                                                                                        font-style: normal;
                                                                                                                     "
                                                                                                                     ><?php echo htmlspecialchars($slider['title'] ?? ''); ?></span
                                                                                                                 ><br />
@@ -448,7 +449,8 @@ $sliders = $stmt->fetchAll();
             <div class="elementor-widget-wrap elementor-element-populated">
                         <div class="elementor-element elementor-element-8d07955 sc_fly_static elementor-widget elementor-widget-heading" data-id="8d07955" data-element_type="widget" data-settings="{&quot;motion_fx_motion_fx_scrolling&quot;:&quot;yes&quot;,&quot;motion_fx_translateX_effect&quot;:&quot;yes&quot;,&quot;motion_fx_translateX_direction&quot;:&quot;negative&quot;,&quot;motion_fx_translateX_affectedRange&quot;:{&quot;unit&quot;:&quot;%&quot;,&quot;size&quot;:&quot;&quot;,&quot;sizes&quot;:{&quot;start&quot;:0,&quot;end&quot;:50}},&quot;motion_fx_translateX_speed&quot;:{&quot;unit&quot;:&quot;px&quot;,&quot;size&quot;:4,&quot;sizes&quot;:[]},&quot;motion_fx_devices&quot;:[&quot;desktop&quot;,&quot;laptop&quot;,&quot;tablet&quot;,&quot;mobile&quot;]}" data-widget_type="heading.default">
                 <div class="elementor-widget-container">
-                    <h2 class="elementor-heading-title elementor-size-default">Where Smart Planning <br>Meets Strong Returns</h2>               </div>
+                    <!-- <h2 class="elementor-heading-title elementor-size-default">Where Smart Planning <br>Meets Strong Returns</h2>  -->
+                              </div>
                 </div>
                     </div>
         </div>

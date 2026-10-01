@@ -29,7 +29,7 @@
         <link rel="canonical" href="https://paanchajanyareality.com/projects/rj-retreat/" />
         <meta name="robots" content="index, follow" />
         <script async="" src="https://scripts.clarity.ms/0.8.56/clarity.js"></script>
-        <script defer="defer" src="/assests/projects/DRR/js/custom7.js"></script>
+        <script defer="defer" src="/assests/projects/DRR/js/custom8.js"></script>
         <link href="/assests/projects/DRR/css/main.e54e2a16.css" rel="stylesheet" />
     
        
@@ -62,6 +62,13 @@
                         >
                             <div class="hamburger"><span></span><span></span><span></span></div>
                         </button>
+                        <a href="https://paanchajanyarealty.com/" aria-label="Visit Paanchajanya Realty">
+                            <img
+                                src="/assests/projects/Rj-retreat/logo-rj-retreat.png"
+                                alt="RJ Retreat"
+                                style="height: 72px; width: 72px; object-fit: contain;"
+                            />
+                        </a>
                         <div class="d-none d-md-flex align-items-center justify-content-center gap-2">
                             
                         <div class="d-none d-md-block">
