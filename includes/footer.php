@@ -203,29 +203,30 @@
                     <div class="socials_wrap sc_item_content">
                         <a
                             target="_blank"
-                            href="https://www.facebook.com/"
+                            href="https://www.facebook.com/PanchajanyaEcoVillages"
                             class="social_item social_item_style_icons sc_icon_type_icons social_item_type_icons"
                             ><span class="social_icon social_icon_facebook-1" style=""
                                 ><span class="icon-facebook-1"></span></span></a
                         ><a
                             target="_blank"
-                            href="https://www.instagram.com/"
+                            href="https://www.instagram.com/paanchajanya_realty"
                             class="social_item social_item_style_icons sc_icon_type_icons social_item_type_icons"
                             ><span class="social_icon social_icon_instagram" style=""
                                 ><span class="icon-instagram"></span></span></a
                         ><a
                             target="_blank"
-                            href="https://www.youtube.com/"
+                            href="https://www.youtube.com/@PaanchajanyaRealty"
                             class="social_item social_item_style_icons sc_icon_type_icons social_item_type_icons"
                             ><span class="social_icon social_icon_youtube2" style=""
                                 ><span class="fa-brands fa-youtube"></span></span></a
-                        ><a
+                        >
+                        <!-- <a
                             target="_blank"
                             href="https://in.linkedin.com/"
                             class="social_item social_item_style_icons sc_icon_type_icons social_item_type_icons"
                             ><span class="social_icon social_icon_linkedin" style=""
                                 ><span class="icon-linkedin"></span></span
-                        ></a>
+                        ></a> -->
                     </div>
                 </div>
             </div>
