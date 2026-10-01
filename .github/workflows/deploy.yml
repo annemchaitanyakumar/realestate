@@ -13,6 +13,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.2.0
         with:
@@ -37,15 +40,8 @@ jobs:
             echo "Current commit:"
             git rev-parse --short HEAD
 
-            echo "Fetching latest code..."
-            git fetch origin main
-
-            echo "Pulling latest code..."
-            git pull --ff-only origin main
-
-            echo "New commit:"
-            git rev-parse --short HEAD
+            echo "Production server SSH connection successful."
 
             echo "======================================"
-            echo "Deployment completed successfully"
+            echo "Server connection test completed"
             echo "======================================"
