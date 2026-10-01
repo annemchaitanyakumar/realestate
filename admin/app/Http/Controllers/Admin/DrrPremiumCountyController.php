@@ -23,13 +23,13 @@ class DrrPremiumCountyController extends Controller
             'new_brochure' => DrrBrochureDownload::where('status', 'new')->count(),
         ];
 
-        return view('admin.rj-retreat.index', compact('enquiries', 'brochureDownloads', 'stats', 'tab'));
+        return view('admin.drr-premium-county.index', compact('enquiries', 'brochureDownloads', 'stats', 'tab'));
     }
 
     public function showEnquiry(DrrEnquiry $enquiry)
     {
         $enquiry->markAsRead();
-        return view('admin.rj-retreat.show-enquiry', compact('enquiry'));
+        return view('admin.drr-premium-county.show-enquiry', compact('enquiry'));
     }
 
     public function updateEnquiry(Request $request, DrrEnquiry $enquiry)
@@ -52,7 +52,7 @@ class DrrPremiumCountyController extends Controller
     public function showBrochure(DrrBrochureDownload $brochureDownload)
     {
         $brochureDownload->markAsRead();
-        return view('admin.rj-retreat.show-brochure', compact('brochureDownload'));
+        return view('admin.drr-premium-county.show-brochure', compact('brochureDownload'));
     }
 
     public function updateBrochure(Request $request, DrrBrochureDownload $brochureDownload)
