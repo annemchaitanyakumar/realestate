@@ -1,0 +1,51 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy to Production Server
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
+          script_stop: true
+
+          script: |
+            set -e
+
+            echo "======================================"
+            echo "Starting production deployment"
+            echo "======================================"
+
+            cd /var/www/paanchajanyarealty.com
+
+            echo "Current directory:"
+            pwd
+
+            echo "Current commit:"
+            git rev-parse --short HEAD
+
+            echo "Fetching latest code..."
+            git fetch origin main
+
+            echo "Pulling latest code..."
+            git pull --ff-only origin main
+
+            echo "New commit:"
+            git rev-parse --short HEAD
+
+            echo "======================================"
+            echo "Deployment completed successfully"
+            echo "======================================"
