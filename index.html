@@ -1,36 +1,3 @@
-<?php 
-include 'includes/db.php'; 
-
-// Fetch active sliders dynamically
-$sliders = [];
-try {
-  $stmt = $pdo->query("SELECT * FROM sliders WHERE is_active = 1 ORDER BY `order` ASC");
-  $sliders = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (Exception $e) {
-  // Graceful fallback
-}
-
-// Handle contact form submission
-$form_success = false;
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $name = isset($_POST['name']) ? trim($_POST['name']) : '';
-  $email = isset($_POST['email']) ? trim($_POST['email']) : '';
-  $phone = isset($_POST['phone']) ? trim($_POST['phone']) : '';
-  $venture = isset($_POST['venture']) ? trim($_POST['venture']) : '';
-  $user_msg = isset($_POST['message']) ? trim($_POST['message']) : '';
-  $combined_msg = "Interested Venture: " . $venture . " | " . $user_msg;
-
-  if ($name && $phone) {
-    try {
-      $insertStmt = $pdo->prepare("INSERT INTO contact_submissions (name, email, phone, message, status, created_at, updated_at) VALUES (?, ?, ?, ?, 'new', NOW(), NOW())");
-      $insertStmt->execute([$name, $email, $phone, $combined_msg]);
-      $form_success = true;
-    } catch (Exception $e) {
-      // Graceful fallback
-    }
-  }
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
        ========================================================================== -->
   <header class="lp-header">
     <div class="container lp-header-inner">
-      <a href="index.php" class="lp-logo">
+      <a href="index.html" class="lp-logo">
         <img src="assests/image/paanchajanya-logo-new.png" alt="Paanchajanya Realty Logo">
       </a>
 
@@ -124,20 +91,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
        ========================================================================== -->
   <section class="lp-hero" id="hero">
     <div class="lp-hero-slides">
-      <?php if (!empty($sliders)): ?>
-        <?php foreach ($sliders as $index => $slider): ?>
-          <div class="lp-hero-slide <?php echo $index === 0 ? 'active' : ''; ?>">
-            <img src="admin/storage/<?php echo htmlspecialchars($slider['image']); ?>" alt="<?php echo htmlspecialchars($slider['title'] ?? 'Paanchajanya Venture'); ?>" class="lp-hero-slide-img">
-          </div>
-        <?php endforeach; ?>
-      <?php else: ?>
-        <div class="lp-hero-slide active">
-          <img src="assests/image/banner.jpg" alt="Paanchajanya Venture" class="lp-hero-slide-img">
-        </div>
-        <div class="lp-hero-slide">
-          <img src="assests/image/banner2.jpg" alt="DRR Premium County" class="lp-hero-slide-img">
-        </div>
-      <?php endif; ?>
+      
+      <div class="lp-hero-slide active">
+        <img src="/admin/storage/sliders/BSMDbnLZJXxBvKtswYhifkqsZlVL5qaxkDyjhkOb.webp" alt="Paanchajanya Venture" class="lp-hero-slide-img">
+      </div>
+      <div class="lp-hero-slide">
+        <img src="/admin/storage/sliders/EQPGfdUnx673VnSY6Jf6gIcrNFGnboUUlA3ML6VQ.jpg" alt="DRR Premium County" class="lp-hero-slide-img">
+      </div>
+      <div class="lp-hero-slide">
+        <img src="/admin/storage/sliders/oPATvX2IdTjPZgwVsORezMsUJwTaSvT1kOb4n7QQ.jpg" alt="Hyderabad Growth Corridors" class="lp-hero-slide-img">
+      </div>
+      <div class="lp-hero-slide">
+        <img src="/admin/storage/sliders/Suxyj1I0XGj3FCuEAvORbU2SlwJa9hUU6UhSqpmW.jpg" alt="Strategic Plotting" class="lp-hero-slide-img">
+      </div>
+      <div class="lp-hero-slide">
+        <img src="/admin/storage/sliders/TRpDV0gZbxM0oyPK9likbBaLF9lj52RoYT8ulfvL.jpg" alt="Modern Amenities" class="lp-hero-slide-img">
+      </div>
+      <div class="lp-hero-slide">
+        <img src="/admin/storage/sliders/vk26wV2J5HoRuLCXa36hN1PdxGStEA0GYqPfeVq6.jpg" alt="Approved Ventures" class="lp-hero-slide-img">
+      </div>
     </div>
     <div class="lp-hero-overlay"></div>
 
@@ -157,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- Hero Controls -->
     <div class="lp-hero-controls">
       <button class="lp-hero-arrow lp-prev-slide" aria-label="Previous slide">&#10094;</button>
-      <span class="lp-hero-counter">01 / <?php echo str_pad(max(1, count($sliders)), 2, "0", STR_PAD_LEFT); ?></span>
+      <span class="lp-hero-counter">01 / 06</span>
       <button class="lp-hero-arrow lp-next-slide" aria-label="Next slide">&#10095;</button>
     </div>
   </section>
@@ -529,13 +501,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <h3 class="lp-form-title">Enquire Now</h3>
           <p class="lp-form-sub">Please fill in your details and our team will get back to you promptly.</p>
 
-          <?php if (!empty($form_success)): ?>
-            <div style="padding: 16px; background: #e6f7ef; color: #0d684d; border-radius: 8px; margin-bottom: 24px; font-weight: 600; border: 1px solid #b7ebd3;">
-              Thank you! Your details have been received. Our sales team will call you shortly to confirm your site visit.
-            </div>
-          <?php endif; ?>
+          
 
-          <form action="index.php#contact" method="POST">
+          <form action="#contact" method="POST">
             <div class="lp-form-grid">
               <div class="lp-form-group">
                 <label class="lp-form-label" for="full_name">Full Name *</label>
@@ -655,7 +623,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <h3 class="lp-form-title" style="font-size: 1.85rem;">Book Free Site Visit</h3>
       <p class="lp-form-sub">We offer complimentary transport from Hyderabad directly to the project site.</p>
 
-      <form action="index.php#contact" method="POST">
+      <form action="#contact" method="POST">
         <input type="hidden" name="venture" id="modal_project" value="DRR Premium County">
 
         <div style="display:flex; flex-direction:column; gap:1.25rem;">
