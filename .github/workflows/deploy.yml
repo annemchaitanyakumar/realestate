@@ -1,3 +1,4 @@
+
 name: Deploy to Production
 
 on:
@@ -17,15 +18,18 @@ jobs:
   preflight:
     name: Validate Production Deployment
     runs-on: ubuntu-latest
+
     steps:
       - name: Validate deployment branch
         shell: bash
         run: |
           set -euo pipefail
+
           if [[ "$GITHUB_REF" != "refs/heads/main" ]]; then
             echo "ERROR: Production deployment is allowed only from main."
             exit 1
           fi
+
           echo "Branch: $GITHUB_REF_NAME"
           echo "Commit: $GITHUB_SHA"
 
@@ -33,7 +37,7 @@ jobs:
     name: Backup, Deploy and Verify
     runs-on: ubuntu-latest
     needs: preflight
-    timeout-minutes: 20
+    timeout-minutes: 30
 
     steps:
       - name: Deploy to Ubuntu Server
@@ -43,7 +47,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_PORT }}
-          command_timeout: 15m
+          command_timeout: 25m
 
           script: |
             set -Eeuo pipefail
@@ -55,6 +59,12 @@ jobs:
             CONFIG_BACKUP="$CONFIG_DIR/db.php"
             TARGET_COMMIT="${{ github.sha }}"
 
+            DEPLOY_USER="$(id -un)"
+            DB_CONFIG="$APP_DIR/includes/db.php"
+            STORAGE_DIR="$APP_DIR/admin/storage/app/public"
+            PUBLIC_STORAGE="$APP_DIR/admin/public/storage"
+            EXPECTED_STORAGE_TARGET="$STORAGE_DIR"
+
             BACKUP_READY=0
             DEPLOY_STARTED=0
             RESTORE_DIR=""
@@ -63,30 +73,91 @@ jobs:
 
             cleanup_temps() {
               set +e
+
               [ -z "$TEMP_ARCHIVE" ] || rm -f "$TEMP_ARCHIVE"
               [ -z "$TEMP_DB" ] || rm -f "$TEMP_DB"
+
               if [ -n "$RESTORE_DIR" ] && [ -d "$RESTORE_DIR" ]; then
                 rm -rf "$RESTORE_DIR"
               fi
             }
 
+            ensure_db_permissions() {
+              local file="$1"
+
+              test -s "$file" || {
+                echo "ERROR: Database configuration is missing: $file"
+                return 1
+              }
+
+              chmod 640 "$file"
+
+              if chgrp www-data "$file"; then
+                :
+              elif command -v sudo >/dev/null 2>&1 &&
+                   sudo -n chown "$DEPLOY_USER:www-data" "$file"; then
+                :
+              else
+                echo "ERROR: Cannot set www-data group on $file."
+                echo "Grant the deploy user group membership or narrowly scoped sudo access."
+                return 1
+              fi
+
+              echo "Database configuration permissions verified."
+              ls -l "$file"
+            }
+
+            ensure_storage_link() {
+              mkdir -p "$STORAGE_DIR" "$APP_DIR/admin/public"
+
+              if [ -L "$PUBLIC_STORAGE" ]; then
+                local actual_target
+                actual_target="$(readlink -f "$PUBLIC_STORAGE" || true)"
+
+                if [ "$actual_target" != "$EXPECTED_STORAGE_TARGET" ]; then
+                  echo "Repairing incorrect Laravel storage symlink."
+                  rm "$PUBLIC_STORAGE"
+                fi
+              elif [ -e "$PUBLIC_STORAGE" ]; then
+                echo "ERROR: $PUBLIC_STORAGE exists but is not a symlink."
+                echo "Refusing to remove this directory because it may contain uploaded files."
+                return 1
+              fi
+
+              if [ ! -L "$PUBLIC_STORAGE" ]; then
+                ln -s "$EXPECTED_STORAGE_TARGET" "$PUBLIC_STORAGE"
+              fi
+
+              local actual_target
+              actual_target="$(readlink -f "$PUBLIC_STORAGE")"
+
+              if [ "$actual_target" != "$EXPECTED_STORAGE_TARGET" ]; then
+                echo "ERROR: Laravel storage symlink verification failed."
+                return 1
+              fi
+
+              echo "PASS: Laravel public storage symlink."
+              ls -ld "$PUBLIC_STORAGE"
+            }
+
             rollback() {
-              STATUS=$?
-              FAILED_LINE="${BASH_LINENO[0]:-unknown}"
+              local status=$?
+              local failed_line="${BASH_LINENO[0]:-unknown}"
+
               trap - ERR
               set +e
 
               echo "======================================"
               echo "DEPLOYMENT FAILED"
-              echo "Failure line: $FAILED_LINE"
-              echo "Exit code: $STATUS"
+              echo "Failure line: $failed_line"
+              echo "Exit code: $status"
               echo "Starting rollback."
               echo "======================================"
 
               if [ "$DEPLOY_STARTED" -ne 1 ]; then
                 echo "Application changes had not started."
                 cleanup_temps
-                exit "$STATUS"
+                exit "$status"
               fi
 
               if [ "$BACKUP_READY" -ne 1 ] ||
@@ -113,21 +184,29 @@ jobs:
               fi
 
               if [ -s "$CONFIG_BACKUP" ]; then
-                cp "$CONFIG_BACKUP" "$APP_DIR/includes/db.php"
-                chmod 640 "$APP_DIR/includes/db.php"
+                cp "$CONFIG_BACKUP" "$DB_CONFIG"
               elif [ -s "$RESTORE_DIR/includes/db.php" ]; then
-                cp "$RESTORE_DIR/includes/db.php" "$APP_DIR/includes/db.php"
-                chmod 640 "$APP_DIR/includes/db.php"
+                cp "$RESTORE_DIR/includes/db.php" "$DB_CONFIG"
               else
                 echo "CRITICAL: Database configuration restoration failed."
                 exit 1
               fi
 
+              if ! ensure_db_permissions "$DB_CONFIG"; then
+                echo "CRITICAL: Database configuration permissions need manual repair."
+                exit 1
+              fi
+
+              if ! ensure_storage_link; then
+                echo "WARNING: Storage link needs manual verification."
+              fi
+
               echo "Application files restored."
               echo "Database configuration restored."
               echo "Backup retained: $BACKUP_ARCHIVE"
+
               cleanup_temps
-              exit "$STATUS"
+              exit "$status"
             }
 
             echo "======================================"
@@ -135,6 +214,7 @@ jobs:
             echo "======================================"
 
             cd "$APP_DIR"
+
             git rev-parse --is-inside-work-tree
             git fetch origin main
 
@@ -150,14 +230,14 @@ jobs:
               exit 1
             fi
 
-            # Preserve production database configuration independently.
+            # Preserve the production-only database configuration.
             install -d -m 700 "$CONFIG_DIR"
 
-            if [ ! -s "$APP_DIR/includes/db.php" ]; then
+            if [ ! -s "$DB_CONFIG" ]; then
               if [ -s "$CONFIG_BACKUP" ]; then
                 mkdir -p "$APP_DIR/includes"
-                cp "$CONFIG_BACKUP" "$APP_DIR/includes/db.php"
-                chmod 640 "$APP_DIR/includes/db.php"
+                cp "$CONFIG_BACKUP" "$DB_CONFIG"
+                ensure_db_permissions "$DB_CONFIG"
               else
                 echo "ERROR: Production database configuration is missing."
                 exit 1
@@ -165,7 +245,7 @@ jobs:
             fi
 
             TEMP_DB="$(mktemp "$CONFIG_DIR/db.php.XXXXXX")"
-            cp "$APP_DIR/includes/db.php" "$TEMP_DB"
+            cp "$DB_CONFIG" "$TEMP_DB"
             chmod 600 "$TEMP_DB"
             mv -f "$TEMP_DB" "$CONFIG_BACKUP"
             TEMP_DB=""
@@ -173,7 +253,7 @@ jobs:
             test -s "$CONFIG_BACKUP"
             echo "Independent database configuration backup verified."
 
-            # Back up the current application before changing files.
+            # Create and verify a complete application backup.
             install -d -m 700 "$BACKUP_ROOT"
             TEMP_ARCHIVE="$BACKUP_ROOT/previous-site.tar.gz.tmp"
             rm -f "$TEMP_ARCHIVE"
@@ -185,11 +265,11 @@ jobs:
             test -s "$TEMP_ARCHIVE"
 
             ARCHIVE_LIST="$(tar -tzf "$TEMP_ARCHIVE")"
+
             if ! printf '%s\n' "$ARCHIVE_LIST" |
                  grep -Fx './includes/db.php' > /dev/null; then
               echo "ERROR: Backup does not contain includes/db.php."
-              printf '%s\n' "$ARCHIVE_LIST" |
-                grep 'db\.php' || true
+              printf '%s\n' "$ARCHIVE_LIST" | grep 'db\.php' || true
               exit 1
             fi
 
@@ -200,42 +280,55 @@ jobs:
 
             test -s "$BACKUP_ARCHIVE"
             BACKUP_READY=1
+
             echo "Application backup created and verified."
 
             trap rollback ERR
             DEPLOY_STARTED=1
 
-            # Deploy the exact target commit.
+            # Deploy the exact commit selected by GitHub Actions.
             git reset --hard "$TARGET_COMMIT"
 
-            # Preserve production config, Laravel data and dependencies.
+            # Keep production data, environment, dependencies and build
+            # artifacts until their replacements have been prepared.
             git clean -fdx \
               -e '.env' \
               -e '.env.*' \
               -e 'uploads/' \
               -e 'storage/' \
               -e 'includes/db.php' \
+              -e 'admin/.env' \
               -e 'admin/storage/' \
               -e 'admin/bootstrap/cache/' \
               -e 'admin/public/storage' \
               -e 'admin/vendor/' \
+              -e 'admin/node_modules/' \
               -e 'admin/public/build/'
 
             # Restore the production-only database configuration.
             mkdir -p includes
             cp "$CONFIG_BACKUP" includes/db.php
-            chmod 640 includes/db.php
-            test -s includes/db.php
+            ensure_db_permissions "$DB_CONFIG"
 
             ACTUAL_COMMIT="$(git rev-parse HEAD)"
+
             if [ "$ACTUAL_COMMIT" != "$TARGET_COMMIT" ]; then
               echo "ERROR: Deployed commit does not match target."
               exit 1
             fi
+
             echo "Deployed commit: $ACTUAL_COMMIT"
 
-            # Verify required environment and application files.
-            for file in admin/.env includes/db.php admin/artisan admin/composer.json; do
+            # Verify required application files.
+            for file in \
+              admin/.env \
+              includes/db.php \
+              admin/artisan \
+              admin/composer.json \
+              admin/composer.lock \
+              admin/package.json \
+              admin/package-lock.json \
+              admin/vite.config.js; do
               if [ -s "$file" ]; then
                 echo "PASS: $file"
               else
@@ -244,7 +337,7 @@ jobs:
               fi
             done
 
-            # Install PHP dependencies only if the autoloader is missing.
+            # Install PHP dependencies if the production autoloader is missing.
             if [ ! -s admin/vendor/autoload.php ]; then
               echo "Composer autoloader is missing. Installing dependencies."
 
@@ -255,17 +348,11 @@ jobs:
 
               cd admin
 
-              if [ -f composer.lock ]; then
-                composer install \
-                  --no-dev \
-                  --prefer-dist \
-                  --no-interaction \
-                  --optimize-autoloader
-              else
-                echo "ERROR: admin/composer.lock is missing."
-                echo "Refusing to resolve unpinned production dependencies."
-                exit 26
-              fi
+              composer install \
+                --no-dev \
+                --prefer-dist \
+                --no-interaction \
+                --optimize-autoloader
 
               cd "$APP_DIR"
             fi
@@ -277,8 +364,36 @@ jobs:
 
             echo "PASS: Composer autoloader"
 
+            # Build the Laravel frontend on every deployment.
+            if ! command -v node >/dev/null 2>&1 ||
+               ! command -v npm >/dev/null 2>&1; then
+              echo "ERROR: Node.js and npm must be installed on the server."
+              exit 28
+            fi
+
+            echo "Node version: $(node --version)"
+            echo "npm version:  $(npm --version)"
+
+            cd admin
+
+            npm ci
+            npm run build
+
+            if [ ! -s public/build/manifest.json ]; then
+              echo "ERROR: Vite build did not create public/build/manifest.json."
+              exit 29
+            fi
+
+            echo "PASS: Vite production manifest."
+
+            cd "$APP_DIR"
+
+            # Ensure public URLs can reach Laravel's uploaded files.
+            ensure_storage_link
+
             # Verify Laravel bootstrap.
             echo "DIAGNOSTIC: Checking Laravel bootstrap."
+
             if php admin/artisan --version; then
               echo "PASS: Laravel bootstrap."
             else
@@ -286,8 +401,18 @@ jobs:
               exit 22
             fi
 
-            # Verify public website.
+            # Verify the production database configuration is readable
+            # by the PHP-FPM worker group.
+            if ! runuser -u www-data -- test -r "$DB_CONFIG"; then
+              echo "ERROR: www-data cannot read includes/db.php."
+              exit 30
+            fi
+
+            echo "PASS: Database configuration is readable by www-data."
+
+            # Verify the public website.
             echo "DIAGNOSTIC: Checking public website."
+
             if curl --fail --silent --show-error --location \
               --retry 2 --retry-delay 2 --max-time 20 \
               https://paanchajanyarealty.com/ -o /dev/null; then
@@ -297,15 +422,34 @@ jobs:
               exit 23
             fi
 
-            # Verify admin URL.
-            echo "DIAGNOSTIC: Checking admin URL."
+            # Check the actual login page rather than relying on the
+            # /admin/ redirect, which may redirect to a different URL.
+            echo "DIAGNOSTIC: Checking admin login page."
+
             if curl --fail --silent --show-error --location \
               --retry 2 --retry-delay 2 --max-time 20 \
-              https://paanchajanyarealty.com/admin/ -o /dev/null; then
-              echo "PASS: Admin URL."
+              https://paanchajanyarealty.com/admin/login -o /dev/null; then
+              echo "PASS: Admin login page."
             else
-              echo "FAIL: Admin URL HTTP check."
+              echo "FAIL: Admin login HTTP check."
               exit 24
+            fi
+
+            # Verify a known uploaded slider image if one exists.
+            FIRST_SLIDER="$STORAGE_DIR/sliders/vk26wV2J5HoRuLCXa36hN1PdxGStEA0GYqPfeVq6.jpg"
+
+            if [ -f "$FIRST_SLIDER" ]; then
+              if curl --fail --silent --show-error --location \
+                --max-time 20 \
+                https://paanchajanyarealty.com/admin/storage/sliders/vk26wV2J5HoRuLCXa36hN1PdxGStEA0GYqPfeVq6.jpg \
+                -o /dev/null; then
+                echo "PASS: Existing slider image is publicly accessible."
+              else
+                echo "ERROR: Existing slider image is not publicly accessible."
+                exit 31
+              fi
+            else
+              echo "INFO: Known slider image is absent; skipping image URL check."
             fi
 
             trap - ERR
@@ -314,11 +458,8 @@ jobs:
             echo "DEPLOYMENT VERIFICATION SUCCESSFUL"
             echo "======================================"
 
-
             rm -f "$BACKUP_ARCHIVE"
 
             echo "Application backup removed after successful deployment."
             echo "Independent database backup retained: $CONFIG_BACKUP"
             echo "Production deployment completed."
-
-#End of the script
