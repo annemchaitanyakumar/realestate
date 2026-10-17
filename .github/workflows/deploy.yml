@@ -8,41 +8,40 @@ on:
 
   workflow_dispatch:
 
-# Prevent two deployments from modifying the server simultaneously.
+permissions:
+  contents: read
+
 concurrency:
   group: production-deployment
   cancel-in-progress: false
 
-permissions:
-  contents: read
-
 jobs:
   preflight:
-    name: Validate Deployment
+    name: Validate Production Deployment
     runs-on: ubuntu-latest
 
     steps:
-      - name: Validate workflow trigger
+      - name: Validate deployment branch
         run: |
-          echo "======================================"
-          echo "Production deployment preflight"
-          echo "Branch: $GITHUB_REF_NAME"
-          echo "Commit: $GITHUB_SHA"
-          echo "======================================"
+          set -euo pipefail
 
-          if [ "$GITHUB_REF_NAME" != "main" ]; then
-            echo "Error: Deployment is allowed only from main."
+          if [ "$GITHUB_REF" != "refs/heads/main" ]; then
+            echo "ERROR: Production deployment is allowed only from main."
             exit 1
           fi
 
+          echo "Branch: $GITHUB_REF_NAME"
+          echo "Commit: $GITHUB_SHA"
+          echo "Preflight successful."
+
   deploy:
-    name: Backup and Deploy to Ubuntu
+    name: Backup, Deploy and Verify
     runs-on: ubuntu-latest
     needs: preflight
-    timeout-minutes: 15
+    timeout-minutes: 20
 
     steps:
-      - name: Deploy with Backup and Rollback
+      - name: Deploy to Ubuntu Server
         uses: appleboy/ssh-action@v1.2.5
 
         with:
@@ -50,7 +49,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_PORT }}
-          command_timeout: 12m
+          command_timeout: 15m
 
           script: |
             set -Eeuo pipefail
@@ -58,10 +57,13 @@ jobs:
             APP_DIR="/var/www/paanchajanyarealty.com"
             BACKUP_ROOT="$HOME/deploy-backups/paanchajanyarealty.com"
             BACKUP_ARCHIVE="$BACKUP_ROOT/previous-site.tar.gz"
+            TARGET_COMMIT="${{ github.sha }}"
+
+            BACKUP_READY=0
+            DEPLOY_STARTED=0
 
             rollback() {
               STATUS=$?
-
               trap - ERR
               set +e
 
@@ -69,30 +71,38 @@ jobs:
               echo "Deployment failed. Starting rollback."
               echo "======================================"
 
-              if [ -f "$BACKUP_ARCHIVE" ]; then
-                cd "$APP_DIR" || exit 1
+              if [ "$BACKUP_READY" -eq 1 ] &&
+                 [ -f "$BACKUP_ARCHIVE" ]; then
 
-                # Remove failed deployment files while preserving
-                # environment configuration and runtime data.
-                git reset --hard HEAD
-                git clean -fdx \
-                  -e '.env' \
-                  -e '.env.*' \
-                  -e 'uploads/' \
-                  -e 'storage/'
+                RESTORE_DIR="$(mktemp -d "$HOME/deploy-restore.XXXXXX")"
 
-                # Restore the previous application files.
-                tar -xzf "$BACKUP_ARCHIVE" -C "$APP_DIR"
+                if tar -xzf "$BACKUP_ARCHIVE" \
+                     -C "$RESTORE_DIR" &&
+                   rsync -a --delete \
+                     --exclude='/.git/' \
+                     "$RESTORE_DIR/" "$APP_DIR/"; then
 
-                echo "Previous application files restored."
+                  echo "Previous application files restored."
+                  echo "Backup retained at: $BACKUP_ARCHIVE"
+                else
+                  echo "CRITICAL: Automatic rollback failed."
+                  echo "Backup retained at: $BACKUP_ARCHIVE"
+                  echo "Restore directory: $RESTORE_DIR"
+                  exit 1
+                fi
+
+                rm -rf "$RESTORE_DIR"
+
+              elif [ "$DEPLOY_STARTED" -eq 1 ]; then
+                echo "CRITICAL: No usable backup is available."
+                echo "Manual recovery is required."
+                exit 1
               else
-                echo "No backup archive exists; automatic rollback unavailable."
+                echo "Deployment failed before application changes."
               fi
 
               exit "$STATUS"
             }
-
-            trap rollback ERR
 
             echo "======================================"
             echo "Starting production deployment"
@@ -100,71 +110,124 @@ jobs:
 
             cd "$APP_DIR"
 
-            # Ensure this is the expected Git repository.
             git rev-parse --is-inside-work-tree
-
-            # Fetch the latest remote branch before changing files.
             git fetch origin main
 
             OLD_COMMIT="$(git rev-parse HEAD)"
-            NEW_COMMIT="$(git rev-parse origin/main)"
+            NEW_COMMIT="$(git rev-parse FETCH_HEAD)"
 
             echo "Previous commit: $OLD_COMMIT"
-            echo "Target commit:   $NEW_COMMIT"
+            echo "Target commit:   $TARGET_COMMIT"
+            echo "Remote commit:   $NEW_COMMIT"
 
-            # Replace the previous backup on every deployment.
-            mkdir -p "$(dirname "$BACKUP_ROOT")"
-            rm -rf "$BACKUP_ROOT"
-            mkdir -p "$BACKUP_ROOT"
+            if [ "$NEW_COMMIT" != "$TARGET_COMMIT" ]; then
+              echo "ERROR: Remote main does not match workflow commit."
+              exit 1
+            fi
 
-            # Back up all application files, including local changes,
-            # without copying Git's internal .git directory.
+            # Create a protected backup outside the repository.
+            install -d -m 700 "$BACKUP_ROOT"
+
+            TEMP_ARCHIVE="$BACKUP_ROOT/previous-site.tar.gz.tmp"
+            rm -f "$TEMP_ARCHIVE"
+
             tar \
               --exclude='./.git' \
-              -czf "$BACKUP_ARCHIVE" \
+              -czf "$TEMP_ARCHIVE" \
               -C "$APP_DIR" .
 
-            echo "Backup created: $BACKUP_ARCHIVE"
+            test -s "$TEMP_ARCHIVE"
+            chmod 600 "$TEMP_ARCHIVE"
 
-            # Force the tracked code to match the remote main branch.
-            git reset --hard origin/main
+            # Publish the complete backup atomically.
+            mv -f "$TEMP_ARCHIVE" "$BACKUP_ARCHIVE"
+            BACKUP_READY=1
 
-            # Remove untracked and ignored files that are not preserved.
-            # The environment and runtime directories are excluded.
+            echo "Backup created successfully."
+
+            # Enable rollback before modifying application files.
+            trap rollback ERR
+            DEPLOY_STARTED=1
+
+            # Force tracked code to match the target commit.
+            git reset --hard "$TARGET_COMMIT"
+
+            # Remove unwanted untracked/ignored files while preserving
+            # production-only configuration and runtime directories.
             git clean -fdx \
               -e '.env' \
               -e '.env.*' \
               -e 'uploads/' \
-              -e 'storage/'
+              -e 'storage/' \
+              -e 'includes/db.php' \
+              -e 'admin/.env' \
+              -e 'admin/storage/' \
+              -e 'admin/bootstrap/cache/' \
+              -e 'admin/public/storage' \
+              -e 'admin/vendor/' \
+              -e 'admin/public/build/'
 
-            # Verify the checkout matches the intended commit.
+            # Restore the production-only database file from backup.
+            if tar -tzf "$BACKUP_ARCHIVE" |
+                 grep -Fxq './includes/db.php'; then
+
+              mkdir -p includes
+
+              TEMP_DB="$(mktemp "$HOME/db-recovery.XXXXXX")"
+
+              tar -xOf "$BACKUP_ARCHIVE" \
+                ./includes/db.php > "$TEMP_DB"
+
+              test -s "$TEMP_DB"
+
+              install -o "$(id -un)" -g www-data -m 640 \
+                "$TEMP_DB" includes/db.php
+
+              rm -f "$TEMP_DB"
+
+              echo "Production database file preserved."
+            else
+              echo "ERROR: Backup does not contain includes/db.php."
+              exit 1
+            fi
+
+            # Verify the deployed commit.
             ACTUAL_COMMIT="$(git rev-parse HEAD)"
 
-            if [ "$ACTUAL_COMMIT" != "$NEW_COMMIT" ]; then
-              echo "Error: Deployed commit does not match origin/main."
+            if [ "$ACTUAL_COMMIT" != "$TARGET_COMMIT" ]; then
+              echo "ERROR: Deployed commit does not match target."
               exit 1
             fi
 
             echo "Deployed commit: $ACTUAL_COMMIT"
 
-            # Add application-specific build, test, and health checks here.
-            # Any command returning a non-zero exit status triggers rollback.
+            # Verify required application files.
+            test -f admin/.env
+            test -f includes/db.php
+            test -f admin/artisan
+            test -f admin/vendor/autoload.php
 
-            echo "Verifying Git working tree..."
-            if [ -n "$(git status --porcelain)" ]; then
-              echo "Error: Unexpected working-tree changes remain."
-              git status --short
-              exit 1
-            fi
+            # Verify Laravel can bootstrap.
+            php admin/artisan --version
 
-            # All configured deployment checks have passed.
+            # Verify the public website returns a successful response.
+            curl --fail --silent --show-error --location \
+              --retry 5 \
+              --retry-delay 2 \
+              --retry-connrefused \
+              --max-time 20 \
+              https://paanchajanyarealty.com/ \
+              -o /dev/null
+
+            # All configured checks passed.
             trap - ERR
 
             echo "======================================"
-            echo "Deployment completed successfully"
+            echo "Deployment verification successful"
             echo "======================================"
 
-            # Delete the backup only after successful verification.
-            rm -rf "$BACKUP_ROOT"
+            # Remove backup only after successful verification.
+            rm -f "$BACKUP_ARCHIVE"
 
             echo "Temporary backup removed."
+            echo "Production deployment completed."
