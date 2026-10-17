@@ -71,7 +71,7 @@ jobs:
 
             rollback() {
               STATUS=$?
-              trap - ERR
+              trap 'STATUS=$?; echo "ERROR: Command failed at line $LINENO with exit code $STATUS"; trap - ERR; rollback' ERR
               set +e
 
               echo "======================================"
