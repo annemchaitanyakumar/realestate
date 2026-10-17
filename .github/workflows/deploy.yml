@@ -314,6 +314,7 @@ jobs:
             echo "DEPLOYMENT VERIFICATION SUCCESSFUL"
             echo "======================================"
 
+#End of the script
             rm -f "$BACKUP_ARCHIVE"
 
             echo "Application backup removed after successful deployment."
