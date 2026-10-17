@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-
   workflow_dispatch:
 
 permissions:
@@ -18,21 +17,17 @@ jobs:
   preflight:
     name: Validate Production Deployment
     runs-on: ubuntu-latest
-
     steps:
       - name: Validate deployment branch
         shell: bash
         run: |
           set -euo pipefail
-
           if [[ "$GITHUB_REF" != "refs/heads/main" ]]; then
             echo "ERROR: Production deployment is allowed only from main."
             exit 1
           fi
-
           echo "Branch: $GITHUB_REF_NAME"
           echo "Commit: $GITHUB_SHA"
-          echo "Preflight successful."
 
   deploy:
     name: Backup, Deploy and Verify
@@ -56,25 +51,22 @@ jobs:
             APP_DIR="/var/www/paanchajanyarealty.com"
             BACKUP_ROOT="$HOME/deploy-backups/paanchajanyarealty.com"
             BACKUP_ARCHIVE="$BACKUP_ROOT/previous-site.tar.gz"
-            CONFIG_BACKUP_DIR="$HOME/production-config-backup"
-            CONFIG_BACKUP="$CONFIG_BACKUP_DIR/db.php"
+            CONFIG_DIR="$HOME/production-config-backup"
+            CONFIG_BACKUP="$CONFIG_DIR/db.php"
             TARGET_COMMIT="${{ github.sha }}"
 
             BACKUP_READY=0
             DEPLOY_STARTED=0
             RESTORE_DIR=""
+            TEMP_ARCHIVE=""
             TEMP_DB=""
 
-            cleanup_temporary_files() {
-              set +e
-
-              if [ -n "$TEMP_DB" ]; then
-                rm -f "$TEMP_DB"
-              fi
-
-              if [ -n "$RESTORE_DIR" ] && [ -d "$RESTORE_DIR" ]; then
-                rm -rf "$RESTORE_DIR"
-              fi
+            cleanup_temps() {
+              [ -z "$TEMP_ARCHIVE" ] || rm -f "$TEMP_ARCHIVE"
+              [ -z "$TEMP_DB" ] || rm -f "$TEMP_DB"
+              [ -z "$RESTORE_DIR" ] || {
+                [ ! -d "$RESTORE_DIR" ] || rm -rf "$RESTORE_DIR"
+              }
             }
 
             rollback() {
@@ -83,12 +75,18 @@ jobs:
               set +e
 
               echo "======================================"
-              echo "Deployment failed. Starting rollback."
+              echo "DEPLOYMENT FAILED: ROLLBACK STARTED"
               echo "======================================"
+
+              if [ "$DEPLOY_STARTED" -ne 1 ]; then
+                echo "Application changes had not started."
+                cleanup_temps
+                exit "$STATUS"
+              fi
 
               if [ "$BACKUP_READY" -ne 1 ] ||
                  [ ! -s "$BACKUP_ARCHIVE" ]; then
-                echo "CRITICAL: A valid application backup is unavailable."
+                echo "CRITICAL: No verified application backup is available."
                 echo "Manual recovery is required."
                 exit 1
               fi
@@ -96,21 +94,20 @@ jobs:
               RESTORE_DIR="$(mktemp -d "$HOME/deploy-restore.XXXXXX")"
 
               if ! tar -xzf "$BACKUP_ARCHIVE" -C "$RESTORE_DIR"; then
-                echo "CRITICAL: Could not extract the backup."
-                echo "Backup retained at: $BACKUP_ARCHIVE"
+                echo "CRITICAL: Backup extraction failed."
+                echo "Backup retained: $BACKUP_ARCHIVE"
                 exit 1
               fi
 
               if ! rsync -a --delete \
                    --exclude='/.git/' \
                    "$RESTORE_DIR/" "$APP_DIR/"; then
-                echo "CRITICAL: Application rollback failed."
-                echo "Backup retained at: $BACKUP_ARCHIVE"
+                echo "CRITICAL: Application file restoration failed."
+                echo "Backup retained: $BACKUP_ARCHIVE"
                 echo "Restore directory: $RESTORE_DIR"
                 exit 1
               fi
 
-              # Restore the database configuration independently.
               if [ -s "$CONFIG_BACKUP" ]; then
                 cp "$CONFIG_BACKUP" "$APP_DIR/includes/db.php"
                 chmod 640 "$APP_DIR/includes/db.php"
@@ -118,15 +115,15 @@ jobs:
                 cp "$RESTORE_DIR/includes/db.php" "$APP_DIR/includes/db.php"
                 chmod 640 "$APP_DIR/includes/db.php"
               else
-                echo "CRITICAL: Database configuration could not be restored."
+                echo "CRITICAL: Database configuration restoration failed."
                 exit 1
               fi
 
-              echo "Previous application files restored."
+              echo "Application files restored from backup."
               echo "Database configuration restored."
-              echo "Backup retained at: $BACKUP_ARCHIVE"
+              echo "Backup retained: $BACKUP_ARCHIVE"
 
-              cleanup_temporary_files
+              cleanup_temps
               exit "$STATUS"
             }
 
@@ -134,43 +131,38 @@ jobs:
             echo "Starting production deployment"
             echo "======================================"
 
-            # Validate the application directory and repository.
             cd "$APP_DIR"
             git rev-parse --is-inside-work-tree
             git fetch origin main
 
-            OLD_COMMIT="$(git rev-parse HEAD)"
-            NEW_COMMIT="$(git rev-parse FETCH_HEAD)"
+            CURRENT_COMMIT="$(git rev-parse HEAD)"
+            REMOTE_COMMIT="$(git rev-parse FETCH_HEAD)"
 
-            echo "Previous commit: $OLD_COMMIT"
+            echo "Previous commit: $CURRENT_COMMIT"
             echo "Target commit:   $TARGET_COMMIT"
-            echo "Remote commit:   $NEW_COMMIT"
+            echo "Remote commit:   $REMOTE_COMMIT"
 
-            if [ "$NEW_COMMIT" != "$TARGET_COMMIT" ]; then
-              echo "ERROR: Remote main does not match workflow commit."
+            if [ "$REMOTE_COMMIT" != "$TARGET_COMMIT" ]; then
+              echo "ERROR: Remote main does not match the workflow commit."
               exit 1
             fi
 
-            # Prepare an independent, protected database configuration backup.
-            install -d -m 700 "$CONFIG_BACKUP_DIR"
+            # Verify the production DB file before changing the application.
+            install -d -m 700 "$CONFIG_DIR"
 
-            # Recover the live file from the protected copy if it is missing.
             if [ ! -s "$APP_DIR/includes/db.php" ]; then
               if [ -s "$CONFIG_BACKUP" ]; then
-                echo "Live database configuration missing; restoring protected copy."
-
                 mkdir -p "$APP_DIR/includes"
                 cp "$CONFIG_BACKUP" "$APP_DIR/includes/db.php"
                 chmod 640 "$APP_DIR/includes/db.php"
               else
-                echo "ERROR: Live and protected database configurations are missing."
-                echo "Refusing to deploy."
+                echo "ERROR: includes/db.php and its protected copy are missing."
                 exit 1
               fi
             fi
 
-            # Save the existing production configuration without changing ownership.
-            TEMP_DB="$(mktemp "$CONFIG_BACKUP_DIR/db.php.XXXXXX")"
+            # Keep an independent copy outside the repository.
+            TEMP_DB="$(mktemp "$CONFIG_DIR/db.php.XXXXXX")"
             cp "$APP_DIR/includes/db.php" "$TEMP_DB"
             chmod 600 "$TEMP_DB"
             mv -f "$TEMP_DB" "$CONFIG_BACKUP"
@@ -179,48 +171,48 @@ jobs:
             test -s "$CONFIG_BACKUP"
             echo "Independent database configuration backup verified."
 
-            # Create a full application snapshot before changing any application files.
+            # Build a snapshot of the current application.
             install -d -m 700 "$BACKUP_ROOT"
-
             TEMP_ARCHIVE="$BACKUP_ROOT/previous-site.tar.gz.tmp"
             rm -f "$TEMP_ARCHIVE"
 
-            tar \
-              --exclude='./.git' \
-              -czf "$TEMP_ARCHIVE" \
-              -C "$APP_DIR" .
+            tar --exclude='./.git' \
+                -czf "$TEMP_ARCHIVE" \
+                -C "$APP_DIR" .
 
             test -s "$TEMP_ARCHIVE"
 
-            # Confirm the archive contains the production-only database file.
-            if ! tar -tzf "$TEMP_ARCHIVE" |
-                 grep -Fxq './includes/db.php'; then
-              echo "ERROR: Application backup does not contain includes/db.php."
-              echo "Matching archive entries:"
-              tar -tzf "$TEMP_ARCHIVE" | grep 'db\.php' || true
-              rm -f "$TEMP_ARCHIVE"
+            # Read the full archive listing before checking it.
+            # This avoids grep -q / pipefail broken-pipe false failures.
+            ARCHIVE_LIST="$(tar -tzf "$TEMP_ARCHIVE")"
+
+            if ! printf '%s\n' "$ARCHIVE_LIST" |
+                 grep -Fx './includes/db.php' > /dev/null; then
+              echo "ERROR: Snapshot does not contain includes/db.php."
+              printf '%s\n' "$ARCHIVE_LIST" |
+                grep 'db\.php' || true
               exit 1
             fi
 
-            # Verify archive readability before publishing the backup.
+            # Verify the archive can be read.
             tar -tzf "$TEMP_ARCHIVE" > /dev/null
             chmod 600 "$TEMP_ARCHIVE"
             mv -f "$TEMP_ARCHIVE" "$BACKUP_ARCHIVE"
+            TEMP_ARCHIVE=""
 
             test -s "$BACKUP_ARCHIVE"
             BACKUP_READY=1
 
             echo "Application backup created and verified."
 
-            # Enable rollback before changing tracked or untracked application files.
+            # Enable rollback before modifying application files.
             trap rollback ERR
             DEPLOY_STARTED=1
 
             # Deploy the exact commit that triggered this workflow.
             git reset --hard "$TARGET_COMMIT"
 
-            # Clean obsolete files while preserving production configuration,
-            # Laravel runtime data and installed dependencies.
+            # Clean obsolete files but preserve production data and dependencies.
             git clean -fdx \
               -e '.env' \
               -e '.env.*' \
@@ -234,17 +226,15 @@ jobs:
               -e 'admin/vendor/' \
               -e 'admin/public/build/'
 
-            # Restore the production database configuration.
+            # Restore production-only DB configuration.
             mkdir -p includes
             cp "$CONFIG_BACKUP" includes/db.php
             chmod 640 includes/db.php
 
             test -s includes/db.php
-            echo "Production database configuration restored."
 
-            # Verify the checked-out commit.
+            # Verify deployed commit.
             ACTUAL_COMMIT="$(git rev-parse HEAD)"
-
             if [ "$ACTUAL_COMMIT" != "$TARGET_COMMIT" ]; then
               echo "ERROR: Deployed commit does not match target."
               exit 1
@@ -252,16 +242,16 @@ jobs:
 
             echo "Deployed commit: $ACTUAL_COMMIT"
 
-            # Verify required files exist.
+            # Verify required production files.
             test -s admin/.env
             test -s includes/db.php
             test -f admin/artisan
             test -f admin/vendor/autoload.php
 
-            # Check Laravel bootstrap.
+            # Verify Laravel bootstraps.
             php admin/artisan --version
 
-            # Check the public website.
+            # Verify public website returns HTTP success.
             curl --fail --silent --show-error --location \
               --retry 5 \
               --retry-delay 2 \
@@ -270,7 +260,7 @@ jobs:
               https://paanchajanyarealty.com/ \
               -o /dev/null
 
-            # Check the admin URL.
+            # Verify admin endpoint returns HTTP success.
             curl --fail --silent --show-error --location \
               --retry 5 \
               --retry-delay 2 \
@@ -279,16 +269,16 @@ jobs:
               https://paanchajanyarealty.com/admin/ \
               -o /dev/null
 
-            # Disable rollback only after all checks pass.
+            # Deployment verification passed.
             trap - ERR
 
             echo "======================================"
-            echo "Deployment verification successful"
+            echo "DEPLOYMENT VERIFICATION SUCCESSFUL"
             echo "======================================"
 
-            # Remove the application snapshot only after successful verification.
+            # Delete the temporary application snapshot only after success.
             rm -f "$BACKUP_ARCHIVE"
 
-            echo "Temporary application backup removed."
-            echo "Protected DB backup retained at: $CONFIG_BACKUP"
+            echo "Application snapshot removed after successful verification."
+            echo "Independent DB backup retained: $CONFIG_BACKUP"
             echo "Production deployment completed."
