@@ -1,0 +1,129 @@
+================================================================================
+PAANCHAJANYA REALTY - TECHNICAL ARCHITECTURE & SYSTEM OVERVIEW
+================================================================================
+Document Version : 1.0
+Generated Date   : October 2026
+Production Domain: https://paanchajanyarealty.com
+GitHub Repository: https://github.com/annemchaitanyakumar/realestate.git
+================================================================================
+
+1. EXECUTIVE SUMMARY
+--------------------------------------------------------------------------------
+Paanchajanya Realty's web platform operates as a dual-layer architecture:
+
+  1. Public Website (/) : A high-performance, lightweight PHP and modern
+     Vanilla CSS/JS client portal delivering fast page loads and high SEO rankings.
+     
+  2. Administration Portal (/admin) : A full-stack Laravel 12 application
+     powered by Livewire 3 and Tailwind CSS v4, handling leads, sliders,
+     venture media, and administrative workflows.
+
+
+2. FRAMEWORKS & TECHNOLOGY STACK
+--------------------------------------------------------------------------------
+
+A. Backend & Admin Portal (/admin):
+-----------------------------------
+  * Backend Framework   : Laravel 12 (laravel/framework: ^12.0)
+  * Language Runtime    : PHP 8.2+
+  * Dynamic UI Engine   : Livewire 3 (livewire/livewire: ^3.6)
+                          (Builds reactive components without React/Vue)
+  * Styling Framework   : Tailwind CSS v4 (tailwindcss: ^4.0.0)
+  * Asset Bundler / HMR : Vite 7 (vite: ^7.0.7, laravel-vite-plugin: ^2.0.0)
+  * HTTP API Client     : Axios (axios: ^1.11.0)
+  * CLI Tool            : Laravel Tinker (laravel/tinker: ^2.10.1)
+  * Automated Testing   : PHPUnit 11 (phpunit/phpunit: ^11.5.3)
+
+B. Public Website (/):
+----------------------
+  * Server-Side Engine  : Native Vanilla PHP (8.2+) with PDO database driver
+  * Database Engine     : MySQL 8.0 (Local instance on 127.0.0.1:3306)
+  * Frontend Styling    : Custom Vanilla CSS3 (assests/css/laperla-luxury.css)
+                          Modern CSS tokens, Grid, Flexbox, micro-animations
+  * Frontend Logic      : Modern ES6+ JavaScript (assests/js/laperla-luxury.js)
+  * Typography          : Google Fonts (Cinzel, Playfair Display, Plus Jakarta Sans)
+  * Legacy Background   : Originally started on WordPress + Elementor
+                          (Residual backups kept in wp-content/ and
+                          index_elementor_backup.php)
+
+
+3. COMMUNICATION ARCHITECTURE (FRONTEND TO BACKEND)
+--------------------------------------------------------------------------------
+This platform uses a Server-Side Rendered (SSR) Monolithic PHP architecture.
+There is NO separate API or .env required for the public frontend:
+
+  [ Visitor Browser ]
+         │
+         ▼  (1. HTTP GET /)
+  [ Nginx Web Server (Port 80 / 443) ]
+         │
+         ▼  (2. Passes request to PHP-FPM)
+  [ index.php ] ──includes──> [ includes/db.php ] ──PDO──> [ MySQL (127.0.0.1) ]
+         │                                                        ▲
+         │ (3. Queries 'sliders' table)                           │
+         ▼ (4. Compiles and sends HTML/CSS)                       │
+  [ Visitor Browser ]                                             │
+         │                                                        │
+         ▼ (5. Submits Contact Form via POST)                     │
+  [ index.php ] ───INSERT INTO contact_submissions────────────────┘
+                                                                  ▲
+                                                                  │ (Reads leads)
+  [ admin/ (Laravel 12 Dashboard) ] ──────────────────────────────┘
+
+Key Files:
+  - Database Connector: includes/db.php (Connects via PDO to MySQL)
+  - Lead Capture      : index.php receives POST, inserts directly into
+                        'contact_submissions' table.
+  - Lead Management   : admin/ (Laravel 12) reads the same 'contact_submissions'
+                        table for the admin dashboard.
+
+
+4. HOSTING, SERVER & INFRASTRUCTURE DETAILS
+--------------------------------------------------------------------------------
+  * Hosting Brand       : GoDaddy (GO-DADDY-COM-LLC)
+  * Server Machine      : Ubuntu Linux VPS
+  * Server Public IP    : 97.74.80.132
+  * Web Server Daemon   : Nginx 1.24.0 (Ubuntu) (Active on ports 80 & 443)
+  * Virtual Host Config : /etc/nginx/sites-available/paanchajanyarealty.com
+  * Web Document Root   : /var/www/paanchajanyarealty.com
+  * SSL / HTTPS Cert    : Let's Encrypt Certbot
+  * Domain Registrar    : GoDaddy.com, LLC (Registered: Oct 17, 2025)
+  * DNS & CDN Provider  : Cloudflare (meera.ns.cloudflare.com, rocco.ns.cloudflare.com)
+  * CI/CD Automation    : GitHub Actions (.github/workflows/deploy.yml)
+                          Deploys automatically via SSH on pushes to main.
+
+
+5. DIRECTORY STRUCTURE MAP
+--------------------------------------------------------------------------------
+paanchajanyarealty.com/
+│
+├── .github/workflows/      # Automated deployment script (deploy.yml)
+│
+├── admin/                  # Laravel 12 Admin Dashboard
+│   ├── app/                # Controllers, Models, Livewire components
+│   ├── config/             # Laravel config files
+│   ├── database/           # Database migrations and seeders
+│   ├── resources/          # Blade views, CSS, JS
+│   ├── routes/             # Web & API routes
+│   ├── .env                # Database & Mail configuration
+│   ├── composer.json       # PHP packages (Laravel 12, Livewire 3)
+│   └── package.json        # Frontend tools (Tailwind v4, Vite 7)
+│
+├── assests/                # Public assets directory
+│   ├── css/                # Stylesheets (laperla-luxury.css)
+│   ├── js/                 # JS controllers (laperla-luxury.js)
+│   └── image/              # Venture photography and assets
+│
+├── includes/               # Shared PHP utilities
+│   ├── db.php              # Direct MySQL PDO connection
+│   ├── header.php          # Shared header partial
+│   └── footer.php          # Shared footer partial
+│
+├── index.php               # Live Production homepage (PHP + MySQL + Luxury UI)
+├── index.html              # Standalone static preview / Vercel demo
+├── aboutus.php             # About Us page
+├── contactus.php           # Contact Us page
+├── project.php             # Venture details page
+├── PROJECT_ARCHITECTURE.md # Markdown documentation
+└── PROJECT_ARCHITECTURE.txt# Plain text documentation
+================================================================================

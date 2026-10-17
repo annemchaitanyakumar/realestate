@@ -53,9 +53,14 @@
                     <span>Page Content</span>
                 </a>
 
-                <a href="{{ route('admin.projects.index') }}" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition {{ request()->routeIs('admin.projects.*') ? 'active' : '' }}">
-                    <i class="fas fa-project-diagram w-5"></i>
-                    <span>Projects</span>
+                <a href="{{ route('admin.projects.index') }}" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition {{ request()->routeIs('admin.projects.index') || request()->routeIs('admin.projects.edit') ? 'active' : '' }}">
+                    <i class="fas fa-city w-5"></i>
+                    <span>All Projects</span>
+                </a>
+
+                <a href="{{ route('admin.projects.create') }}" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition {{ request()->routeIs('admin.projects.create') ? 'active' : '' }}">
+                    <i class="fas fa-plus-circle w-5"></i>
+                    <span>Add New Project</span>
                 </a>
 
                 <a href="{{ route('admin.news.index') }}" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition {{ request()->routeIs('admin.news.*') ? 'active' : '' }}">

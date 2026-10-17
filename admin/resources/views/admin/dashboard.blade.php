@@ -24,15 +24,15 @@
 
     <!-- Quick Stats Row -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-        <!-- <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+        <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-xs text-gray-500 uppercase font-semibold mb-1">Featured Projects</p>
-                    <p class="text-2xl font-bold text-gray-800">{{ $stats['featured_projects'] ?? 0 }}</p>
+                    <p class="text-xs text-gray-500 uppercase font-semibold mb-1">Total Projects</p>
+                    <p class="text-2xl font-bold text-gray-800">{{ $stats['projects'] ?? 0 }}</p>
                 </div>
-                <i class="fas fa-star text-yellow-500 text-2xl"></i>
+                <i class="fas fa-city text-blue-600 text-2xl"></i>
             </div>
-        </div> -->
+        </div>
 
         <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
             <div class="flex items-center justify-between">
@@ -206,7 +206,15 @@
         </h3>
         <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
 
-        <a href="{{ route('admin.vendors.index') }}" class="flex flex-col items-center justify-center p-6 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition group">
+        <a href="{{ route('admin.projects.index') }}" class="flex flex-col items-center justify-center p-6 bg-blue-50 hover:bg-blue-100 rounded-lg transition group">
+                <i class="fas fa-city text-blue-600 text-3xl mb-2 group-hover:scale-110 transition"></i>
+                <span class="text-sm font-semibold text-blue-700">All Projects</span>
+            </a>
+            <a href="{{ route('admin.projects.create') }}" class="flex flex-col items-center justify-center p-6 bg-emerald-50 hover:bg-emerald-100 rounded-lg transition group">
+                <i class="fas fa-plus-circle text-emerald-600 text-3xl mb-2 group-hover:scale-110 transition"></i>
+                <span class="text-sm font-semibold text-emerald-700">Add Project</span>
+            </a>
+            <a href="{{ route('admin.vendors.index') }}" class="flex flex-col items-center justify-center p-6 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition group">
                 <i class="fas fa-users text-indigo-600 text-3xl mb-2 group-hover:scale-110 transition"></i>
                 <span class="text-sm font-semibold text-indigo-700">Vendors</span>
             </a>
@@ -214,12 +222,10 @@
                 <i class="fas fa-handshake text-teal-600 text-3xl mb-2 group-hover:scale-110 transition"></i>
                 <span class="text-sm font-semibold text-teal-700">Partners</span>
             </a>
-
-             <a href="{{ route('admin.news.create') }}" class="flex flex-col items-center justify-center p-6 bg-purple-50 hover:bg-purple-100 rounded-lg transition group">
-                <i class="fas fa-plus-circle text-purple-600 text-3xl mb-2 group-hover:scale-110 transition"></i>
+            <a href="{{ route('admin.news.create') }}" class="flex flex-col items-center justify-center p-6 bg-purple-50 hover:bg-purple-100 rounded-lg transition group">
+                <i class="fas fa-newspaper text-purple-600 text-3xl mb-2 group-hover:scale-110 transition"></i>
                 <span class="text-sm font-semibold text-purple-700">Add News</span>
             </a>
-            
             <a href="{{ route('admin.settings') }}" class="flex flex-col items-center justify-center p-6 bg-gray-50 hover:bg-gray-100 rounded-lg transition group">
                 <i class="fas fa-cog text-gray-600 text-3xl mb-2 group-hover:scale-110 transition"></i>
                 <span class="text-sm font-semibold text-gray-700">Settings</span>

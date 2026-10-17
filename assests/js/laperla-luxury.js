@@ -140,4 +140,36 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   });
+
+  // 6. Completed Projects Category Filter
+  const filterPills = document.querySelectorAll('.lp-filter-pill');
+  const completedCards = document.querySelectorAll('.lp-completed-grid .lp-comp-card, .lp-completed-grid .lp-project-card');
+
+  if (filterPills.length > 0 && completedCards.length > 0) {
+    filterPills.forEach(pill => {
+      pill.addEventListener('click', function () {
+        filterPills.forEach(p => p.classList.remove('active'));
+        this.classList.add('active');
+
+        const filterVal = this.getAttribute('data-filter');
+
+        completedCards.forEach(card => {
+          const category = card.getAttribute('data-category');
+          if (filterVal === 'all' || category === filterVal) {
+            card.style.display = 'flex';
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(15px)';
+            setTimeout(() => {
+              card.style.transition = 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+              card.style.opacity = '1';
+              card.style.transform = 'translateY(0)';
+            }, 30);
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  }
 });
+

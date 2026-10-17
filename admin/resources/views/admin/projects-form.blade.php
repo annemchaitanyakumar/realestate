@@ -61,14 +61,23 @@
 
             <!-- Category -->
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">Category</label>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Category / Venture Type</label>
                 <input 
                     type="text" 
                     name="category" 
+                    list="category-suggestions"
                     value="{{ old('category', $project->category ?? '') }}"
                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="e.g., Infrastructure, Building, Road"
+                    placeholder="e.g., Open Plots, Villa Plots, Luxury Apartments"
                 >
+                <datalist id="category-suggestions">
+                    <option value="Open Plots">
+                    <option value="Villa Plots">
+                    <option value="Luxury Apartments">
+                    <option value="Residential Ventures">
+                    <option value="Commercial Plots">
+                    <option value="Farm Lands">
+                </datalist>
             </div>
 
             <!-- Value -->

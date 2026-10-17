@@ -196,21 +196,30 @@ button {
 
 .lp-nav-dropdown {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 14px);
   left: 50%;
-  transform: translateX(-50%) translateY(15px);
+  transform: translateX(-50%) translateY(10px);
   background: #ffffff;
-  min-width: 320px;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-sm);
-  padding: 12px 0;
+  min-width: 350px;
+  box-shadow: 0 24px 60px rgba(10, 13, 18, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.06);
+  border-radius: 16px;
+  padding: 10px;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: var(--transition-smooth);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   list-style: none;
   z-index: 1010;
+}
+
+/* Invisible bridge so mouse moving from nav link to dropdown doesn't close it */
+.lp-nav-dropdown::before {
+  content: '';
+  position: absolute;
+  top: -16px;
+  left: 0;
+  right: 0;
+  height: 16px;
 }
 
 .lp-nav-item-dropdown:hover .lp-nav-dropdown {
@@ -221,36 +230,81 @@ button {
 }
 
 .lp-dropdown-link {
-  display: block;
-  padding: 12px 24px;
-  transition: var(--transition-smooth);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
-}
-
-.lp-dropdown-link:last-child {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 18px;
+  border-radius: 10px;
+  transition: all 0.22s ease;
+  position: relative;
+  text-decoration: none;
+  margin-bottom: 3px;
   border-bottom: none;
 }
 
+.lp-dropdown-link:last-child {
+  margin-bottom: 0;
+}
+
 .lp-dropdown-link:hover {
-  background: var(--bg-secondary);
-  padding-left: 28px;
+  background: #fbf8f2;
+  transform: translateX(4px);
+  padding-left: 20px;
+}
+
+.lp-dropdown-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
 }
 
 .lp-dropdown-badge {
-  display: block;
-  font-size: 0.72rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.68rem;
   font-weight: 700;
   color: var(--accent-gold);
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  margin-bottom: 2px;
+}
+
+.lp-dropdown-badge.completed-tag {
+  color: #0d7f5b;
+}
+
+.lp-dropdown-badge.completed-tag::before {
+  content: '✓';
+  font-size: 0.72rem;
+  font-weight: 900;
 }
 
 .lp-dropdown-name {
   font-family: var(--font-serif);
-  font-size: 1.05rem;
+  font-size: 1.08rem;
   color: var(--text-primary);
   font-weight: 600;
+  line-height: 1.25;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.lp-dropdown-arrow {
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: all 0.22s ease;
+  color: var(--accent-gold);
+  font-size: 0.95rem;
+}
+
+.lp-dropdown-link:hover .lp-dropdown-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.lp-dropdown-link:hover .lp-dropdown-name {
+  color: var(--accent-gold);
 }
 
 .lp-header-actions {
@@ -794,6 +848,290 @@ button {
 
 .lp-card-status.emerald {
   background: rgba(16, 142, 104, 0.92);
+}
+
+.lp-card-status.completed {
+  background: linear-gradient(135deg, #0d7f5b 0%, #06543b 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(13, 127, 91, 0.38);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.lp-card-status.completed::before {
+  content: '✓';
+  font-weight: 900;
+  font-size: 0.78rem;
+  color: #86efac;
+}
+
+/* ==========================================================================
+   COMPLETED PROJECTS - ARCHITECTURAL PORTFOLIO CARDS
+   Clean, Modern, Editorial Delivered Layouts Showcase
+   ========================================================================== */
+.lp-completed-ventures {
+  padding: 100px 0 130px;
+  background-color: var(--bg-primary);
+  position: relative;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* Filter Navigation */
+.lp-filter-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 3.5rem;
+  flex-wrap: wrap;
+}
+
+.lp-filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: var(--radius-full);
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.lp-filter-pill:hover {
+  border-color: var(--accent-gold);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+}
+
+.lp-filter-pill.active {
+  background: var(--bg-dark);
+  color: #ffffff;
+  border-color: var(--bg-dark);
+  box-shadow: 0 4px 16px rgba(10, 13, 17, 0.15);
+}
+
+.lp-filter-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 7px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  background: rgba(197, 155, 78, 0.15);
+  color: var(--accent-gold);
+}
+
+.lp-filter-pill.active .lp-filter-count {
+  background: var(--accent-gold);
+  color: #ffffff;
+}
+
+/* Completed Grid */
+.lp-completed-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.25rem;
+}
+
+@media (min-width: 1101px) {
+  .lp-completed-grid > .lp-comp-card:nth-child(7) {
+    grid-column: 2;
+  }
+}
+
+/* Elevated Architectural Completed Card */
+.lp-comp-card {
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.lp-comp-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 26px 55px rgba(0, 0, 0, 0.11);
+  border-color: rgba(197, 155, 78, 0.45);
+}
+
+/* Card Image Media */
+.lp-comp-media {
+  position: relative;
+  height: 250px;
+  overflow: hidden;
+  background-color: #0d1117;
+}
+
+.lp-comp-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lp-comp-card:hover .lp-comp-img {
+  transform: scale(1.08);
+}
+
+.lp-comp-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(8, 12, 18, 0.48) 0%, rgba(8, 12, 18, 0) 55%, rgba(8, 12, 18, 0.25) 100%);
+  pointer-events: none;
+}
+
+/* Top Floating Badges */
+.lp-comp-top-badges {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  z-index: 2;
+}
+
+.lp-comp-badge-type {
+  background: rgba(12, 16, 22, 0.78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #ffffff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+/* COMPLETED Tag */
+.lp-comp-badge-completed {
+  background: linear-gradient(135deg, #0d7f5b 0%, #06543b 100%);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  box-shadow: 0 4px 14px rgba(13, 127, 91, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.lp-comp-badge-completed::before {
+  content: '✓';
+  font-weight: 900;
+  font-size: 0.78rem;
+  color: #a7f3d0;
+}
+
+/* Bottom Acreage Tag */
+.lp-comp-acreage-tag {
+  position: absolute;
+  bottom: 14px;
+  right: 16px;
+  background: rgba(197, 155, 78, 0.95);
+  backdrop-filter: blur(8px);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 5px 13px;
+  border-radius: var(--radius-full);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+  z-index: 2;
+}
+
+/* Card Body */
+.lp-comp-body {
+  padding: 1.75rem 1.75rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background: #ffffff;
+}
+
+.lp-comp-location {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 0.45rem;
+}
+
+.lp-comp-title {
+  font-family: var(--font-serif);
+  font-size: 1.65rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.25;
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.01em;
+}
+
+/* 3-Column Micro-Specs Box */
+.lp-comp-specs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 14px 10px;
+  background: #fbfaf7;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.lp-comp-spec-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.lp-comp-spec-item:not(:last-child) {
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.lp-comp-spec-val {
+  font-size: 0.94rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.lp-comp-spec-lbl {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-top: 3px;
+  font-weight: 600;
 }
 
 .lp-card-bottom {
@@ -1508,6 +1846,8 @@ button {
   .lp-nav-menu { display: none; }
   .lp-menu-toggle { display: flex; }
   .lp-ventures-grid { grid-template-columns: repeat(2, 1fr); }
+  .lp-completed-grid { grid-template-columns: repeat(2, 1fr); }
+  .lp-completed-grid > .lp-comp-card:nth-child(7) { grid-column: span 2; max-width: 500px; margin: 0 auto; width: 100%; }
   .lp-connectivity-grid { grid-template-columns: repeat(2, 1fr); }
   .lp-amenities-grid { grid-template-columns: repeat(2, 1fr); }
   .lp-footer-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1522,6 +1862,8 @@ button {
   .lp-philosophy-grid { grid-template-columns: 1fr; gap: 2.5rem; }
   .lp-philosophy-stats-row { grid-template-columns: 1fr; gap: 1.5rem; }
   .lp-ventures-grid { grid-template-columns: 1fr; }
+  .lp-completed-grid { grid-template-columns: 1fr; }
+  .lp-completed-grid > .lp-comp-card:nth-child(7) { grid-column: auto; max-width: 100%; }
   .lp-connectivity-grid { grid-template-columns: 1fr; }
   .lp-amenities-grid { grid-template-columns: 1fr; }
   .lp-leader-card { grid-template-columns: 1fr; }

@@ -1,0 +1,1572 @@
+/* ==========================================================================
+   GREENLEAF LUXURY VILLA PLOTS - SHAMIRPET (64 ACRES HMDA LAYOUT)
+   Dedicated Luxury Stylesheet
+   Marketed by Paanchajanya Realty Pvt Ltd | Developed by Kaythri Group
+   ========================================================================== */
+
+:root {
+  --gl-emerald: #0d5c3a;
+  --gl-emerald-dark: #083b24;
+  --gl-emerald-light: #167a4f;
+  --gl-emerald-soft: #eaf5ef;
+  --gl-gold: #c5a059;
+  --gl-gold-hover: #b38e46;
+  --gl-gold-light: #f7f1e5;
+  --gl-dark: #0f1412;
+  --gl-dark-card: #171f1a;
+  --gl-charcoal: #232c26;
+  --gl-muted: #5c6861;
+  --gl-light-bg: #f9fbf9;
+  --gl-card-border: rgba(13, 92, 58, 0.12);
+  --gl-gold-border: rgba(197, 160, 89, 0.28);
+  --gl-shadow: 0 16px 40px rgba(15, 20, 18, 0.08);
+  --gl-shadow-hover: 0 24px 60px rgba(13, 92, 58, 0.16);
+  --gl-radius: 14px;
+  --gl-radius-sm: 8px;
+  --gl-font-serif: 'Playfair Display', Georgia, serif;
+  --gl-font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --gl-transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--gl-font-sans);
+  background-color: #ffffff;
+  color: var(--gl-dark);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: var(--gl-transition);
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+  border: none;
+  outline: none;
+  background: none;
+}
+
+.gl-container {
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ==========================================================================
+   TOP NOTIFICATION BAR & HEADER
+   ========================================================================== */
+.gl-topbar {
+  background: var(--gl-emerald-dark);
+  color: #ffffff;
+  padding: 8px 0;
+  font-size: 0.82rem;
+  border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+}
+
+.gl-topbar-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.gl-topbar-badges {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.gl-topbar-badge {
+  background: rgba(197, 160, 89, 0.2);
+  color: var(--gl-gold);
+  border: 1px solid rgba(197, 160, 89, 0.4);
+  padding: 2px 10px;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.gl-topbar-contact {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.gl-topbar-contact a {
+  color: #f0f0f0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.gl-topbar-contact a:hover {
+  color: var(--gl-gold);
+}
+
+/* Main Header */
+.gl-header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  transition: var(--gl-transition);
+}
+
+.gl-header.scrolled {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.gl-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 82px;
+}
+
+.gl-brand-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.gl-logo-paanchajanya {
+  height: 48px;
+  object-fit: contain;
+}
+
+.gl-brand-divider {
+  width: 1px;
+  height: 34px;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.gl-logo-partner {
+  display: flex;
+  flex-direction: column;
+}
+
+.gl-logo-partner-title {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--gl-muted);
+  font-weight: 600;
+}
+
+.gl-logo-partner-name {
+  font-family: var(--gl-font-serif);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--gl-emerald-dark);
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+}
+
+.gl-nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  list-style: none;
+}
+
+.gl-nav-link {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--gl-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 8px 0;
+  position: relative;
+}
+
+.gl-nav-link:hover {
+  color: var(--gl-emerald);
+}
+
+.gl-nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--gl-gold);
+  transition: var(--gl-transition);
+}
+
+.gl-nav-link:hover::after {
+  width: 100%;
+}
+
+.gl-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.gl-btn-secondary {
+  border: 1px solid var(--gl-gold);
+  color: var(--gl-emerald-dark);
+  padding: 10px 18px;
+  border-radius: var(--gl-radius-sm);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--gl-gold-light);
+  transition: var(--gl-transition);
+}
+
+.gl-btn-secondary:hover {
+  background: var(--gl-gold);
+  color: #ffffff;
+}
+
+.gl-btn-primary {
+  background: var(--gl-emerald);
+  color: #ffffff;
+  padding: 10px 22px;
+  border-radius: var(--gl-radius-sm);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  box-shadow: 0 4px 14px rgba(13, 92, 58, 0.28);
+  transition: var(--gl-transition);
+}
+
+.gl-btn-primary:hover {
+  background: var(--gl-emerald-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(13, 92, 58, 0.35);
+}
+
+.gl-menu-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: 8px;
+}
+
+.gl-menu-toggle span {
+  width: 24px;
+  height: 2px;
+  background: var(--gl-dark);
+  transition: var(--gl-transition);
+}
+
+/* ==========================================================================
+   HERO SECTION
+   ========================================================================== */
+.gl-hero {
+  position: relative;
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, rgba(8, 59, 36, 0.94) 0%, rgba(15, 20, 18, 0.96) 100%),
+              url('greenleaf-entrance.jpg') center/cover no-repeat;
+  color: #ffffff;
+  padding: 70px 0 100px;
+  overflow: hidden;
+}
+
+.gl-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 20% 40%, rgba(197, 160, 89, 0.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.gl-hero-grid {
+  display: grid;
+  grid-template-columns: 1.25fr 0.95fr;
+  gap: 40px;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.gl-hero-content {
+  max-width: 680px;
+}
+
+.gl-hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.gl-hero-badge {
+  background: rgba(197, 160, 89, 0.22);
+  color: #faecc9;
+  border: 1px solid rgba(197, 160, 89, 0.5);
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.gl-hero-badge.highlight {
+  background: #0d7f5b;
+  border-color: #129d72;
+  color: #ffffff;
+}
+
+.gl-hero-title {
+  font-family: var(--gl-font-serif);
+  font-size: 3.6rem;
+  line-height: 1.08;
+  font-weight: 800;
+  margin-bottom: 12px;
+  color: #ffffff;
+}
+
+.gl-hero-title span {
+  color: var(--gl-gold);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.gl-hero-subtitle {
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: #e5ece7;
+  margin-bottom: 16px;
+  letter-spacing: 0.02em;
+}
+
+.gl-hero-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 0.95rem;
+  color: #b8c7be;
+  margin-bottom: 28px;
+}
+
+.gl-hero-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.gl-hero-desc {
+  font-size: 1.05rem;
+  color: #d1ded7;
+  line-height: 1.7;
+  margin-bottom: 32px;
+}
+
+.gl-hero-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.gl-btn-hero-primary {
+  background: var(--gl-gold);
+  color: var(--gl-dark);
+  font-weight: 800;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 16px 32px;
+  border-radius: var(--gl-radius-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 10px 30px rgba(197, 160, 89, 0.35);
+  transition: var(--gl-transition);
+}
+
+.gl-btn-hero-primary:hover {
+  background: #ffffff;
+  color: var(--gl-emerald-dark);
+  transform: translateY(-3px);
+  box-shadow: 0 14px 40px rgba(255, 255, 255, 0.3);
+}
+
+.gl-btn-hero-outline {
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 16px 28px;
+  border-radius: var(--gl-radius-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(8px);
+  transition: var(--gl-transition);
+}
+
+.gl-btn-hero-outline:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+/* Quick Inquiry Card on Hero */
+.gl-hero-form-card {
+  background: rgba(255, 255, 255, 0.98);
+  color: var(--gl-dark);
+  border-radius: 16px;
+  padding: 34px 30px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--gl-gold-border);
+  position: relative;
+}
+
+.gl-hero-form-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--gl-emerald), var(--gl-gold));
+  border-radius: 16px 16px 0 0;
+}
+
+.gl-form-title {
+  font-family: var(--gl-font-serif);
+  font-size: 1.55rem;
+  color: var(--gl-emerald-dark);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.gl-form-subtitle {
+  font-size: 0.88rem;
+  color: var(--gl-muted);
+  margin-bottom: 22px;
+}
+
+.gl-form-group {
+  margin-bottom: 14px;
+}
+
+.gl-form-label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gl-dark);
+  margin-bottom: 5px;
+}
+
+.gl-form-input, .gl-form-select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #d4ddd7;
+  border-radius: 6px;
+  font-size: 0.92rem;
+  font-family: inherit;
+  color: var(--gl-dark);
+  background: #fbfdfb;
+  transition: var(--gl-transition);
+}
+
+.gl-form-input:focus, .gl-form-select:focus {
+  border-color: var(--gl-emerald);
+  outline: none;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(13, 92, 58, 0.12);
+}
+
+.gl-form-submit {
+  width: 100%;
+  background: var(--gl-emerald);
+  color: #ffffff;
+  padding: 14px;
+  border-radius: 6px;
+  font-weight: 800;
+  font-size: 0.92rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 10px;
+  transition: var(--gl-transition);
+  box-shadow: 0 6px 20px rgba(13, 92, 58, 0.3);
+}
+
+.gl-form-submit:hover {
+  background: var(--gl-emerald-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(13, 92, 58, 0.4);
+}
+
+.gl-form-privacy {
+  font-size: 0.72rem;
+  color: #7d8b83;
+  text-align: center;
+  margin-top: 12px;
+}
+
+/* ==========================================================================
+   METRICS STRIP (The 6 Pillars)
+   ========================================================================== */
+.gl-metrics-section {
+  position: relative;
+  margin-top: -50px;
+  z-index: 10;
+  padding-bottom: 50px;
+}
+
+.gl-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: var(--gl-shadow);
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  overflow: hidden;
+}
+
+.gl-metric-card {
+  padding: 26px 20px;
+  text-align: center;
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
+  transition: var(--gl-transition);
+  position: relative;
+}
+
+.gl-metric-card:last-child {
+  border-right: none;
+}
+
+.gl-metric-card:hover {
+  background: var(--gl-light-bg);
+  transform: translateY(-3px);
+}
+
+.gl-metric-icon {
+  font-size: 1.6rem;
+  color: var(--gl-gold);
+  margin-bottom: 8px;
+}
+
+.gl-metric-value {
+  font-family: var(--gl-font-serif);
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--gl-emerald-dark);
+  line-height: 1.1;
+  margin-bottom: 4px;
+}
+
+.gl-metric-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gl-dark);
+  margin-bottom: 2px;
+}
+
+.gl-metric-sub {
+  font-size: 0.74rem;
+  color: var(--gl-muted);
+}
+
+/* ==========================================================================
+   LEGAL CLEARANCES STRIP (HMDA, RERA, SURVEY NUMBERS)
+   ========================================================================== */
+.gl-legal-strip {
+  background: #f7faf7;
+  border-top: 1px solid var(--gl-card-border);
+  border-bottom: 1px solid var(--gl-card-border);
+  padding: 34px 0;
+  margin-bottom: 60px;
+}
+
+.gl-legal-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.gl-legal-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 20px;
+  background: #ffffff;
+  border-radius: 10px;
+  border: 1px solid rgba(13, 92, 58, 0.12);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.gl-legal-icon {
+  font-size: 1.4rem;
+  color: var(--gl-emerald);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.gl-legal-title {
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gl-dark);
+  margin-bottom: 3px;
+}
+
+.gl-legal-code {
+  font-family: monospace;
+  font-size: 0.96rem;
+  font-weight: 700;
+  color: var(--gl-emerald-dark);
+  margin-bottom: 2px;
+}
+
+.gl-legal-desc {
+  font-size: 0.78rem;
+  color: var(--gl-muted);
+  line-height: 1.4;
+}
+
+/* ==========================================================================
+   COMMON SECTION STYLING
+   ========================================================================== */
+.gl-section {
+  padding: 70px 0;
+  position: relative;
+}
+
+.gl-section-alt {
+  background: #fbfdfb;
+}
+
+.gl-section-header {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto 50px;
+}
+
+.gl-section-tag {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--gl-emerald);
+  background: var(--gl-emerald-soft);
+  padding: 6px 14px;
+  border-radius: 30px;
+  margin-bottom: 12px;
+}
+
+.gl-section-title {
+  font-family: var(--gl-font-serif);
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--gl-dark);
+  line-height: 1.2;
+  margin-bottom: 14px;
+}
+
+.gl-section-title span {
+  color: var(--gl-emerald);
+}
+
+.gl-section-subtitle {
+  font-size: 1.05rem;
+  color: var(--gl-muted);
+  line-height: 1.65;
+}
+
+/* ==========================================================================
+   MASTER LAYOUT PLAN SECTION
+   ========================================================================== */
+.gl-masterplan-wrapper {
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid var(--gl-card-border);
+  box-shadow: var(--gl-shadow);
+  padding: 30px;
+  display: grid;
+  grid-template-columns: 1.35fr 0.9fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.gl-plan-media-box {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  background: #000;
+}
+
+.gl-plan-img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  transition: transform 0.4s ease;
+  cursor: zoom-in;
+}
+
+.gl-plan-img:hover {
+  transform: scale(1.02);
+}
+
+.gl-plan-zoom-hint {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  background: rgba(15, 20, 18, 0.85);
+  color: #ffffff;
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 20px;
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.gl-plan-data {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.gl-plan-info-title {
+  font-family: var(--gl-font-serif);
+  font-size: 1.6rem;
+  color: var(--gl-emerald-dark);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.gl-plan-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.gl-plan-table tr {
+  border-bottom: 1px solid #edf2ee;
+}
+
+.gl-plan-table td {
+  padding: 10px 0;
+  font-size: 0.9rem;
+}
+
+.gl-plan-table td:first-child {
+  font-weight: 700;
+  color: var(--gl-dark);
+  width: 45%;
+}
+
+.gl-plan-table td:last-child {
+  color: var(--gl-muted);
+}
+
+.gl-plan-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+/* ==========================================================================
+   INFRASTRUCTURE & ENGINEERING SPECIFICATIONS
+   ========================================================================== */
+.gl-infra-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.gl-infra-card {
+  background: #ffffff;
+  border-radius: var(--gl-radius);
+  border: 1px solid var(--gl-card-border);
+  padding: 30px 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+  transition: var(--gl-transition);
+}
+
+.gl-infra-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--gl-shadow-hover);
+  border-color: var(--gl-emerald);
+}
+
+.gl-infra-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.gl-infra-icon-wrap {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  background: var(--gl-emerald-soft);
+  color: var(--gl-emerald);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.gl-infra-card-title {
+  font-family: var(--gl-font-serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--gl-dark);
+  line-height: 1.25;
+}
+
+.gl-infra-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gl-infra-list li {
+  font-size: 0.88rem;
+  color: var(--gl-muted);
+  position: relative;
+  padding-left: 18px;
+  line-height: 1.5;
+}
+
+.gl-infra-list li::before {
+  content: '▪';
+  position: absolute;
+  left: 0;
+  color: var(--gl-gold);
+  font-size: 1.1rem;
+  top: -2px;
+}
+
+/* ==========================================================================
+   10,000 SFT CLUBHOUSE & 5 PARKS SECTION
+   ========================================================================== */
+.gl-amenities-showcase {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 40px;
+  margin-bottom: 50px;
+  align-items: center;
+}
+
+.gl-clubhouse-img-wrap {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--gl-shadow);
+  border: 1px solid var(--gl-gold-border);
+}
+
+.gl-clubhouse-img-wrap img {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+}
+
+.gl-clubhouse-tag {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: var(--gl-emerald-dark);
+  color: #ffffff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid var(--gl-gold);
+}
+
+.gl-clubhouse-info h3 {
+  font-family: var(--gl-font-serif);
+  font-size: 2rem;
+  color: var(--gl-emerald-dark);
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.gl-clubhouse-info p {
+  color: var(--gl-muted);
+  font-size: 0.98rem;
+  line-height: 1.7;
+  margin-bottom: 22px;
+}
+
+.gl-amenities-pills {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.gl-amenity-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #e5eee8;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--gl-dark);
+}
+
+.gl-amenity-pill span {
+  color: var(--gl-emerald);
+  font-size: 1.1rem;
+}
+
+/* 5 Parks Grid */
+.gl-parks-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.gl-park-card {
+  background: #ffffff;
+  border-radius: var(--gl-radius);
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--gl-card-border);
+}
+
+.gl-park-media {
+  height: 180px;
+  overflow: hidden;
+}
+
+.gl-park-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.gl-park-card:hover .gl-park-media img {
+  transform: scale(1.05);
+}
+
+.gl-park-body {
+  padding: 20px;
+}
+
+.gl-park-title {
+  font-family: var(--gl-font-serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--gl-dark);
+  margin-bottom: 6px;
+}
+
+.gl-park-desc {
+  font-size: 0.84rem;
+  color: var(--gl-muted);
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   PLOT SIZES & AREA CALCULATOR
+   ========================================================================== */
+.gl-calc-wrapper {
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid var(--gl-gold-border);
+  box-shadow: var(--gl-shadow);
+  padding: 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.gl-calc-title {
+  font-family: var(--gl-font-serif);
+  font-size: 1.8rem;
+  color: var(--gl-dark);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.gl-calc-subtitle {
+  font-size: 0.95rem;
+  color: var(--gl-muted);
+  margin-bottom: 24px;
+}
+
+.gl-calc-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.gl-calc-btn {
+  padding: 12px 10px;
+  text-align: center;
+  border-radius: 8px;
+  border: 1px solid #dbe5de;
+  background: #ffffff;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--gl-dark);
+  transition: var(--gl-transition);
+}
+
+.gl-calc-btn.active, .gl-calc-btn:hover {
+  background: var(--gl-emerald);
+  color: #ffffff;
+  border-color: var(--gl-emerald);
+}
+
+.gl-calc-result-box {
+  background: var(--gl-emerald-dark);
+  color: #ffffff;
+  border-radius: 14px;
+  padding: 30px;
+  text-align: center;
+  border: 1px solid var(--gl-gold);
+}
+
+.gl-calc-result-label {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--gl-gold);
+  margin-bottom: 8px;
+}
+
+.gl-calc-result-yards {
+  font-family: var(--gl-font-serif);
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+
+.gl-calc-result-subtext {
+  font-size: 0.95rem;
+  color: #cbe0d4;
+  margin-bottom: 20px;
+}
+
+.gl-calc-specs-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 22px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 14px 0;
+}
+
+.gl-calc-spec-item {
+  text-align: center;
+}
+
+.gl-calc-spec-val {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--gl-gold);
+}
+
+.gl-calc-spec-lbl {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #a4beae;
+}
+
+/* ==========================================================================
+   LOCATION & PROXIMITY TIMELINE
+   ========================================================================== */
+.gl-location-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.gl-location-card {
+  background: #ffffff;
+  border-radius: var(--gl-radius);
+  border: 1px solid var(--gl-card-border);
+  padding: 30px;
+  box-shadow: var(--gl-shadow);
+}
+
+.gl-location-title {
+  font-family: var(--gl-font-serif);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--gl-emerald-dark);
+  margin-bottom: 10px;
+}
+
+.gl-location-subtitle {
+  font-size: 0.92rem;
+  color: var(--gl-muted);
+  margin-bottom: 24px;
+}
+
+.gl-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.gl-timeline-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: #fbfdfb;
+  border: 1px solid #e8f0eb;
+  transition: var(--gl-transition);
+}
+
+.gl-timeline-item:hover {
+  background: var(--gl-emerald-soft);
+  border-color: var(--gl-emerald);
+}
+
+.gl-timeline-dest {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--gl-dark);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.gl-timeline-badge {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--gl-emerald);
+  background: #ffffff;
+  border: 1px solid var(--gl-emerald);
+  padding: 4px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.gl-map-container {
+  border-radius: var(--gl-radius);
+  overflow: hidden;
+  box-shadow: var(--gl-shadow);
+  border: 1px solid var(--gl-card-border);
+  height: 480px;
+  background: #eef2ef;
+}
+
+.gl-map-container iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* ==========================================================================
+   ABOUT DEVELOPERS (KAYTHRI & PAANCHAJANYA)
+   ========================================================================== */
+.gl-dev-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.gl-dev-card {
+  background: #ffffff;
+  border-radius: var(--gl-radius);
+  border: 1px solid var(--gl-card-border);
+  padding: 34px 30px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+}
+
+.gl-dev-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.gl-dev-name {
+  font-family: var(--gl-font-serif);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--gl-emerald-dark);
+}
+
+.gl-dev-role {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gl-gold);
+}
+
+.gl-dev-desc {
+  font-size: 0.92rem;
+  color: var(--gl-muted);
+  line-height: 1.65;
+}
+
+/* ==========================================================================
+   FOOTER & MODALS
+   ========================================================================== */
+.gl-footer {
+  background: var(--gl-dark);
+  color: #ffffff;
+  padding: 60px 0 30px;
+  border-top: 2px solid var(--gl-gold);
+}
+
+.gl-footer-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.gl-footer-desc {
+  font-size: 0.88rem;
+  color: #9cb1a5;
+  margin-top: 14px;
+  line-height: 1.6;
+}
+
+.gl-footer-col-title {
+  font-family: var(--gl-font-serif);
+  font-size: 1.15rem;
+  color: var(--gl-gold);
+  margin-bottom: 16px;
+  font-weight: 700;
+}
+
+.gl-footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gl-footer-links a {
+  color: #c4d4cc;
+  font-size: 0.88rem;
+}
+
+.gl-footer-links a:hover {
+  color: var(--gl-gold);
+}
+
+.gl-footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.82rem;
+  color: #7b8e83;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Mobile Sticky Bar */
+.gl-mobile-bar {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+  padding: 10px 16px;
+  z-index: 999;
+}
+
+.gl-mobile-bar-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.gl-btn-mobile-call {
+  background: #f0f7f3;
+  color: var(--gl-emerald-dark);
+  border: 1px solid var(--gl-emerald);
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.gl-btn-mobile-visit {
+  background: var(--gl-emerald);
+  color: #ffffff;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* Modal Styling */
+.gl-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(6px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: var(--gl-transition);
+  padding: 20px;
+}
+
+.gl-modal-backdrop.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.gl-modal-content {
+  background: #ffffff;
+  border-radius: 16px;
+  max-width: 520px;
+  width: 100%;
+  padding: 34px 28px;
+  position: relative;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+  transform: translateY(20px);
+  transition: var(--gl-transition);
+}
+
+.gl-modal-backdrop.active .gl-modal-content {
+  transform: translateY(0);
+}
+
+.gl-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 1.4rem;
+  color: var(--gl-muted);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f0f0f0;
+}
+
+.gl-modal-close:hover {
+  background: #e0e0e0;
+  color: var(--gl-dark);
+}
+
+/* Lightbox Modal for Layout Plan */
+.gl-lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.92);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: var(--gl-transition);
+  padding: 24px;
+}
+
+.gl-lightbox.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.gl-lightbox img {
+  max-width: 95vw;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.gl-lightbox-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  color: #ffffff;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   RESPONSIVE BREAKPOINTS
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .gl-hero-grid {
+    grid-template-columns: 1fr;
+  }
+  .gl-hero-content {
+    max-width: 100%;
+    text-align: center;
+  }
+  .gl-hero-badges, .gl-hero-meta, .gl-hero-actions {
+    justify-content: center;
+  }
+  .gl-metrics-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .gl-metric-card:nth-child(3) {
+    border-right: none;
+  }
+  .gl-legal-grid {
+    grid-template-columns: 1fr;
+  }
+  .gl-masterplan-wrapper {
+    grid-template-columns: 1fr;
+  }
+  .gl-infra-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .gl-amenities-showcase {
+    grid-template-columns: 1fr;
+  }
+  .gl-calc-wrapper {
+    grid-template-columns: 1fr;
+  }
+  .gl-location-grid {
+    grid-template-columns: 1fr;
+  }
+  .gl-footer-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .gl-topbar {
+    display: none;
+  }
+  .gl-header-inner {
+    height: 70px;
+  }
+  .gl-nav-menu, .gl-header-actions {
+    display: none;
+  }
+  .gl-menu-toggle {
+    display: flex;
+  }
+  .gl-hero {
+    padding: 40px 0 80px;
+  }
+  .gl-hero-title {
+    font-size: 2.5rem;
+  }
+  .gl-hero-subtitle {
+    font-size: 1.15rem;
+  }
+  .gl-metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .gl-metric-card:nth-child(2), .gl-metric-card:nth-child(4) {
+    border-right: none;
+  }
+  .gl-infra-grid {
+    grid-template-columns: 1fr;
+  }
+  .gl-parks-grid {
+    grid-template-columns: 1fr;
+  }
+  .gl-dev-grid {
+    grid-template-columns: 1fr;
+  }
+  .gl-mobile-bar {
+    display: block;
+  }
+  body {
+    padding-bottom: 60px;
+  }
+}

@@ -25,7 +25,7 @@
             </select>
         </div>
 
-        <a href="{{ route('admin.projects.create') }}" class="btn-primary w-full md:w-auto text-center">
+        <a href="{{ route('admin.projects.create') }}" class="inline-flex items-center justify-center px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-medium rounded-lg hover:shadow-lg transition w-full md:w-auto text-center">
             <i class="fas fa-plus mr-2"></i>Add New Project
         </a>
     </div>

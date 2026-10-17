@@ -60,12 +60,7 @@
                 </a>
                 @endif
 
-                <!-- @if(auth()->user()->can('projects.view'))
-                <a href="{{ route('admin.projects.index') }}" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition {{ request()->routeIs('admin.projects.*') ? 'active' : '' }}">
-                    <i class="fas fa-project-diagram w-5"></i>
-                    <span>Projects</span>
-                </a>
-                @endif -->
+
 
                 @if(auth()->user()->can('news.view'))
                 <a href="{{ route('admin.news.index') }}" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition {{ request()->routeIs('admin.news.*') ? 'active' : '' }}">
@@ -136,20 +131,43 @@
                 </a>
                 @endif
 
+                <!-- Projects & Ventures Management -->
+                @if(auth()->user()->can('projects.view') || auth()->user()->can('projects.create'))
                 <div class="pt-4 pb-2">
-                    <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Projects</p>
+                    <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Projects & Ventures</p>
                 </div>
 
+                @if(auth()->user()->can('projects.view'))
+                <a href="{{ route('admin.projects.index') }}" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition {{ request()->routeIs('admin.projects.index') || request()->routeIs('admin.projects.edit') || request()->routeIs('admin.projects.show') ? 'active' : '' }}">
+                    <i class="fas fa-city w-5"></i>
+                    <span>All Projects</span>
+                    @php
+                        $totalProjectsCount = \App\Models\Project::count();
+                    @endphp
+                    @if($totalProjectsCount > 0)
+                        <span class="ml-auto bg-blue-600 text-white text-xs px-2 py-0.5 rounded-full">{{ $totalProjectsCount }}</span>
+                    @endif
+                </a>
+                @endif
+
+                @if(auth()->user()->can('projects.create'))
+                <a href="{{ route('admin.projects.create') }}" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition {{ request()->routeIs('admin.projects.create') ? 'active' : '' }}">
+                    <i class="fas fa-plus-circle w-5"></i>
+                    <span>Add New Project</span>
+                </a>
+                @endif
+
                 <a href="{{ route('admin.drr.index') }}" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition {{ request()->routeIs('admin.drr.*') ? 'active' : '' }}">
-                    <i class="fas fa-building w-5"></i>
-                    <span>RJ Retreat.</span>
+                    <i class="fas fa-map-marked-alt w-5"></i>
+                    <span>RJ Retreat (Leads)</span>
                     @php
                         $newDrrCount = \App\Models\DrrEnquiry::where('status', 'new')->count() + \App\Models\DrrBrochureDownload::where('status', 'new')->count();
                     @endphp
                     @if($newDrrCount > 0)
-                        <span class="ml-auto bg-orange-500 text-white text-xs px-2 py-1 rounded-full">{{ $newDrrCount }}</span>
+                        <span class="ml-auto bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full">{{ $newDrrCount }}</span>
                     @endif
                 </a>
+                @endif
 
                 <!-- User Management -->
                 @if(auth()->user()->can('users.view') || auth()->user()->can('roles.view'))
