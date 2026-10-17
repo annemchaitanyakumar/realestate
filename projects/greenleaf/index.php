@@ -273,18 +273,171 @@
                 background-color: #b38e46 !important;
                 color: #ffffff !important;
             }
+            /* Vertical Floating CTA Button */
+            .fixed-cta-vertical {
+                position: fixed;
+                top: 50%;
+                left: 0;
+                transform: translateY(-50%);
+                z-index: 1040;
+            }
+            .vertical-btn {
+                writing-mode: vertical-rl;
+                transform: rotate(180deg);
+                background: linear-gradient(135deg, #0d5c3a 0%, #157347 100%);
+                color: #ffffff;
+                border: 1px solid rgba(197, 160, 89, 0.7);
+                border-left: none;
+                border-radius: 0 10px 10px 0;
+                padding: 20px 11px;
+                font-size: 13px;
+                font-weight: 700;
+                letter-spacing: 1.5px;
+                text-transform: uppercase;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                box-shadow: 2px 4px 18px rgba(0, 0, 0, 0.35);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
+            }
             .vertical-btn:hover {
-                background: var(--theme-gold) !important;
+                background: linear-gradient(135deg, #c5a059 0%, #b38e46 100%) !important;
+                color: #000000 !important;
+                transform: rotate(180deg) scale(1.05);
+                box-shadow: 4px 6px 25px rgba(197, 160, 89, 0.5);
+                border-color: #ffffff;
             }
-            .modern-footer {
-                background: #111613 !important;
-                color: #e5eee8 !important;
+            @media (max-width: 576px) {
+                .vertical-btn {
+                    padding: 16px 8px;
+                    font-size: 11px;
+                    letter-spacing: 1px;
+                }
             }
-            .modern-footer .footer-nav ul li a {
-                color: #c0d4c8 !important;
+
+            /* Specifications Section - Luxury 8-Card Grid */
+            .specs-section {
+                padding: 85px 0 95px 0;
+                background: #fbfdfb;
+                border-top: 1px solid #e5ede8;
+                border-bottom: 1px solid #e5ede8;
             }
-            .modern-footer .footer-nav ul li a:hover {
+            .spec-card {
+                background: #ffffff;
+                border: 1px solid #e2ece5;
+                border-radius: 18px;
+                padding: 26px 22px;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                transition: all 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
+                box-shadow: 0 4px 16px rgba(13, 92, 58, 0.04);
+            }
+            .spec-card:hover {
+                transform: translateY(-6px);
+                border-color: var(--theme-gold);
+                box-shadow: 0 16px 36px rgba(13, 92, 58, 0.12);
+            }
+            .spec-icon-wrap {
+                width: 52px;
+                height: 52px;
+                border-radius: 14px;
+                background: linear-gradient(135deg, #0d5c3a 0%, #157347 100%);
+                color: #ffffff;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.35rem;
+                margin-bottom: 18px;
+                box-shadow: 0 6px 16px rgba(13, 92, 58, 0.25);
+                transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease;
+            }
+            .spec-card:hover .spec-icon-wrap {
+                transform: scale(1.08) rotate(3deg);
+                background: linear-gradient(135deg, #c5a059 0%, #b38e46 100%);
+                color: #111111;
+            }
+            .spec-title {
+                font-size: 1.05rem;
+                font-weight: 800;
+                color: #0f1412;
+                margin-bottom: 12px;
+                letter-spacing: -0.2px;
+            }
+            .spec-list {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                flex-grow: 1;
+            }
+            .spec-list li {
+                font-size: 0.86rem;
+                color: #4a5550;
+                line-height: 1.5;
+                position: relative;
+                padding-left: 20px;
+            }
+            .spec-list li i {
+                position: absolute;
+                left: 0;
+                top: 4px;
+                font-size: 0.72rem;
+                color: var(--theme-green);
+            }
+
+            /* Executive GreenLeaf Footer */
+            .greenleaf-footer {
+                background: #09130e;
+                color: #d2ded7;
+                padding: 65px 0 25px 0;
+                border-top: 3px solid var(--theme-gold);
+                position: relative;
+                z-index: 10;
+            }
+            .footer-cta-card {
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid rgba(197, 160, 89, 0.35);
+                border-radius: 16px;
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
+            }
+            .hover-gold {
+                transition: color 0.3s ease;
+            }
+            .hover-gold:hover {
                 color: var(--theme-gold) !important;
+            }
+            .footer-nav-clean {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+            .footer-nav-link {
+                color: #b5c7bd;
+                text-decoration: none;
+                font-size: 0.92rem;
+                font-weight: 600;
+                transition: color 0.25s ease;
+            }
+            .footer-nav-link:hover {
+                color: var(--theme-gold);
+                text-decoration: underline;
+            }
+            .footer-approval-badge {
+                display: inline-flex;
+                align-items: center;
+                background: rgba(255, 255, 255, 0.06);
+                border: 1px solid rgba(197, 160, 89, 0.3);
+                border-radius: 50px;
+                padding: 6px 14px;
+                font-size: 0.78rem;
+                color: #f1f7f3;
+                letter-spacing: 0.3px;
             }
             .legal-badge-pill {
                 background: rgba(13, 92, 58, 0.1);
@@ -1065,164 +1218,141 @@
                 </section>
 
                 <!-- ==========================================================================
-                     SPECIFICATIONS SECTION (Same Accordion Structure as RJ Retreat)
+                     SPECIFICATIONS SECTION - LUXURY 8-CARD ARCHITECTURAL GRID
                      ========================================================================== -->
-                <section id="specs" class="section" style="padding: 80px 0; background: #0f1412;">
+                <section id="specs" class="specs-section">
                     <div class="container">
-                        <div class="text-center mb-4 aos-init" data-aos="zoom-in">
-                            <h2 class="section-title mt-2 text-white">Project Specifications</h2>
-                            <p class="text-muted">Civil, technical, and infrastructure parameters executed per HMDA guidelines.</p>
+                        <div class="text-center mb-5 aos-init" data-aos="zoom-in">
+                            <span class="badge rounded-pill px-3 py-2 text-uppercase mb-2" style="background: rgba(13, 92, 58, 0.1); color: #0d5c3a; font-weight: 700; letter-spacing: 1px; font-size: 0.75rem;">
+                                <i class="fas fa-check-circle me-1"></i> Infrastructure &amp; Technical Standards
+                            </span>
+                            <h2 class="fw-bold section-title mt-2 text-dark" style="font-family: 'Playfair Display', Georgia, serif; font-size: clamp(2rem, 3.5vw, 2.75rem); color: #0f1412;">Project Specifications</h2>
+                            <p class="text-muted" style="max-width: 650px; margin: 0 auto; font-size: 1.05rem;">
+                                Civil, engineering, and infrastructure parameters executed in strict accordance with HMDA development norms.
+                            </p>
                         </div>
                         
-                        <div class="accordion row" id="specAcc">
-                            
-                            <div class="col-md-6 mb-3 aos-init" data-aos="fade-up" data-aos-delay="0">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="h-0">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#c-0" aria-expanded="true" aria-controls="c-0">
-                                            GATED COMMUNITY &amp; ARCHWAY
-                                        </button>
-                                    </h2>
-                                    <div id="c-0" class="accordion-collapse collapse show" data-bs-parent="#specAcc">
-                                        <div class="accordion-body">
-                                            <ul class="mb-0">
-                                                <li>Grand architectural entrance arch with security cabin and boom barriers</li>
-                                                <li>7-foot high perimeter compound wall enclosing all 64 acres</li>
-                                            </ul>
-                                        </div>
+                        <div class="row g-4">
+                            <!-- 1. Gated Entry & Arch -->
+                            <div class="col-12 col-md-6 col-lg-3 aos-init" data-aos="fade-up" data-aos-delay="0">
+                                <div class="spec-card">
+                                    <div class="spec-icon-wrap">
+                                        <i class="fas fa-archway"></i>
                                     </div>
+                                    <h3 class="spec-title">Gated Entry &amp; Arch</h3>
+                                    <ul class="spec-list">
+                                        <li><i class="fas fa-check"></i> Grand 60-ft wide architectural entrance arch</li>
+                                        <li><i class="fas fa-check"></i> Security cabin with multi-lane boom barriers</li>
+                                        <li><i class="fas fa-check"></i> 7-foot high perimeter compound wall enclosing 64 acres</li>
+                                    </ul>
                                 </div>
                             </div>
 
-                            <div class="col-md-6 mb-3 aos-init" data-aos="fade-up" data-aos-delay="50">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="h-1">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c-1" aria-expanded="false" aria-controls="c-1">
-                                            24/7 SECURITY &amp; CCTV
-                                        </button>
-                                    </h2>
-                                    <div id="c-1" class="accordion-collapse collapse" data-bs-parent="#specAcc">
-                                        <div class="accordion-body">
-                                            <ul class="mb-0">
-                                                <li>Guarded security personnel at all entry and exit corridors</li>
-                                                <li>CCTV cameras positioned along the main junction roads</li>
-                                            </ul>
-                                        </div>
+                            <!-- 2. 24/7 Security & CCTV -->
+                            <div class="col-12 col-md-6 col-lg-3 aos-init" data-aos="fade-up" data-aos-delay="50">
+                                <div class="spec-card">
+                                    <div class="spec-icon-wrap">
+                                        <i class="fas fa-shield-alt"></i>
                                     </div>
+                                    <h3 class="spec-title">24/7 Guarded Security</h3>
+                                    <ul class="spec-list">
+                                        <li><i class="fas fa-check"></i> Trained security guards at entry and exit gates</li>
+                                        <li><i class="fas fa-check"></i> CCTV camera network along main spine and junctions</li>
+                                        <li><i class="fas fa-check"></i> Regulated visitor access and vehicle check-in log</li>
+                                    </ul>
                                 </div>
                             </div>
 
-                            <div class="col-md-6 mb-3 aos-init" data-aos="fade-up" data-aos-delay="100">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="h-2">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c-2" aria-expanded="false" aria-controls="c-2">
-                                            10,000 SFT CLUBHOUSE
-                                        </button>
-                                    </h2>
-                                    <div id="c-2" class="accordion-collapse collapse" data-bs-parent="#specAcc">
-                                        <div class="accordion-body">
-                                            <ul class="mb-0">
-                                                <li>Dedicated recreational building with swimming pool, gym, banquet hall, and games room</li>
-                                            </ul>
-                                        </div>
+                            <!-- 3. 10,000 Sft Clubhouse -->
+                            <div class="col-12 col-md-6 col-lg-3 aos-init" data-aos="fade-up" data-aos-delay="100">
+                                <div class="spec-card">
+                                    <div class="spec-icon-wrap">
+                                        <i class="fas fa-swimming-pool"></i>
                                     </div>
+                                    <h3 class="spec-title">10,000 Sft Clubhouse</h3>
+                                    <ul class="spec-list">
+                                        <li><i class="fas fa-check"></i> Luxury swimming pool with dedicated kids' pool</li>
+                                        <li><i class="fas fa-check"></i> Air-conditioned fitness gymnasium &amp; yoga deck</li>
+                                        <li><i class="fas fa-check"></i> Multipurpose banquet hall and indoor games room</li>
+                                    </ul>
                                 </div>
                             </div>
 
-                            <div class="col-md-6 mb-3 aos-init" data-aos="fade-up" data-aos-delay="150">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="h-3">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c-3" aria-expanded="false" aria-controls="c-3">
-                                            ROAD INFRASTRUCTURE
-                                        </button>
-                                    </h2>
-                                    <div id="c-3" class="accordion-collapse collapse" data-bs-parent="#specAcc">
-                                        <div class="accordion-body">
-                                            <ul class="mb-0">
-                                                <li>30.0M (100 Ft) Wide Master Plan Road cutting through the layout</li>
-                                                <li>60-Foot wide central avenue with concrete kerbs and paved footpaths</li>
-                                                <li>40-Foot and 30-Foot wide internal blacktop lanes</li>
-                                            </ul>
-                                        </div>
+                            <!-- 4. Road Infrastructure -->
+                            <div class="col-12 col-md-6 col-lg-3 aos-init" data-aos="fade-up" data-aos-delay="150">
+                                <div class="spec-card">
+                                    <div class="spec-icon-wrap">
+                                        <i class="fas fa-road"></i>
                                     </div>
+                                    <h3 class="spec-title">Road Infrastructure</h3>
+                                    <ul class="spec-list">
+                                        <li><i class="fas fa-check"></i> 30.0M (100-Ft) Master Plan road alignment</li>
+                                        <li><i class="fas fa-check"></i> 60-ft wide central avenue with concrete kerbs</li>
+                                        <li><i class="fas fa-check"></i> 40-ft and 30-ft internal blacktop (BT) roads</li>
+                                    </ul>
                                 </div>
                             </div>
 
-                            <div class="col-md-6 mb-3 aos-init" data-aos="fade-up" data-aos-delay="200">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="h-4">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c-4" aria-expanded="false" aria-controls="c-4">
-                                            UNDERGROUND ELECTRICITY
-                                        </button>
-                                    </h2>
-                                    <div id="c-4" class="accordion-collapse collapse" data-bs-parent="#specAcc">
-                                        <div class="accordion-body">
-                                            <ul class="mb-0">
-                                                <li>Entire venture provided with underground armored cabling and localized transformers</li>
-                                                <li>LED street lighting mounted on decorative poles throughout all avenues</li>
-                                            </ul>
-                                        </div>
+                            <!-- 5. Underground Electricity -->
+                            <div class="col-12 col-md-6 col-lg-3 aos-init" data-aos="fade-up" data-aos-delay="200">
+                                <div class="spec-card">
+                                    <div class="spec-icon-wrap">
+                                        <i class="fas fa-bolt"></i>
                                     </div>
+                                    <h3 class="spec-title">Underground Power</h3>
+                                    <ul class="spec-list">
+                                        <li><i class="fas fa-check"></i> 100% armored underground electrical cabling</li>
+                                        <li><i class="fas fa-check"></i> Dedicated distribution transformers installed</li>
+                                        <li><i class="fas fa-check"></i> Designer LED street lighting on avenue poles</li>
+                                    </ul>
                                 </div>
                             </div>
 
-                            <div class="col-md-6 mb-3 aos-init" data-aos="fade-up" data-aos-delay="250">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="h-5">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c-5" aria-expanded="false" aria-controls="c-5">
-                                            WATER &amp; DRAINAGE NETWORK
-                                        </button>
-                                    </h2>
-                                    <div id="c-5" class="accordion-collapse collapse" data-bs-parent="#specAcc">
-                                        <div class="accordion-body">
-                                            <ul class="mb-0">
-                                                <li>Centralized Overhead Storage Tank (OHT) with water line stub to each plot</li>
-                                                <li>Underground drainage (UGD) system with Sewage Treatment Plant (STP)</li>
-                                                <li>Rainwater harvesting pits along road flanks</li>
-                                            </ul>
-                                        </div>
+                            <!-- 6. Water & Drainage Network -->
+                            <div class="col-12 col-md-6 col-lg-3 aos-init" data-aos="fade-up" data-aos-delay="250">
+                                <div class="spec-card">
+                                    <div class="spec-icon-wrap">
+                                        <i class="fas fa-tint"></i>
                                     </div>
+                                    <h3 class="spec-title">Water &amp; Drainage</h3>
+                                    <ul class="spec-list">
+                                        <li><i class="fas fa-check"></i> Centralized Overhead Water Tank (OHT) with stubs</li>
+                                        <li><i class="fas fa-check"></i> Underground drainage (UGD) connected to STP</li>
+                                        <li><i class="fas fa-check"></i> Rainwater harvesting recharge pits across layout</li>
+                                    </ul>
                                 </div>
                             </div>
 
-                            <div class="col-md-6 mb-3 aos-init" data-aos="fade-up" data-aos-delay="300">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="h-6">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c-6" aria-expanded="false" aria-controls="c-6">
-                                            5 LANDSCAPED PARKS
-                                        </button>
-                                    </h2>
-                                    <div id="c-6" class="accordion-collapse collapse" data-bs-parent="#specAcc">
-                                        <div class="accordion-body">
-                                            <ul class="mb-0">
-                                                <li>5 open green spaces with jogging trails, children's play equipment, and gazebos</li>
-                                                <li>Avenue plantation with flowering trees along all street corridors</li>
-                                            </ul>
-                                        </div>
+                            <!-- 7. 5 Landscaped Parks -->
+                            <div class="col-12 col-md-6 col-lg-3 aos-init" data-aos="fade-up" data-aos-delay="300">
+                                <div class="spec-card">
+                                    <div class="spec-icon-wrap">
+                                        <i class="fas fa-tree"></i>
                                     </div>
+                                    <h3 class="spec-title">5 Landscaped Parks</h3>
+                                    <ul class="spec-list">
+                                        <li><i class="fas fa-check"></i> 5 themed green parks with walking &amp; jogging tracks</li>
+                                        <li><i class="fas fa-check"></i> Children play zones, seating gazebos &amp; lawn plazas</li>
+                                        <li><i class="fas fa-check"></i> Avenue tree plantations along every internal street</li>
+                                    </ul>
                                 </div>
                             </div>
 
-                            <div class="col-md-6 mb-3 aos-init" data-aos="fade-up" data-aos-delay="350">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="h-7">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c-7" aria-expanded="false" aria-controls="c-7">
-                                            LEGAL &amp; TITLE CLARITY
-                                        </button>
-                                    </h2>
-                                    <div id="c-7" class="accordion-collapse collapse" data-bs-parent="#specAcc">
-                                        <div class="accordion-body">
-                                            <ul class="mb-0">
-                                                <li>HMDA Sanction LP No. 000037/LO/PLG/HMDA/2020</li>
-                                                <li>TS RERA Registration No. P02200002093</li>
-                                                <li>100% Vastu compliance, clear title passbook, and spot registration ready</li>
-                                                <li>Bank loan approvals from leading financial institutions</li>
-                                            </ul>
-                                        </div>
+                            <!-- 8. Legal & Title Clarity -->
+                            <div class="col-12 col-md-6 col-lg-3 aos-init" data-aos="fade-up" data-aos-delay="350">
+                                <div class="spec-card">
+                                    <div class="spec-icon-wrap">
+                                        <i class="fas fa-certificate"></i>
                                     </div>
+                                    <h3 class="spec-title">HMDA &amp; RERA Sanction</h3>
+                                    <ul class="spec-list">
+                                        <li><i class="fas fa-check"></i> <strong>HMDA LP:</strong> 000037/LO/PLG/HMDA/2020</li>
+                                        <li><i class="fas fa-check"></i> <strong>TS RERA:</strong> P02200002093</li>
+                                        <li><i class="fas fa-check"></i> 100% Vastu compliance &amp; spot registration</li>
+                                        <li><i class="fas fa-check"></i> Approved for bank loans by leading institutions</li>
+                                    </ul>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </section>
@@ -1232,9 +1362,12 @@
                      ========================================================================== -->
                 <section id="contact" class="contact-section py-5">
                     <div class="container aos-init" data-aos="zoom-in">
-                        <div class="text-center mb-5">
-                            <h2 class="fw-bold section-title">Contact &amp; Site Visit</h2>
-                            <p class="text-muted">Schedule a free site visit to GreenLeaf Shamirpet with cab pickup and drop.</p>
+                        <div class="text-center mb-5 aos-init" data-aos="zoom-in">
+                            <span class="badge rounded-pill px-3 py-2 text-uppercase mb-2" style="background: rgba(197, 160, 89, 0.15); color: #8e6d24; font-weight: 700; letter-spacing: 1px; font-size: 0.75rem;">
+                                <i class="fas fa-map-marked-alt me-1"></i> Visit GreenLeaf Shamirpet
+                            </span>
+                            <h2 class="fw-bold section-title mt-2 text-dark" style="font-family: 'Playfair Display', Georgia, serif; font-size: clamp(2rem, 3.5vw, 2.75rem); color: #0f1412;">Contact &amp; Site Visit</h2>
+                            <p class="text-muted" style="max-width: 620px; margin: 0 auto; font-size: 1.05rem;">Schedule an on-ground site visit to GreenLeaf Shamirpet with complimentary cab pickup and drop.</p>
                         </div>
                         <div class="row g-4 align-items-stretch">
                             <div class="col-md-6">
@@ -1318,48 +1451,112 @@
                 </section>
 
                 <!-- ==========================================================================
-                     MODERN FOOTER (Same Format as RJ Retreat)
+                     EXECUTIVE GREENLEAF FOOTER
                      ========================================================================== -->
-                <footer class="modern-footer">
-                    <div class="footer-logo text-center mb-3">
-                        <img
-                            alt="Paanchajanya Realty Logo"
-                            src="/assests/image/paanchajanya-logo-new.png"
-                            style="width: 200px; filter: brightness(0) invert(1);"
-                        />
-                    </div>
-                    <nav class="footer-nav text-center mb-3">
-                        <ul class="d-flex justify-content-center gap-4 flex-wrap">
-                            <li><a href="#">Home</a></li>
-                            <li><a href="#highlights">Project Highlights</a></li>
-                            <li><a href="#amenities">Clubhouse &amp; Parks</a></li>
-                            <li><a href="#plans">Master Layout</a></li>
-                            <li><a href="#location">Location Highlights</a></li>
-                            <li><a href="#specs">Specifications</a></li>
-                            <li><a href="tel:+919100031999">Contact: +91 91000 31999</a></li>
-                        </ul>
-                    </nav>
-                    <p><b>HMDA LP NO:</b> 000037/LO/PLG/HMDA/2020 &nbsp;|&nbsp; <b>TS RERA NO:</b> P02200002093</p>
-                    <p><b>Site Location:</b> Bowramspet-ORRGC Village, Shamirpet-ORRGC Mandal, Medchal-Malkajgiri District, Telangana.</p>
-                    <a href="tel:+919100031999" class="text-warning text-decoration-none">
-                        <p class="fw-bold"><b>Sales Call:</b> +91 91000 31999 &nbsp;|&nbsp; +91 723 799 7999</p>
-                    </a>
-                    <div class="footer-bottom text-center">
-                        <small>© <?php echo date('Y'); ?> GreenLeaf Shamirpet. Developed by Kaythri Group. Marketed by Paanchajanya Realty Pvt Ltd.</small>
+                <footer class="greenleaf-footer">
+                    <div class="container">
+                        <!-- Top Row: Co-Branding & Helpline Callout -->
+                        <div class="row align-items-center justify-content-between pb-5 border-bottom border-secondary border-opacity-25 gy-4">
+                            <div class="col-lg-5 col-md-6">
+                                <div class="d-flex align-items-center gap-3">
+                                    <img
+                                        alt="Paanchajanya Realty Logo"
+                                        src="/assests/image/paanchajanya-logo-new.png"
+                                        style="height: 52px; width: auto; filter: brightness(0) invert(1);"
+                                    />
+                                    <div style="width: 1px; height: 38px; background: rgba(255,255,255,0.25);"></div>
+                                    <div>
+                                        <div class="text-uppercase fw-bold text-muted small" style="letter-spacing: 1px; font-size: 0.7rem;">In Association With</div>
+                                        <div class="fw-bold text-white fs-5" style="letter-spacing: 0.5px;">KAYTHRI GROUP</div>
+                                    </div>
+                                </div>
+                                <p class="text-light text-opacity-75 mt-3 mb-0" style="font-size: 0.92rem; line-height: 1.6; max-width: 420px;">
+                                    GreenLeaf is a 64-acre premium HMDA &amp; TS RERA approved plotted township strategically situated at ORR Exit 7, Shamirpet, Hyderabad.
+                                </p>
+                            </div>
+                            
+                            <div class="col-lg-6 col-md-6">
+                                <div class="footer-cta-card p-4 rounded-4">
+                                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                                        <div>
+                                            <span class="text-uppercase fw-bold text-warning small" style="letter-spacing: 1px;">Direct Sales Helpline</span>
+                                            <div class="d-flex flex-wrap gap-3 mt-1">
+                                                <a href="tel:+919100031999" class="text-white text-decoration-none fw-bold fs-5 hover-gold">
+                                                    <i class="fas fa-phone-alt me-1 text-warning"></i> +91 91000 31999
+                                                </a>
+                                                <span class="text-muted d-none d-sm-inline">|</span>
+                                                <a href="tel:+917237997999" class="text-white text-decoration-none fw-bold fs-5 hover-gold">
+                                                    <i class="fas fa-phone-alt me-1 text-warning"></i> +91 723 799 7999
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <button
+                                            class="btn btn-warning px-4 py-2 fw-bold rounded-pill text-dark shadow-sm"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#exampleModal"
+                                            style="background: linear-gradient(135deg, #d4af62 0%, #b38e46 100%); border: none;"
+                                        >
+                                            <i class="fas fa-calendar-check me-1"></i> Book Site Visit
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Middle Row: Navigation Links & Legal Approvals -->
+                        <div class="row pt-4 pb-4 gy-4 align-items-center">
+                            <div class="col-lg-7">
+                                <ul class="footer-nav-clean mb-0 p-0 d-flex flex-wrap gap-3 gap-md-4">
+                                    <li><a href="#" class="footer-nav-link">Home</a></li>
+                                    <li><a href="#highlights" class="footer-nav-link">Project Highlights</a></li>
+                                    <li><a href="#amenities" class="footer-nav-link">Clubhouse &amp; Parks</a></li>
+                                    <li><a href="#plans" class="footer-nav-link">Master Layout</a></li>
+                                    <li><a href="#location" class="footer-nav-link">Location Highlights</a></li>
+                                    <li><a href="#specs" class="footer-nav-link">Specifications</a></li>
+                                    <li><a href="#contact" class="footer-nav-link">Contact</a></li>
+                                </ul>
+                            </div>
+                            
+                            <div class="col-lg-5 text-lg-end">
+                                <div class="d-inline-flex flex-wrap gap-2 justify-content-lg-end">
+                                    <span class="footer-approval-badge">
+                                        <i class="fas fa-check-circle text-success me-1"></i> <strong>HMDA LP:</strong> 000037/LO/PLG/HMDA/2020
+                                    </span>
+                                    <span class="footer-approval-badge">
+                                        <i class="fas fa-shield-alt text-warning me-1"></i> <strong>TS RERA:</strong> P02200002093
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Location address -->
+                        <div class="py-2 text-center text-lg-start border-top border-secondary border-opacity-10">
+                            <small class="text-light text-opacity-50">
+                                <i class="fas fa-map-marker-alt text-warning me-1"></i> <strong>Site Location:</strong> Bowramspet-ORRGC Village, Shamirpet-ORRGC Mandal, Medchal-Malkajgiri District, Telangana.
+                            </small>
+                        </div>
+
+                        <!-- Bottom Copyright -->
+                        <div class="footer-bottom pt-3 pb-2 text-center border-top border-secondary border-opacity-15">
+                            <p class="small text-light text-opacity-60 mb-0">
+                                © <?php echo date('Y'); ?> GreenLeaf Shamirpet. Developed by Kaythri Group. Marketed by Paanchajanya Realty Pvt Ltd. All rights reserved.
+                            </p>
+                        </div>
                     </div>
                 </footer>
 
                 <!-- ==========================================================================
-                     VERTICAL FIXED CTA BUTTON (Same as RJ Retreat)
+                     VERTICAL FIXED CTA BUTTON
                      ========================================================================== -->
-                <div class="fixed-cta-vertical" style="opacity: 1; transform: none">
+                <div class="fixed-cta-vertical">
                     <button
                         class="vertical-btn"
                         aria-label="Enquire Now"
                         data-bs-toggle="modal"
                         data-bs-target="#exampleModal"
                     >
-                        Enquire&nbsp;Now
+                        <i class="fas fa-paper-plane mb-2" style="transform: rotate(90deg);"></i>
+                        <span>Enquire&nbsp;Now</span>
                     </button>
                 </div>
 
