@@ -18,18 +18,15 @@ jobs:
   preflight:
     name: Validate Production Deployment
     runs-on: ubuntu-latest
-
     steps:
       - name: Validate deployment branch
         shell: bash
         run: |
           set -euo pipefail
-
           if [[ "$GITHUB_REF" != "refs/heads/main" ]]; then
             echo "ERROR: Production deployment is allowed only from main."
             exit 1
           fi
-
           echo "Branch: $GITHUB_REF_NAME"
           echo "Commit: $GITHUB_SHA"
 
@@ -73,7 +70,6 @@ jobs:
 
             cleanup_temps() {
               set +e
-
               [ -z "$TEMP_ARCHIVE" ] || rm -f "$TEMP_ARCHIVE"
               [ -z "$TEMP_DB" ] || rm -f "$TEMP_DB"
 
@@ -92,18 +88,25 @@ jobs:
 
               chmod 640 "$file"
 
-              if chgrp www-data "$file"; then
-                :
-              elif command -v sudo >/dev/null 2>&1 &&
-                   sudo -n chown "$DEPLOY_USER:www-data" "$file"; then
-                :
-              else
-                echo "ERROR: Cannot set www-data group on $file."
-                echo "Grant the deploy user group membership or narrowly scoped sudo access."
+              if [ "$(stat -c '%G' "$file")" != "www-data" ]; then
+                if ! chgrp www-data "$file"; then
+                  if command -v sudo >/dev/null 2>&1 &&
+                     sudo -n chown "$DEPLOY_USER:www-data" "$file"; then
+                    :
+                  else
+                    echo "ERROR: Cannot set www-data group on $file."
+                    echo "Grant the deploy user membership in www-data or narrowly scoped sudo access."
+                    return 1
+                  fi
+                fi
+              fi
+
+              if [ "$(stat -c '%G' "$file")" != "www-data" ]; then
+                echo "ERROR: Database configuration group is not www-data."
                 return 1
               fi
 
-              echo "Database configuration permissions verified."
+              echo "Database configuration permissions:"
               ls -l "$file"
             }
 
@@ -120,7 +123,7 @@ jobs:
                 fi
               elif [ -e "$PUBLIC_STORAGE" ]; then
                 echo "ERROR: $PUBLIC_STORAGE exists but is not a symlink."
-                echo "Refusing to remove this directory because it may contain uploaded files."
+                echo "Refusing to remove it because it may contain uploaded files."
                 return 1
               fi
 
@@ -138,6 +141,36 @@ jobs:
 
               echo "PASS: Laravel public storage symlink."
               ls -ld "$PUBLIC_STORAGE"
+            }
+
+            verify_db_permissions() {
+              local file="$1"
+              local owner group mode
+
+              owner="$(stat -c '%U' "$file")"
+              group="$(stat -c '%G' "$file")"
+              mode="$(stat -c '%a' "$file")"
+
+              echo "Database config owner: $owner"
+              echo "Database config group: $group"
+              echo "Database config mode:  $mode"
+
+              if [ "$group" != "www-data" ]; then
+                echo "ERROR: includes/db.php is not in the www-data group."
+                return 1
+              fi
+
+              if [ "$mode" != "640" ]; then
+                echo "ERROR: includes/db.php must have permissions 640."
+                return 1
+              fi
+
+              if [ ! -r "$file" ]; then
+                echo "ERROR: The deployment user cannot read includes/db.php."
+                return 1
+              fi
+
+              echo "PASS: Database config ownership and permissions verified."
             }
 
             rollback() {
@@ -193,7 +226,7 @@ jobs:
               fi
 
               if ! ensure_db_permissions "$DB_CONFIG"; then
-                echo "CRITICAL: Database configuration permissions need manual repair."
+                echo "CRITICAL: Database config permissions need manual repair."
                 exit 1
               fi
 
@@ -214,7 +247,6 @@ jobs:
             echo "======================================"
 
             cd "$APP_DIR"
-
             git rev-parse --is-inside-work-tree
             git fetch origin main
 
@@ -230,7 +262,7 @@ jobs:
               exit 1
             fi
 
-            # Preserve the production-only database configuration.
+            # Preserve production database configuration independently.
             install -d -m 700 "$CONFIG_DIR"
 
             if [ ! -s "$DB_CONFIG" ]; then
@@ -253,7 +285,7 @@ jobs:
             test -s "$CONFIG_BACKUP"
             echo "Independent database configuration backup verified."
 
-            # Create and verify a complete application backup.
+            # Back up the current application before changing files.
             install -d -m 700 "$BACKUP_ROOT"
             TEMP_ARCHIVE="$BACKUP_ROOT/previous-site.tar.gz.tmp"
             rm -f "$TEMP_ARCHIVE"
@@ -280,17 +312,15 @@ jobs:
 
             test -s "$BACKUP_ARCHIVE"
             BACKUP_READY=1
-
             echo "Application backup created and verified."
 
             trap rollback ERR
             DEPLOY_STARTED=1
 
-            # Deploy the exact commit selected by GitHub Actions.
+            # Deploy the exact target commit.
             git reset --hard "$TARGET_COMMIT"
 
-            # Keep production data, environment, dependencies and build
-            # artifacts until their replacements have been prepared.
+            # Preserve production data, dependencies and environment files.
             git clean -fdx \
               -e '.env' \
               -e '.env.*' \
@@ -309,6 +339,7 @@ jobs:
             mkdir -p includes
             cp "$CONFIG_BACKUP" includes/db.php
             ensure_db_permissions "$DB_CONFIG"
+            verify_db_permissions "$DB_CONFIG"
 
             ACTUAL_COMMIT="$(git rev-parse HEAD)"
 
@@ -337,7 +368,7 @@ jobs:
               fi
             done
 
-            # Install PHP dependencies if the production autoloader is missing.
+            # Install PHP dependencies if the autoloader is missing.
             if [ ! -s admin/vendor/autoload.php ]; then
               echo "Composer autoloader is missing. Installing dependencies."
 
@@ -364,7 +395,7 @@ jobs:
 
             echo "PASS: Composer autoloader"
 
-            # Build the Laravel frontend on every deployment.
+            # Build Vite production assets on every deployment.
             if ! command -v node >/dev/null 2>&1 ||
                ! command -v npm >/dev/null 2>&1; then
               echo "ERROR: Node.js and npm must be installed on the server."
@@ -372,10 +403,9 @@ jobs:
             fi
 
             echo "Node version: $(node --version)"
-            echo "npm version:  $(npm --version)"
+            echo "npm version: $(npm --version)"
 
             cd admin
-
             npm ci
             npm run build
 
@@ -385,10 +415,9 @@ jobs:
             fi
 
             echo "PASS: Vite production manifest."
-
             cd "$APP_DIR"
 
-            # Ensure public URLs can reach Laravel's uploaded files.
+            # Restore the Laravel public storage link.
             ensure_storage_link
 
             # Verify Laravel bootstrap.
@@ -400,15 +429,6 @@ jobs:
               echo "FAIL: Laravel bootstrap."
               exit 22
             fi
-
-            # Verify the production database configuration is readable
-            # by the PHP-FPM worker group.
-            if ! runuser -u www-data -- test -r "$DB_CONFIG"; then
-              echo "ERROR: www-data cannot read includes/db.php."
-              exit 30
-            fi
-
-            echo "PASS: Database configuration is readable by www-data."
 
             # Verify the public website.
             echo "DIAGNOSTIC: Checking public website."
@@ -422,8 +442,7 @@ jobs:
               exit 23
             fi
 
-            # Check the actual login page rather than relying on the
-            # /admin/ redirect, which may redirect to a different URL.
+            # Check the actual login page.
             echo "DIAGNOSTIC: Checking admin login page."
 
             if curl --fail --silent --show-error --location \
@@ -435,7 +454,7 @@ jobs:
               exit 24
             fi
 
-            # Verify a known uploaded slider image if one exists.
+            # Verify an existing uploaded image if available.
             FIRST_SLIDER="$STORAGE_DIR/sliders/vk26wV2J5HoRuLCXa36hN1PdxGStEA0GYqPfeVq6.jpg"
 
             if [ -f "$FIRST_SLIDER" ]; then
