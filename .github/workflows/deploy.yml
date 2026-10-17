@@ -22,10 +22,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+
           if [[ "$GITHUB_REF" != "refs/heads/main" ]]; then
             echo "ERROR: Production deployment is allowed only from main."
             exit 1
           fi
+
           echo "Branch: $GITHUB_REF_NAME"
           echo "Commit: $GITHUB_SHA"
 
@@ -62,20 +64,27 @@ jobs:
             TEMP_DB=""
 
             cleanup_temps() {
+              set +e
+
               [ -z "$TEMP_ARCHIVE" ] || rm -f "$TEMP_ARCHIVE"
               [ -z "$TEMP_DB" ] || rm -f "$TEMP_DB"
-              [ -z "$RESTORE_DIR" ] || {
-                [ ! -d "$RESTORE_DIR" ] || rm -rf "$RESTORE_DIR"
-              }
+
+              if [ -n "$RESTORE_DIR" ] && [ -d "$RESTORE_DIR" ]; then
+                rm -rf "$RESTORE_DIR"
+              fi
             }
 
             rollback() {
               STATUS=$?
-              trap 'STATUS=$?; echo "ERROR: Command failed at line $LINENO with exit code $STATUS"; trap - ERR; rollback' ERR
+              FAILED_LINE="${BASH_LINENO[0]:-unknown}"
+              trap - ERR
               set +e
 
               echo "======================================"
-              echo "DEPLOYMENT FAILED: ROLLBACK STARTED"
+              echo "DEPLOYMENT FAILED"
+              echo "Failure line: $FAILED_LINE"
+              echo "Exit code: $STATUS"
+              echo "Starting rollback."
               echo "======================================"
 
               if [ "$DEPLOY_STARTED" -ne 1 ]; then
@@ -102,7 +111,7 @@ jobs:
               if ! rsync -a --delete \
                    --exclude='/.git/' \
                    "$RESTORE_DIR/" "$APP_DIR/"; then
-                echo "CRITICAL: Application file restoration failed."
+                echo "CRITICAL: Application restoration failed."
                 echo "Backup retained: $BACKUP_ARCHIVE"
                 echo "Restore directory: $RESTORE_DIR"
                 exit 1
@@ -119,7 +128,7 @@ jobs:
                 exit 1
               fi
 
-              echo "Application files restored from backup."
+              echo "Application files restored."
               echo "Database configuration restored."
               echo "Backup retained: $BACKUP_ARCHIVE"
 
@@ -143,11 +152,11 @@ jobs:
             echo "Remote commit:   $REMOTE_COMMIT"
 
             if [ "$REMOTE_COMMIT" != "$TARGET_COMMIT" ]; then
-              echo "ERROR: Remote main does not match the workflow commit."
+              echo "ERROR: Remote main does not match workflow commit."
               exit 1
             fi
 
-            # Verify the production DB file before changing the application.
+            # Verify and preserve the production-only database configuration.
             install -d -m 700 "$CONFIG_DIR"
 
             if [ ! -s "$APP_DIR/includes/db.php" ]; then
@@ -156,12 +165,11 @@ jobs:
                 cp "$CONFIG_BACKUP" "$APP_DIR/includes/db.php"
                 chmod 640 "$APP_DIR/includes/db.php"
               else
-                echo "ERROR: includes/db.php and its protected copy are missing."
+                echo "ERROR: Live and protected database configurations are missing."
                 exit 1
               fi
             fi
 
-            # Keep an independent copy outside the repository.
             TEMP_DB="$(mktemp "$CONFIG_DIR/db.php.XXXXXX")"
             cp "$APP_DIR/includes/db.php" "$TEMP_DB"
             chmod 600 "$TEMP_DB"
@@ -171,19 +179,19 @@ jobs:
             test -s "$CONFIG_BACKUP"
             echo "Independent database configuration backup verified."
 
-            # Build a snapshot of the current application.
+            # Create and verify the application snapshot before changing files.
             install -d -m 700 "$BACKUP_ROOT"
             TEMP_ARCHIVE="$BACKUP_ROOT/previous-site.tar.gz.tmp"
             rm -f "$TEMP_ARCHIVE"
 
-            tar --exclude='./.git' \
-                -czf "$TEMP_ARCHIVE" \
-                -C "$APP_DIR" .
+            tar \
+              --exclude='./.git' \
+              -czf "$TEMP_ARCHIVE" \
+              -C "$APP_DIR" .
 
             test -s "$TEMP_ARCHIVE"
 
-            # Read the full archive listing before checking it.
-            # This avoids grep -q / pipefail broken-pipe false failures.
+            # Read the complete listing to avoid grep -q/pipefail issues.
             ARCHIVE_LIST="$(tar -tzf "$TEMP_ARCHIVE")"
 
             if ! printf '%s\n' "$ARCHIVE_LIST" |
@@ -194,7 +202,6 @@ jobs:
               exit 1
             fi
 
-            # Verify the archive can be read.
             tar -tzf "$TEMP_ARCHIVE" > /dev/null
             chmod 600 "$TEMP_ARCHIVE"
             mv -f "$TEMP_ARCHIVE" "$BACKUP_ARCHIVE"
@@ -205,14 +212,14 @@ jobs:
 
             echo "Application backup created and verified."
 
-            # Enable rollback before modifying application files.
+            # Install rollback handler before modifying application files.
             trap rollback ERR
             DEPLOY_STARTED=1
 
-            # Deploy the exact commit that triggered this workflow.
+            echo "Deploying target commit..."
             git reset --hard "$TARGET_COMMIT"
 
-            # Clean obsolete files but preserve production data and dependencies.
+            # Preserve production configuration and runtime dependencies.
             git clean -fdx \
               -e '.env' \
               -e '.env.*' \
@@ -226,15 +233,14 @@ jobs:
               -e 'admin/vendor/' \
               -e 'admin/public/build/'
 
-            # Restore production-only DB configuration.
+            # Restore production database configuration after Git cleanup.
             mkdir -p includes
             cp "$CONFIG_BACKUP" includes/db.php
             chmod 640 includes/db.php
 
-            test -s includes/db.php
-
-            # Verify deployed commit.
+            # Verify deployment commit.
             ACTUAL_COMMIT="$(git rev-parse HEAD)"
+
             if [ "$ACTUAL_COMMIT" != "$TARGET_COMMIT" ]; then
               echo "ERROR: Deployed commit does not match target."
               exit 1
@@ -242,43 +248,69 @@ jobs:
 
             echo "Deployed commit: $ACTUAL_COMMIT"
 
-            # Verify required production files.
-            test -s admin/.env
-            test -s includes/db.php
-            test -f admin/artisan
-            test -f admin/vendor/autoload.php
+            # Verification 1: Required files.
+            echo "DIAGNOSTIC: Checking required files."
 
-            # Verify Laravel bootstraps.
-            php admin/artisan --version
+            for file in admin/.env includes/db.php admin/artisan admin/vendor/autoload.php; do
+              if [ -s "$file" ]; then
+                echo "PASS: $file"
+              else
+                echo "FAIL: $file is missing or empty."
+                exit 21
+              fi
+            done
 
-            # Verify public website returns HTTP success.
-            curl --fail --silent --show-error --location \
-              --retry 5 \
+            # Verification 2: Laravel bootstrap.
+            echo "DIAGNOSTIC: Checking Laravel bootstrap."
+
+            if php admin/artisan --version; then
+              echo "PASS: Laravel bootstrap."
+            else
+              echo "FAIL: Laravel bootstrap."
+              exit 22
+            fi
+
+            # Verification 3: Public website.
+            echo "DIAGNOSTIC: Checking public website."
+
+            if curl --fail --silent --show-error --location \
+              --retry 2 \
               --retry-delay 2 \
-              --retry-connrefused \
               --max-time 20 \
               https://paanchajanyarealty.com/ \
-              -o /dev/null
+              -o /dev/null; then
+              echo "PASS: Public website."
+            else
+              echo "FAIL: Public website HTTP check."
+              exit 23
+            fi
 
-            # Verify admin endpoint returns HTTP success.
-            curl --fail --silent --show-error --location \
-              --retry 5 \
+            # Verification 4: Admin URL.
+            echo "DIAGNOSTIC: Checking admin URL."
+
+            if curl --fail --silent --show-error --location \
+              --retry 2 \
               --retry-delay 2 \
-              --retry-connrefused \
               --max-time 20 \
               https://paanchajanyarealty.com/admin/ \
-              -o /dev/null
+              -o /dev/null; then
+              echo "PASS: Admin URL."
+            else
+              echo "FAIL: Admin URL HTTP check."
+              exit 24
+            fi
 
-            # Deployment verification passed.
+            echo "All verification checks passed."
+
+            # Disable rollback only after every verification succeeds.
             trap - ERR
 
             echo "======================================"
             echo "DEPLOYMENT VERIFICATION SUCCESSFUL"
             echo "======================================"
 
-            # Delete the temporary application snapshot only after success.
             rm -f "$BACKUP_ARCHIVE"
 
-            echo "Application snapshot removed after successful verification."
-            echo "Independent DB backup retained: $CONFIG_BACKUP"
+            echo "Temporary application backup removed."
+            echo "Independent database backup retained: $CONFIG_BACKUP"
             echo "Production deployment completed."
