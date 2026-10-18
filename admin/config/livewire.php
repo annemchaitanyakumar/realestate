@@ -11,7 +11,12 @@ return [
     | your application. This value will change where component auto-discovery
     | finds components. It's also referenced by the file creation commands.
     |
+    /*
+    |---------------------------------------------------------------------------
+    | Asset URL
+    |---------------------------------------------------------------------------
     */
+    'asset_url' => '/admin/livewire/livewire.js',
 
     'class_namespace' => 'App\\Livewire',
 

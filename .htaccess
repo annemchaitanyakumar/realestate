@@ -1,8 +1,9 @@
 RewriteEngine On
 
-# Pass admin requests to the admin/public folder
+# Pass admin and livewire requests to the admin/public folder
 RewriteRule ^admin/api/(.*)$ admin/public/index.php [L,QSA]
 RewriteRule ^admin/(.*)$ admin/public/$1 [L]
+RewriteRule ^livewire/(.*)$ admin/public/index.php [L,QSA]
 
 # Also handle /admin without trailing slash
 RewriteRule ^admin$ admin/public/index.php [L]
