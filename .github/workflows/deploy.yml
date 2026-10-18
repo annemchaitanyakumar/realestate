@@ -1,4 +1,3 @@
-
 name: Deploy to Production
 
 on:
@@ -26,12 +25,12 @@ jobs:
         run: |
           set -euo pipefail
 
-          test "${GITHUB_REF}" = "refs/heads/main" || {
+          if [[ "$GITHUB_REF" != "refs/heads/main" ]]; then
             echo "ERROR: Deployment is restricted to main."
             exit 1
-          }
+          fi
 
-          echo "Target commit: ${GITHUB_SHA}"
+          echo "Target commit: $GITHUB_SHA"
 
       - name: Deploy and stabilize via SSH
         uses: appleboy/ssh-action@v1.2.5
@@ -48,7 +47,7 @@ jobs:
             set -eu
 
             APP_DIR="/var/www/paanchajanyarealty.com"
-            BACKUP_DIR="$HOME/production-config-backup/paanchajanyarealty.com"
+            DEPLOY_SCRIPT="$APP_DIR/.deploy-stablization.sh"
             TARGET_COMMIT="$GITHUB_SHA"
 
             echo "=========================================="
@@ -56,122 +55,51 @@ jobs:
             echo "Commit: $TARGET_COMMIT"
             echo "=========================================="
 
-            cd "$APP_DIR"
+            # Validate inputs and required server files.
+            case "$TARGET_COMMIT" in
+              *[!0-9a-fA-F]*|"")
+                echo "ERROR: Invalid deployment commit SHA."
+                exit 1
+                ;;
+            esac
 
-            # 1. Verify the repository.
-            test "$(git rev-parse --is-inside-work-tree)" = "true"
-
-            REMOTE_URL="$(git remote get-url origin)"
-            echo "Repository: $REMOTE_URL"
-
-            # 2. Back up production-only configuration.
-            mkdir -p "$BACKUP_DIR"
-
-            if [ -f includes/db.php ]; then
-              mkdir -p "$BACKUP_DIR/includes"
-              cp -p includes/db.php "$BACKUP_DIR/includes/db.php"
-              echo "Backed up includes/db.php"
-            elif [ -f "$BACKUP_DIR/includes/db.php" ]; then
-              echo "Current database config is missing; saved backup exists."
-            else
-              echo "ERROR: No database configuration or backup exists."
+            if [ "${#TARGET_COMMIT}" -ne 40 ]; then
+              echo "ERROR: Deployment SHA must be 40 characters."
               exit 1
             fi
 
-            if [ -f admin/.env ]; then
-              mkdir -p "$BACKUP_DIR/admin"
-              cp -p admin/.env "$BACKUP_DIR/admin/.env"
-              echo "Backed up admin/.env"
-            elif [ -f "$BACKUP_DIR/admin/.env" ]; then
-              echo "Current Laravel .env is missing; saved backup exists."
-            else
-              echo "ERROR: No Laravel .env or backup exists."
-              exit 1
-            fi
-
-            # 3. Preserve uploaded slider images in a persistent backup.
-            # Do not delete the live upload directory.
-            if [ -d admin/storage/app/public ]; then
-              mkdir -p "$BACKUP_DIR/admin-public-uploads"
-
-              cp -an admin/storage/app/public/. \
-                "$BACKUP_DIR/admin-public-uploads/"
-
-              echo "Preserved upload backup without overwriting prior files."
-            fi
-
-            # 4. Fetch main and validate the requested commit.
-            git fetch origin main
-
-            git cat-file -e "${TARGET_COMMIT}^{commit}" || {
-              echo "ERROR: Target commit is not available locally."
+            test -d "$APP_DIR/.git" || {
+              echo "ERROR: Git repository not found: $APP_DIR"
               exit 1
             }
 
-            git merge-base --is-ancestor "$TARGET_COMMIT" origin/main || {
-              echo "ERROR: Target commit is not part of origin/main."
-              echo "No production checkout was changed."
+            test -f "$DEPLOY_SCRIPT" || {
+              echo "ERROR: Stabilization script is missing: $DEPLOY_SCRIPT"
               exit 1
             }
 
-            # 5. Deploy the exact commit.
-            git reset --hard "$TARGET_COMMIT"
+            # The stabilization script handles:
+            # - repository and commit validation
+            # - backups of production-only configuration
+            # - persistent upload backups
+            # - exact commit checkout
+            # - Composer and npm dependencies
+            # - Vite asset build
+            # - privileged permission repair
+            # - Laravel, Nginx and HTTP smoke tests
+            bash "$DEPLOY_SCRIPT" "$TARGET_COMMIT"
 
-            test "$(git rev-parse HEAD)" = "$TARGET_COMMIT"
+            # Confirm that the requested commit is still deployed.
+            ACTUAL_COMMIT="$(git -C "$APP_DIR" rev-parse HEAD)"
 
-            echo "Checked out commit: $(git rev-parse HEAD)"
-
-            # 6. Restore production-only files only if absent.
-            if [ ! -f includes/db.php ]; then
-              mkdir -p includes
-              cp -p "$BACKUP_DIR/includes/db.php" includes/db.php
-              echo "Restored includes/db.php"
-            fi
-
-            if [ ! -f admin/.env ]; then
-              cp -p "$BACKUP_DIR/admin/.env" admin/.env
-              echo "Restored admin/.env"
-            fi
-
-            # 7. Ensure the database config has the expected group.
-            # Do not attempt an unprivileged chgrp operation.
-            if [ "$(stat -c '%G' includes/db.php)" != "www-data" ]; then
-              echo "ERROR: includes/db.php must belong to group www-data."
-              echo "Correct its ownership once with administrator privileges."
+            if [ "$ACTUAL_COMMIT" != "$TARGET_COMMIT" ]; then
+              echo "ERROR: Deployed commit does not match target."
+              echo "Expected: $TARGET_COMMIT"
+              echo "Actual:   $ACTUAL_COMMIT"
               exit 1
             fi
-
-            chmod 640 includes/db.php
-
-            # 8. Restore missing uploaded files without overwriting
-            # existing production uploads.
-            if [ -d "$BACKUP_DIR/admin-public-uploads" ]; then
-              mkdir -p admin/storage/app/public
-
-              cp -an "$BACKUP_DIR/admin-public-uploads/." \
-                admin/storage/app/public/
-
-              echo "Verified upload preservation."
-            fi
-
-            # 9. Check that the stabilization script exists.
-            test -f "$APP_DIR/.deploy-stablization.sh" || {
-              echo "ERROR: Stabilization script is missing."
-              exit 1
-            }
-
-            # The script handles Composer, Vite, Laravel runtime
-            # preparation, and its configured application checks.
-            # It must not perform another Git checkout or run git clean.
-            cd "$APP_DIR"
-
-            bash ./.deploy-stablization.sh "$TARGET_COMMIT"
-
-            # 10. Confirm the final checkout is still the target.
-            test "$(git rev-parse HEAD)" = "$TARGET_COMMIT"
 
             echo "=========================================="
             echo "Deployment and stabilization completed."
-            echo "Commit: $(git rev-parse HEAD)"
-            echo "Backups: $BACKUP_DIR"
+            echo "Commit: $ACTUAL_COMMIT"
             echo "=========================================="

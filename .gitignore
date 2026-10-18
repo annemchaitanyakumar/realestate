@@ -7,3 +7,5 @@ admin/storage/sliders
 
 nginx/config/*
 
+.deploy-stablization.sh 
+
