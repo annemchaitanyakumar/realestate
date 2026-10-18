@@ -11,474 +11,168 @@ permissions:
   contents: read
 
 concurrency:
-  group: production-deployment
+  group: production-deploy
   cancel-in-progress: false
 
 jobs:
-  preflight:
-    name: Validate Production Deployment
-    runs-on: ubuntu-latest
-    steps:
-      - name: Validate deployment branch
-        shell: bash
-        run: |
-          set -euo pipefail
-          if [[ "$GITHUB_REF" != "refs/heads/main" ]]; then
-            echo "ERROR: Production deployment is allowed only from main."
-            exit 1
-          fi
-          echo "Branch: $GITHUB_REF_NAME"
-          echo "Commit: $GITHUB_SHA"
-
   deploy:
-    name: Backup, Deploy and Verify
+    name: Deploy to Production Server
     runs-on: ubuntu-latest
-    needs: preflight
     timeout-minutes: 30
 
     steps:
-      - name: Deploy to Ubuntu Server
+      - name: Validate deployment target
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          test "${GITHUB_REF}" = "refs/heads/main" || {
+            echo "ERROR: Deployment is restricted to main."
+            exit 1
+          }
+
+          echo "Target commit: ${GITHUB_SHA}"
+
+      - name: Deploy and stabilize via SSH
         uses: appleboy/ssh-action@v1.2.5
+        env:
+          GITHUB_SHA: ${{ github.sha }}
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_PORT }}
+          envs: GITHUB_SHA
           command_timeout: 25m
-
+          script_stop: true
           script: |
-            set -Eeuo pipefail
+            set -eu
 
             APP_DIR="/var/www/paanchajanyarealty.com"
-            BACKUP_ROOT="$HOME/deploy-backups/paanchajanyarealty.com"
-            BACKUP_ARCHIVE="$BACKUP_ROOT/previous-site.tar.gz"
-            CONFIG_DIR="$HOME/production-config-backup"
-            CONFIG_BACKUP="$CONFIG_DIR/db.php"
-            TARGET_COMMIT="${{ github.sha }}"
+            BACKUP_DIR="$HOME/production-config-backup/paanchajanyarealty.com"
+            TARGET_COMMIT="$GITHUB_SHA"
 
-            DEPLOY_USER="$(id -un)"
-            DB_CONFIG="$APP_DIR/includes/db.php"
-            STORAGE_DIR="$APP_DIR/admin/storage/app/public"
-            PUBLIC_STORAGE="$APP_DIR/admin/public/storage"
-            EXPECTED_STORAGE_TARGET="$STORAGE_DIR"
-
-            BACKUP_READY=0
-            DEPLOY_STARTED=0
-            RESTORE_DIR=""
-            TEMP_ARCHIVE=""
-            TEMP_DB=""
-
-            cleanup_temps() {
-              set +e
-              [ -z "$TEMP_ARCHIVE" ] || rm -f "$TEMP_ARCHIVE"
-              [ -z "$TEMP_DB" ] || rm -f "$TEMP_DB"
-
-              if [ -n "$RESTORE_DIR" ] && [ -d "$RESTORE_DIR" ]; then
-                rm -rf "$RESTORE_DIR"
-              fi
-            }
-
-            ensure_db_permissions() {
-              local file="$1"
-
-              test -s "$file" || {
-                echo "ERROR: Database configuration is missing: $file"
-                return 1
-              }
-
-              chmod 640 "$file"
-
-              if [ "$(stat -c '%G' "$file")" != "www-data" ]; then
-                if ! chgrp www-data "$file"; then
-                  if command -v sudo >/dev/null 2>&1 &&
-                     sudo -n chown "$DEPLOY_USER:www-data" "$file"; then
-                    :
-                  else
-                    echo "ERROR: Cannot set www-data group on $file."
-                    echo "Grant the deploy user membership in www-data or narrowly scoped sudo access."
-                    return 1
-                  fi
-                fi
-              fi
-
-              if [ "$(stat -c '%G' "$file")" != "www-data" ]; then
-                echo "ERROR: Database configuration group is not www-data."
-                return 1
-              fi
-
-              echo "Database configuration permissions:"
-              ls -l "$file"
-            }
-
-            ensure_storage_link() {
-              mkdir -p "$STORAGE_DIR" "$APP_DIR/admin/public"
-
-              if [ -L "$PUBLIC_STORAGE" ]; then
-                local actual_target
-                actual_target="$(readlink -f "$PUBLIC_STORAGE" || true)"
-
-                if [ "$actual_target" != "$EXPECTED_STORAGE_TARGET" ]; then
-                  echo "Repairing incorrect Laravel storage symlink."
-                  rm "$PUBLIC_STORAGE"
-                fi
-              elif [ -e "$PUBLIC_STORAGE" ]; then
-                echo "ERROR: $PUBLIC_STORAGE exists but is not a symlink."
-                echo "Refusing to remove it because it may contain uploaded files."
-                return 1
-              fi
-
-              if [ ! -L "$PUBLIC_STORAGE" ]; then
-                ln -s "$EXPECTED_STORAGE_TARGET" "$PUBLIC_STORAGE"
-              fi
-
-              local actual_target
-              actual_target="$(readlink -f "$PUBLIC_STORAGE")"
-
-              if [ "$actual_target" != "$EXPECTED_STORAGE_TARGET" ]; then
-                echo "ERROR: Laravel storage symlink verification failed."
-                return 1
-              fi
-
-              echo "PASS: Laravel public storage symlink."
-              ls -ld "$PUBLIC_STORAGE"
-            }
-
-            verify_db_permissions() {
-              local file="$1"
-              local owner group mode
-
-              owner="$(stat -c '%U' "$file")"
-              group="$(stat -c '%G' "$file")"
-              mode="$(stat -c '%a' "$file")"
-
-              echo "Database config owner: $owner"
-              echo "Database config group: $group"
-              echo "Database config mode:  $mode"
-
-              if [ "$group" != "www-data" ]; then
-                echo "ERROR: includes/db.php is not in the www-data group."
-                return 1
-              fi
-
-              if [ "$mode" != "640" ]; then
-                echo "ERROR: includes/db.php must have permissions 640."
-                return 1
-              fi
-
-              if [ ! -r "$file" ]; then
-                echo "ERROR: The deployment user cannot read includes/db.php."
-                return 1
-              fi
-
-              echo "PASS: Database config ownership and permissions verified."
-            }
-
-            rollback() {
-              local status=$?
-              local failed_line="${BASH_LINENO[0]:-unknown}"
-
-              trap - ERR
-              set +e
-
-              echo "======================================"
-              echo "DEPLOYMENT FAILED"
-              echo "Failure line: $failed_line"
-              echo "Exit code: $status"
-              echo "Starting rollback."
-              echo "======================================"
-
-              if [ "$DEPLOY_STARTED" -ne 1 ]; then
-                echo "Application changes had not started."
-                cleanup_temps
-                exit "$status"
-              fi
-
-              if [ "$BACKUP_READY" -ne 1 ] ||
-                 [ ! -s "$BACKUP_ARCHIVE" ]; then
-                echo "CRITICAL: No verified application backup is available."
-                exit 1
-              fi
-
-              RESTORE_DIR="$(mktemp -d "$HOME/deploy-restore.XXXXXX")"
-
-              if ! tar -xzf "$BACKUP_ARCHIVE" -C "$RESTORE_DIR"; then
-                echo "CRITICAL: Backup extraction failed."
-                echo "Backup retained: $BACKUP_ARCHIVE"
-                exit 1
-              fi
-
-              if ! rsync -a --delete \
-                   --exclude='/.git/' \
-                   "$RESTORE_DIR/" "$APP_DIR/"; then
-                echo "CRITICAL: Application restoration failed."
-                echo "Backup retained: $BACKUP_ARCHIVE"
-                echo "Restore directory: $RESTORE_DIR"
-                exit 1
-              fi
-
-              if [ -s "$CONFIG_BACKUP" ]; then
-                cp "$CONFIG_BACKUP" "$DB_CONFIG"
-              elif [ -s "$RESTORE_DIR/includes/db.php" ]; then
-                cp "$RESTORE_DIR/includes/db.php" "$DB_CONFIG"
-              else
-                echo "CRITICAL: Database configuration restoration failed."
-                exit 1
-              fi
-
-              if ! ensure_db_permissions "$DB_CONFIG"; then
-                echo "CRITICAL: Database config permissions need manual repair."
-                exit 1
-              fi
-
-              if ! ensure_storage_link; then
-                echo "WARNING: Storage link needs manual verification."
-              fi
-
-              echo "Application files restored."
-              echo "Database configuration restored."
-              echo "Backup retained: $BACKUP_ARCHIVE"
-
-              cleanup_temps
-              exit "$status"
-            }
-
-            echo "======================================"
+            echo "=========================================="
             echo "Starting production deployment"
-            echo "======================================"
+            echo "Commit: $TARGET_COMMIT"
+            echo "=========================================="
 
             cd "$APP_DIR"
-            git rev-parse --is-inside-work-tree
+
+            # 1. Verify the repository.
+            test "$(git rev-parse --is-inside-work-tree)" = "true"
+
+            REMOTE_URL="$(git remote get-url origin)"
+            echo "Repository: $REMOTE_URL"
+
+            # 2. Back up production-only configuration.
+            mkdir -p "$BACKUP_DIR"
+
+            if [ -f includes/db.php ]; then
+              mkdir -p "$BACKUP_DIR/includes"
+              cp -p includes/db.php "$BACKUP_DIR/includes/db.php"
+              echo "Backed up includes/db.php"
+            elif [ -f "$BACKUP_DIR/includes/db.php" ]; then
+              echo "Current database config is missing; saved backup exists."
+            else
+              echo "ERROR: No database configuration or backup exists."
+              exit 1
+            fi
+
+            if [ -f admin/.env ]; then
+              mkdir -p "$BACKUP_DIR/admin"
+              cp -p admin/.env "$BACKUP_DIR/admin/.env"
+              echo "Backed up admin/.env"
+            elif [ -f "$BACKUP_DIR/admin/.env" ]; then
+              echo "Current Laravel .env is missing; saved backup exists."
+            else
+              echo "ERROR: No Laravel .env or backup exists."
+              exit 1
+            fi
+
+            # 3. Preserve uploaded slider images in a persistent backup.
+            # Do not delete the live upload directory.
+            if [ -d admin/storage/app/public ]; then
+              mkdir -p "$BACKUP_DIR/admin-public-uploads"
+
+              cp -an admin/storage/app/public/. \
+                "$BACKUP_DIR/admin-public-uploads/"
+
+              echo "Preserved upload backup without overwriting prior files."
+            fi
+
+            # 4. Fetch main and validate the requested commit.
             git fetch origin main
 
-            CURRENT_COMMIT="$(git rev-parse HEAD)"
-            REMOTE_COMMIT="$(git rev-parse FETCH_HEAD)"
-
-            echo "Previous commit: $CURRENT_COMMIT"
-            echo "Target commit:   $TARGET_COMMIT"
-            echo "Remote commit:   $REMOTE_COMMIT"
-
-            if [ "$REMOTE_COMMIT" != "$TARGET_COMMIT" ]; then
-              echo "ERROR: Remote main does not match workflow commit."
+            git cat-file -e "${TARGET_COMMIT}^{commit}" || {
+              echo "ERROR: Target commit is not available locally."
               exit 1
-            fi
+            }
 
-            # Preserve production database configuration independently.
-            install -d -m 700 "$CONFIG_DIR"
-
-            if [ ! -s "$DB_CONFIG" ]; then
-              if [ -s "$CONFIG_BACKUP" ]; then
-                mkdir -p "$APP_DIR/includes"
-                cp "$CONFIG_BACKUP" "$DB_CONFIG"
-                ensure_db_permissions "$DB_CONFIG"
-              else
-                echo "ERROR: Production database configuration is missing."
-                exit 1
-              fi
-            fi
-
-            TEMP_DB="$(mktemp "$CONFIG_DIR/db.php.XXXXXX")"
-            cp "$DB_CONFIG" "$TEMP_DB"
-            chmod 600 "$TEMP_DB"
-            mv -f "$TEMP_DB" "$CONFIG_BACKUP"
-            TEMP_DB=""
-
-            test -s "$CONFIG_BACKUP"
-            echo "Independent database configuration backup verified."
-
-            # Back up the current application before changing files.
-            install -d -m 700 "$BACKUP_ROOT"
-            TEMP_ARCHIVE="$BACKUP_ROOT/previous-site.tar.gz.tmp"
-            rm -f "$TEMP_ARCHIVE"
-
-            tar --exclude='./.git' \
-                -czf "$TEMP_ARCHIVE" \
-                -C "$APP_DIR" .
-
-            test -s "$TEMP_ARCHIVE"
-
-            ARCHIVE_LIST="$(tar -tzf "$TEMP_ARCHIVE")"
-
-            if ! printf '%s\n' "$ARCHIVE_LIST" |
-                 grep -Fx './includes/db.php' > /dev/null; then
-              echo "ERROR: Backup does not contain includes/db.php."
-              printf '%s\n' "$ARCHIVE_LIST" | grep 'db\.php' || true
+            git merge-base --is-ancestor "$TARGET_COMMIT" origin/main || {
+              echo "ERROR: Target commit is not part of origin/main."
+              echo "No production checkout was changed."
               exit 1
-            fi
+            }
 
-            tar -tzf "$TEMP_ARCHIVE" > /dev/null
-            chmod 600 "$TEMP_ARCHIVE"
-            mv -f "$TEMP_ARCHIVE" "$BACKUP_ARCHIVE"
-            TEMP_ARCHIVE=""
-
-            test -s "$BACKUP_ARCHIVE"
-            BACKUP_READY=1
-            echo "Application backup created and verified."
-
-            trap rollback ERR
-            DEPLOY_STARTED=1
-
-            # Deploy the exact target commit.
+            # 5. Deploy the exact commit.
             git reset --hard "$TARGET_COMMIT"
 
-            # Preserve production data, dependencies and environment files.
-            git clean -fdx \
-              -e '.env' \
-              -e '.env.*' \
-              -e 'uploads/' \
-              -e 'storage/' \
-              -e 'includes/db.php' \
-              -e 'admin/.env' \
-              -e 'admin/storage/' \
-              -e 'admin/bootstrap/cache/' \
-              -e 'admin/public/storage' \
-              -e 'admin/vendor/' \
-              -e 'admin/node_modules/' \
-              -e 'admin/public/build/'
+            test "$(git rev-parse HEAD)" = "$TARGET_COMMIT"
 
-            # Restore the production-only database configuration.
-            mkdir -p includes
-            cp "$CONFIG_BACKUP" includes/db.php
-            ensure_db_permissions "$DB_CONFIG"
-            verify_db_permissions "$DB_CONFIG"
+            echo "Checked out commit: $(git rev-parse HEAD)"
 
-            ACTUAL_COMMIT="$(git rev-parse HEAD)"
+            # 6. Restore production-only files only if absent.
+            if [ ! -f includes/db.php ]; then
+              mkdir -p includes
+              cp -p "$BACKUP_DIR/includes/db.php" includes/db.php
+              echo "Restored includes/db.php"
+            fi
 
-            if [ "$ACTUAL_COMMIT" != "$TARGET_COMMIT" ]; then
-              echo "ERROR: Deployed commit does not match target."
+            if [ ! -f admin/.env ]; then
+              cp -p "$BACKUP_DIR/admin/.env" admin/.env
+              echo "Restored admin/.env"
+            fi
+
+            # 7. Ensure the database config has the expected group.
+            # Do not attempt an unprivileged chgrp operation.
+            if [ "$(stat -c '%G' includes/db.php)" != "www-data" ]; then
+              echo "ERROR: includes/db.php must belong to group www-data."
+              echo "Correct its ownership once with administrator privileges."
               exit 1
             fi
 
-            echo "Deployed commit: $ACTUAL_COMMIT"
+            chmod 640 includes/db.php
 
-            # Verify required application files.
-            for file in \
-              admin/.env \
-              includes/db.php \
-              admin/artisan \
-              admin/composer.json \
-              admin/composer.lock \
-              admin/package.json \
-              admin/package-lock.json \
-              admin/vite.config.js; do
-              if [ -s "$file" ]; then
-                echo "PASS: $file"
-              else
-                echo "FAIL: $file is missing or empty."
-                exit 21
-              fi
-            done
+            # 8. Restore missing uploaded files without overwriting
+            # existing production uploads.
+            if [ -d "$BACKUP_DIR/admin-public-uploads" ]; then
+              mkdir -p admin/storage/app/public
 
-            # Install PHP dependencies if the autoloader is missing.
-            if [ ! -s admin/vendor/autoload.php ]; then
-              echo "Composer autoloader is missing. Installing dependencies."
+              cp -an "$BACKUP_DIR/admin-public-uploads/." \
+                admin/storage/app/public/
 
-              if ! command -v composer >/dev/null 2>&1; then
-                echo "ERROR: Composer is not installed or not in PATH."
-                exit 25
-              fi
-
-              cd admin
-
-              composer install \
-                --no-dev \
-                --prefer-dist \
-                --no-interaction \
-                --optimize-autoloader
-
-              cd "$APP_DIR"
+              echo "Verified upload preservation."
             fi
 
-            if [ ! -s admin/vendor/autoload.php ]; then
-              echo "ERROR: Composer did not generate vendor/autoload.php."
-              exit 27
-            fi
+            # 9. Check that the stabilization script exists.
+            test -f "$APP_DIR/.deploy-stablization.sh" || {
+              echo "ERROR: Stabilization script is missing."
+              exit 1
+            }
 
-            echo "PASS: Composer autoloader"
-
-            # Build Vite production assets on every deployment.
-            if ! command -v node >/dev/null 2>&1 ||
-               ! command -v npm >/dev/null 2>&1; then
-              echo "ERROR: Node.js and npm must be installed on the server."
-              exit 28
-            fi
-
-            echo "Node version: $(node --version)"
-            echo "npm version: $(npm --version)"
-
-            cd admin
-            npm ci
-            npm run build
-
-            if [ ! -s public/build/manifest.json ]; then
-              echo "ERROR: Vite build did not create public/build/manifest.json."
-              exit 29
-            fi
-
-            echo "PASS: Vite production manifest."
+            # The script handles Composer, Vite, Laravel runtime
+            # preparation, and its configured application checks.
+            # It must not perform another Git checkout or run git clean.
             cd "$APP_DIR"
 
-            # Restore the Laravel public storage link.
-            ensure_storage_link
+            bash ./.deploy-stablization.sh "$TARGET_COMMIT"
 
-            # Verify Laravel bootstrap.
-            echo "DIAGNOSTIC: Checking Laravel bootstrap."
+            # 10. Confirm the final checkout is still the target.
+            test "$(git rev-parse HEAD)" = "$TARGET_COMMIT"
 
-            if php admin/artisan --version; then
-              echo "PASS: Laravel bootstrap."
-            else
-              echo "FAIL: Laravel bootstrap."
-              exit 22
-            fi
-
-            # Verify the public website.
-            echo "DIAGNOSTIC: Checking public website."
-
-            if curl --fail --silent --show-error --location \
-              --retry 2 --retry-delay 2 --max-time 20 \
-              https://paanchajanyarealty.com/ -o /dev/null; then
-              echo "PASS: Public website."
-            else
-              echo "FAIL: Public website HTTP check."
-              exit 23
-            fi
-
-            # Check the actual login page.
-            echo "DIAGNOSTIC: Checking admin login page."
-
-            if curl --fail --silent --show-error --location \
-              --retry 2 --retry-delay 2 --max-time 20 \
-              https://paanchajanyarealty.com/admin/login -o /dev/null; then
-              echo "PASS: Admin login page."
-            else
-              echo "FAIL: Admin login HTTP check."
-              exit 24
-            fi
-
-            # Verify an existing uploaded image if available.
-            FIRST_SLIDER="$STORAGE_DIR/sliders/vk26wV2J5HoRuLCXa36hN1PdxGStEA0GYqPfeVq6.jpg"
-
-            if [ -f "$FIRST_SLIDER" ]; then
-              if curl --fail --silent --show-error --location \
-                --max-time 20 \
-                https://paanchajanyarealty.com/admin/storage/sliders/vk26wV2J5HoRuLCXa36hN1PdxGStEA0GYqPfeVq6.jpg \
-                -o /dev/null; then
-                echo "PASS: Existing slider image is publicly accessible."
-              else
-                echo "ERROR: Existing slider image is not publicly accessible."
-                exit 31
-              fi
-            else
-              echo "INFO: Known slider image is absent; skipping image URL check."
-            fi
-
-            trap - ERR
-
-            echo "======================================"
-            echo "DEPLOYMENT VERIFICATION SUCCESSFUL"
-            echo "======================================"
-
-            rm -f "$BACKUP_ARCHIVE"
-
-            echo "Application backup removed after successful deployment."
-            echo "Independent database backup retained: $CONFIG_BACKUP"
-            echo "Production deployment completed."
+            echo "=========================================="
+            echo "Deployment and stabilization completed."
+            echo "Commit: $(git rev-parse HEAD)"
+            echo "Backups: $BACKUP_DIR"
+            echo "=========================================="

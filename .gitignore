@@ -4,3 +4,6 @@ AGENTS.md
 includes/db.php
 
 admin/storage/sliders
+
+nginx/config/*
+
