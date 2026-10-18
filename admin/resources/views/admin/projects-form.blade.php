@@ -128,9 +128,9 @@
                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     required
                 >
-                    <option value="planned" {{ old('status', $project->status ?? '') == 'planned' ? 'selected' : '' }}>Planned</option>
-                    <option value="in_progress" {{ old('status', $project->status ?? '') == 'in_progress' ? 'selected' : '' }}>In Progress</option>
-                    <option value="completed" {{ old('status', $project->status ?? '') == 'completed' ? 'selected' : '' }}>Completed</option>
+                    <option value="ongoing" {{ in_array(old('status', $project->status ?? 'ongoing'), ['ongoing', 'in_progress']) ? 'selected' : '' }}>Ongoing</option>
+                    <option value="completed" {{ in_array(old('status', $project->status ?? ''), ['completed', 'Completed']) ? 'selected' : '' }}>Completed</option>
+                    <option value="upcoming" {{ in_array(old('status', $project->status ?? ''), ['upcoming', 'planned']) ? 'selected' : '' }}>Upcoming</option>
                 </select>
             </div>
 

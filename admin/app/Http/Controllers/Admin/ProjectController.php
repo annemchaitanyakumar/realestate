@@ -32,7 +32,7 @@ class ProjectController extends Controller
             'value' => 'nullable|numeric',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date',
-            'status' => 'required|in:planned,in_progress,completed',
+            'status' => 'required|in:ongoing,completed,upcoming,in_progress,planned',
             'image' => 'nullable|image|max:2048',
             'gallery' => 'nullable|array',
             'gallery.*' => 'image|max:2048',
@@ -40,6 +40,13 @@ class ProjectController extends Controller
             'is_active' => 'boolean',
             'order' => 'nullable|integer|min:0',
         ]);
+
+        // Normalize status
+        if ($validated['status'] === 'in_progress') {
+            $validated['status'] = 'ongoing';
+        } elseif ($validated['status'] === 'planned') {
+            $validated['status'] = 'upcoming';
+        }
 
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('projects', 'public');
@@ -80,7 +87,7 @@ class ProjectController extends Controller
             'value' => 'nullable|numeric',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date',
-            'status' => 'required|in:planned,in_progress,completed',
+            'status' => 'required|in:ongoing,completed,upcoming,in_progress,planned',
             'image' => 'nullable|image|max:2048',
             'gallery' => 'nullable|array',
             'gallery.*' => 'image|max:2048',
@@ -89,6 +96,13 @@ class ProjectController extends Controller
             'is_active' => 'boolean',
             'order' => 'nullable|integer|min:0',
         ]);
+
+        // Normalize status
+        if ($validated['status'] === 'in_progress') {
+            $validated['status'] = 'ongoing';
+        } elseif ($validated['status'] === 'planned') {
+            $validated['status'] = 'upcoming';
+        }
 
         if ($request->hasFile('image')) {
             // Delete old image
