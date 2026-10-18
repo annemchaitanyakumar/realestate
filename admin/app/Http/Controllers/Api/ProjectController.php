@@ -17,7 +17,16 @@ class ProjectController extends Controller
 
         // Filter by status if provided
         if ($request->has('status')) {
-            $query->where('status', $request->status);
+            $status = strtolower($request->status);
+            if ($status === 'ongoing' || $status === 'in_progress' || $status === 'in progress') {
+                $query->whereIn('status', ['ongoing', 'in_progress', 'In Progress']);
+            } elseif ($status === 'upcoming' || $status === 'planned') {
+                $query->whereIn('status', ['upcoming', 'planned', 'Planned']);
+            } elseif ($status === 'completed') {
+                $query->whereIn('status', ['completed', 'Completed']);
+            } else {
+                $query->where('status', $request->status);
+            }
         }
 
         // Filter by category if provided
@@ -117,13 +126,15 @@ class ProjectController extends Controller
     {
         $totalProjects = Project::where('is_active', true)->count();
         $completedProjects = Project::where('is_active', true)
-                                   ->where('status', 'Completed')
+                                   ->whereIn('status', ['completed', 'Completed'])
                                    ->count();
         $ongoingProjects = Project::where('is_active', true)
-                                 ->where('status', 'In Progress')
+                                 ->whereIn('status', ['ongoing', 'in_progress', 'In Progress'])
+                                 ->count();
+        $upcomingProjects = Project::where('is_active', true)
+                                 ->whereIn('status', ['upcoming', 'planned', 'Planned'])
                                  ->count();
         $totalValue = Project::where('is_active', true)
-                            ->where('status', 'Completed')
                             ->sum('value');
 
         return response()->json([
@@ -132,6 +143,7 @@ class ProjectController extends Controller
                 'total_projects' => $totalProjects,
                 'completed_projects' => $completedProjects,
                 'ongoing_projects' => $ongoingProjects,
+                'upcoming_projects' => $upcomingProjects,
                 'total_value' => $totalValue ? round($totalValue / 100, 2) : 0, // Convert Lakhs to Crores
             ]
         ]);
@@ -142,11 +154,12 @@ class ProjectController extends Controller
      */
     private function calculateProgress($project)
     {
-        if ($project->status === 'Completed') {
+        $status = strtolower($project->status ?? '');
+        if ($status === 'completed') {
             return 100;
         }
 
-        if ($project->status !== 'In Progress' || !$project->start_date || !$project->end_date) {
+        if (!in_array($status, ['ongoing', 'in_progress', 'in progress']) || !$project->start_date || !$project->end_date) {
             return null;
         }
 

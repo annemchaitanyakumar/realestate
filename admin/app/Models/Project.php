@@ -35,6 +35,24 @@ class Project extends Model
         'value' => 'decimal:2',
     ];
 
+    public function getPublicUrlAttribute()
+    {
+        $baseProjectDir = dirname(base_path()) . DIRECTORY_SEPARATOR . 'projects' . DIRECTORY_SEPARATOR;
+        
+        $candidates = array_unique(array_filter([
+            $this->slug,
+            Str::slug($this->slug),
+            Str::before($this->slug, '-'),
+        ]));
+
+        foreach ($candidates as $candidate) {
+            if (is_dir($baseProjectDir . $candidate) || is_file($baseProjectDir . $candidate . DIRECTORY_SEPARATOR . 'index.php')) {
+                return '/projects/' . $candidate . '/';
+            }
+        }
+        return null;
+    }
+
     protected static function boot()
     {
         parent::boot();

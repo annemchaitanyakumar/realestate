@@ -13,13 +13,24 @@ class ProjectsTable extends Component
 
     public $search = '';
     public $statusFilter = '';
-    public $sortField = 'created_at';
-    public $sortDirection = 'desc';
+    public $sortField = 'order';
+    public $sortDirection = 'asc';
 
     protected $queryString = ['search', 'statusFilter'];
 
     public function updatingSearch()
     {
+        $this->resetPage();
+    }
+
+    public function updatingStatusFilter()
+    {
+        $this->resetPage();
+    }
+
+    public function setStatusFilter($status = '')
+    {
+        $this->statusFilter = $status;
         $this->resetPage();
     }
 
@@ -58,6 +69,11 @@ class ProjectsTable extends Component
             if ($project->image) {
                 Storage::disk('public')->delete($project->image);
             }
+            if ($project->gallery) {
+                foreach ($project->gallery as $galleryImg) {
+                    Storage::disk('public')->delete($galleryImg);
+                }
+            }
             $project->delete();
             $this->dispatch('project-deleted', message: 'Project deleted successfully!');
         }
@@ -65,20 +81,43 @@ class ProjectsTable extends Component
 
     public function render()
     {
-        $projects = Project::query()
-            ->when($this->search, function ($query) {
-                $query->where('title', 'like', '%' . $this->search . '%')
-                    ->orWhere('client', 'like', '%' . $this->search . '%')
-                    ->orWhere('location', 'like', '%' . $this->search . '%');
-            })
-            ->when($this->statusFilter, function ($query) {
+        $query = Project::query();
+
+        if (!empty($this->search)) {
+            $searchTerm = '%' . trim($this->search) . '%';
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('title', 'like', $searchTerm)
+                  ->orWhere('client', 'like', $searchTerm)
+                  ->orWhere('location', 'like', $searchTerm)
+                  ->orWhere('category', 'like', $searchTerm);
+            });
+        }
+
+        if (!empty($this->statusFilter)) {
+            if ($this->statusFilter === 'ongoing' || $this->statusFilter === 'in_progress') {
+                $query->whereIn('status', ['ongoing', 'in_progress']);
+            } elseif ($this->statusFilter === 'upcoming' || $this->statusFilter === 'planned') {
+                $query->whereIn('status', ['upcoming', 'planned']);
+            } elseif ($this->statusFilter === 'completed') {
+                $query->whereIn('status', ['completed', 'Completed']);
+            } else {
                 $query->where('status', $this->statusFilter);
-            })
-            ->orderBy($this->sortField, $this->sortDirection)
-            ->paginate(10);
+            }
+        }
+
+        $projects = $query->orderBy($this->sortField, $this->sortDirection)
+                          ->paginate(10);
+
+        $counts = [
+            'all' => Project::count(),
+            'ongoing' => Project::whereIn('status', ['ongoing', 'in_progress'])->count(),
+            'completed' => Project::whereIn('status', ['completed', 'Completed'])->count(),
+            'upcoming' => Project::whereIn('status', ['upcoming', 'planned'])->count(),
+        ];
 
         return view('livewire.projects-table', [
             'projects' => $projects,
+            'counts' => $counts,
         ]);
     }
 }
