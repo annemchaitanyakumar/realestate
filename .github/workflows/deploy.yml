@@ -104,4 +104,4 @@ jobs:
             echo "Commit: $ACTUAL_COMMIT"
             echo "=========================================="
 
-#TEST - 01 "Smoke Test: Image Upload Logic Test"
+#TEST - 02 - Smoke Test - 0.4 "Image Logic Uploaded"
