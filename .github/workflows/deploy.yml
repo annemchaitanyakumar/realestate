@@ -104,4 +104,4 @@ jobs:
             echo "Commit: $ACTUAL_COMMIT"
             echo "=========================================="
 
-#Smoke Test - 0.2 | Check 2.0
+#Smoke Test - 0.2 | Check 2.0 | Added a smoke test to verify that the deployed commit matches the target commit after running the stabilization script.
