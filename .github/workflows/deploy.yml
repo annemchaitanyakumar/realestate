@@ -104,4 +104,4 @@ jobs:
             echo "Commit: $ACTUAL_COMMIT"
             echo "=========================================="
 
-#Smoke Test - 0.1 | Check 0.1
+#Smoke Test - 0.2 | Check 2.0
