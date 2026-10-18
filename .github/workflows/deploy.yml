@@ -103,5 +103,3 @@ jobs:
             echo "Deployment and stabilization completed."
             echo "Commit: $ACTUAL_COMMIT"
             echo "=========================================="
-
-#TEST - 02 - Smoke Test - 0.4 "Image Logic Uploaded"
