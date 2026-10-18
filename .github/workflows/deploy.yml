@@ -44,7 +44,6 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           envs: GITHUB_SHA
           command_timeout: 25m
-          script_stop: true
           script: |
             set -eu
 
