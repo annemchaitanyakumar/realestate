@@ -103,3 +103,5 @@ jobs:
             echo "Deployment and stabilization completed."
             echo "Commit: $ACTUAL_COMMIT"
             echo "=========================================="
+
+#Smoke Test - 0.1 | Check 0.1
