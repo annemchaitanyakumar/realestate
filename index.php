@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <li>
                 <a href="projects/greenleaf/" class="lp-dropdown-link">
                   <div class="lp-dropdown-header-row">
-                    <span class="lp-dropdown-badge" style="color: #0d7f5b;">HMDA Approved • Shamirpet</span>
+                    <span class="lp-dropdown-badge" style="color: #0d7f5b;">Ongoing • Shamirpet</span>
                   </div>
                   <span class="lp-dropdown-name">GreenLeaf Villa Plots (64 Ac) <span class="lp-dropdown-arrow">&rarr;</span></span>
                 </a>
@@ -72,15 +72,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <li>
                 <a href="projects/rj-retreat/" class="lp-dropdown-link">
                   <div class="lp-dropdown-header-row">
-                    <span class="lp-dropdown-badge">Villa Plots @ Kadthal</span>
+                    <span class="lp-dropdown-badge" style="color: #0d7f5b;">Ongoing • Kadthal</span>
                   </div>
-                  <span class="lp-dropdown-name">DRR Premium County <span class="lp-dropdown-arrow">&rarr;</span></span>
+                  <span class="lp-dropdown-name">RJ Retreat <span class="lp-dropdown-arrow">&rarr;</span></span>
                 </a>
               </li>
               <li>
                 <a href="project.php" class="lp-dropdown-link">
                   <div class="lp-dropdown-header-row">
-                    <span class="lp-dropdown-badge">Luxury Apartments</span>
+                    <span class="lp-dropdown-badge" style="color: #0d7f5b;">Ongoing • Apartments</span>
                   </div>
                   <span class="lp-dropdown-name">Urban Trilla Apartments <span class="lp-dropdown-arrow">&rarr;</span></span>
                 </a>
@@ -104,7 +104,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </ul>
           </li>
           <li><a href="#connectivity" class="lp-nav-link">Location</a></li>
-          <li><a href="#amenities" class="lp-nav-link">Amenities</a></li>
           <li><a href="#leadership" class="lp-nav-link">Management</a></li>
           <li><a href="#contact" class="lp-nav-link">Contact</a></li>
         </ul>
@@ -129,11 +128,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <li><a href="#about" class="lp-mobile-link">About Us</a></li>
       <li><a href="#ventures" class="lp-mobile-link">Ongoing Projects</a></li>
       <li><a href="projects/greenleaf/" class="lp-mobile-link lp-mobile-sublink" style="color:var(--accent-gold); font-weight:700;">GreenLeaf Villa Plots (Shamirpet)</a></li>
-      <li><a href="projects/rj-retreat/" class="lp-mobile-link lp-mobile-sublink">DRR Premium County (RJ Retreat)</a></li>
+      <li><a href="projects/rj-retreat/" class="lp-mobile-link lp-mobile-sublink">RJ Retreat</a></li>
       <li><a href="project.php" class="lp-mobile-link lp-mobile-sublink">Urban Trilla Apartments</a></li>
       <li><a href="#completed-projects" class="lp-mobile-link lp-mobile-sublink">Completed Projects (166.8 Acres)</a></li>
       <li><a href="#connectivity" class="lp-mobile-link">Location & Route</a></li>
-      <li><a href="#amenities" class="lp-mobile-link">Amenities</a></li>
       <li><a href="#leadership" class="lp-mobile-link">Management</a></li>
       <li><a href="#contact" class="lp-mobile-link">Contact Us</a></li>
     </ul>
@@ -159,7 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <img src="assests/image/banner.jpg" alt="Paanchajanya Venture" class="lp-hero-slide-img">
         </div>
         <div class="lp-hero-slide">
-          <img src="assests/image/banner2.jpg" alt="DRR Premium County" class="lp-hero-slide-img">
+          <img src="assests/image/banner2.jpg" alt="RJ Retreat Kadthal" class="lp-hero-slide-img">
         </div>
       <?php endif; ?>
     </div>
@@ -247,7 +245,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           
           <div class="lp-card-top">
             <span class="lp-card-badge" style="background:#0d5c3a; color:#ffffff; border-color:#0d5c3a;">HMDA &amp; TS RERA</span>
-            <span class="lp-card-status emerald">NEW LAUNCH</span>
+            <span class="lp-card-status ongoing">ONGOING</span>
           </div>
 
           <div class="lp-card-bottom">
@@ -276,18 +274,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           </div>
         </article>
 
-        <!-- Project 1: DRR Premium County / RJ Retreat -->
+        <!-- Project 1: RJ Retreat -->
         <article class="lp-project-card">
-          <img src="admin/storage/sliders/EQPGfdUnx673VnSY6Jf6gIcrNFGnboUUlA3ML6VQ.jpg" alt="DRR Premium County Kadthal" class="lp-card-bg">
+          <img src="admin/storage/sliders/EQPGfdUnx673VnSY6Jf6gIcrNFGnboUUlA3ML6VQ.jpg" alt="RJ Retreat Kadthal" class="lp-card-bg">
           <div class="lp-card-gradient"></div>
           
           <div class="lp-card-top">
             <span class="lp-card-badge">DTCP APPROVED</span>
-            <span class="lp-card-status">SPOT REGISTRATION</span>
+            <span class="lp-card-status ongoing">ONGOING</span>
           </div>
 
           <div class="lp-card-bottom">
-            <h3 class="lp-card-title">DRR Premium County</h3>
+            <h3 class="lp-card-title">RJ Retreat</h3>
             <p class="lp-card-location">📍 Kadthal, Srisailam Highway</p>
             
             <div class="lp-chips-row">
@@ -307,7 +305,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <div class="lp-card-actions">
               <a href="projects/rj-retreat/" class="lp-btn-card-view">Go to Project &rarr;</a>
-              <button class="lp-btn-card-visit" data-open-modal data-project="DRR Premium County (Kadthal)">Book Visit</button>
+              <button class="lp-btn-card-visit" data-open-modal data-project="RJ Retreat (Kadthal)">Book Visit</button>
             </div>
           </div>
         </article>
@@ -319,7 +317,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           
           <div class="lp-card-top">
             <span class="lp-card-badge">GHMC APPROVED</span>
-            <span class="lp-card-status emerald">READY FOR LIVING</span>
+            <span class="lp-card-status ongoing">ONGOING</span>
           </div>
 
           <div class="lp-card-bottom">
@@ -355,7 +353,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           
           <div class="lp-card-top">
             <span class="lp-card-badge">6-LANE FACING</span>
-            <span class="lp-card-status">HIGH GROWTH</span>
+            <span class="lp-card-status upcoming">UPCOMING</span>
           </div>
 
           <div class="lp-card-bottom">
@@ -771,56 +769,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
   </section>
 
-  <!-- ==========================================================================
-       8. AMENITIES (6 Dark Architectural Cards)
-       ========================================================================== -->
-  <section class="lp-amenities-section" id="amenities">
-    <div class="container">
-      <div class="lp-section-header">
-        <span class="lp-section-tag">Venture Infrastructure</span>
-        <h2 class="lp-section-title">Planned for <span>Modern Living</span></h2>
-        <p class="lp-section-subtitle">Everything required for a peaceful and secure gated community lifestyle.</p>
-      </div>
-
-      <div class="lp-amenities-grid">
-        <div class="lp-amenity-card">
-          <span class="lp-amenity-num">01 / 06</span>
-          <h3 class="lp-amenity-title">40ft &amp; 33ft Wide BT Roads</h3>
-          <p class="lp-amenity-desc">Well-laid heavy bitumen black-top roads with boundary curbing stones and proper road signages.</p>
-        </div>
-
-        <div class="lp-amenity-card">
-          <span class="lp-amenity-num">02 / 06</span>
-          <h3 class="lp-amenity-title">Gated Community Security</h3>
-          <p class="lp-amenity-desc">Grand architectural entrance arch, 24/7 security guard post, complete compound wall, and CCTV coverage.</p>
-        </div>
-
-        <div class="lp-amenity-card">
-          <span class="lp-amenity-num">03 / 06</span>
-          <h3 class="lp-amenity-title">Landscaped Parks &amp; Play Area</h3>
-          <p class="lp-amenity-desc">Beautiful green parks for families, dedicated children play equipment, walking tracks, and seating gazebos.</p>
-        </div>
-
-        <div class="lp-amenity-card">
-          <span class="lp-amenity-num">04 / 06</span>
-          <h3 class="lp-amenity-title">Electricity &amp; Water Supply</h3>
-          <p class="lp-amenity-desc">Transformers, underground electricity cabling, overhead water tank, and pipelines to every plot.</p>
-        </div>
-
-        <div class="lp-amenity-card">
-          <span class="lp-amenity-num">05 / 06</span>
-          <h3 class="lp-amenity-title">100% Vastu Compliant</h3>
-          <p class="lp-amenity-desc">Layouts carefully planned according to traditional Vastu principles with proper road facings.</p>
-        </div>
-
-        <div class="lp-amenity-card">
-          <span class="lp-amenity-num">06 / 06</span>
-          <h3 class="lp-amenity-title">Avenue Plantation &amp; Street Lights</h3>
-          <p class="lp-amenity-desc">Tree plantation on both sides of the roads, rainwater harvesting pits, and solar street lights.</p>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- ==========================================================================
        9. BOOK FREE SITE VISIT (2-Column Contact & Lead Form)
@@ -895,7 +843,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label class="lp-form-label" for="venture_select">Select Venture of Interest</label>
                 <select id="venture_select" name="venture" class="lp-form-select">
                   <optgroup label="Ongoing Ventures">
-                    <option value="DRR Premium County (Kadthal)">DRR Premium County (Kadthal, Srisailam Highway)</option>
+                    <option value="RJ Retreat (Kadthal)">RJ Retreat (Kadthal, Srisailam Highway)</option>
                     <option value="Urban Trilla Luxury Living">Urban Trilla Luxury Living</option>
                     <option value="Future City Enclave">Future City Enclave (Near AI Fourth City)</option>
                     <option value="Free Weekend Site Visit">Free Weekend Site Visit (Any Venture)</option>
@@ -949,7 +897,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <li><a href="#ventures" class="lp-footer-link">Ongoing Projects</a></li>
             <li><a href="#completed-projects" class="lp-footer-link">Completed Projects (7)</a></li>
             <li><a href="#connectivity" class="lp-footer-link">Location Highlights</a></li>
-            <li><a href="#amenities" class="lp-footer-link">Venture Amenities</a></li>
             <li><a href="#leadership" class="lp-footer-link">Management</a></li>
           </ul>
         </div>
@@ -958,7 +905,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <div class="lp-footer-col-title">Ventures</div>
           <ul class="lp-footer-links">
             <li><a href="projects/greenleaf/" class="lp-footer-link" style="color:var(--accent-gold); font-weight:700;">GreenLeaf Villa Plots (Shamirpet)</a></li>
-            <li><a href="projects/rj-retreat/" class="lp-footer-link">DRR Premium County</a></li>
+            <li><a href="projects/rj-retreat/" class="lp-footer-link">RJ Retreat</a></li>
             <li><a href="project.php" class="lp-footer-link">Urban Trilla Living</a></li>
             <li><a href="#ventures" class="lp-footer-link">Future City Enclave</a></li>
             <li><a href="#completed-projects" class="lp-footer-link">Completed Layouts (166.8 Acres)</a></li>
@@ -1009,7 +956,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <p class="lp-form-sub">We offer complimentary transport from Hyderabad directly to the project site.</p>
 
       <form action="index.php#contact" method="POST">
-        <input type="hidden" name="venture" id="modal_project" value="DRR Premium County">
+        <input type="hidden" name="venture" id="modal_project" value="RJ Retreat">
 
         <div style="display:flex; flex-direction:column; gap:1.25rem;">
           <div>
