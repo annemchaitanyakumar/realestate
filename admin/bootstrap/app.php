@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Foundation\Application;
@@ -24,11 +25,12 @@ return Application::configure(basePath: dirname(__DIR__))
             'rj-retreat/*',
         ]);
 
-        // Redirect guests to admin login (use function to avoid redirect loop)
+        // Redirect guests to admin login
         $middleware->redirectGuestsTo(fn () => route('admin.login'));
 
         // Redirect authenticated users to admin dashboard
         $middleware->redirectUsersTo(fn () => route('admin.dashboard'));
+    })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(function (\Illuminate\Http\Exceptions\PostTooLargeException $e, $request) {
             if ($request->expectsJson()) {
@@ -40,4 +42,5 @@ return Application::configure(basePath: dirname(__DIR__))
 
             return back()->withInput()->with('error', 'The uploaded file or gallery is too large for the server. Please upload images under 20MB.');
         });
-    })->create();
+    })
+    ->create();
