@@ -197,7 +197,7 @@
                 accept="image/*"
                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
-            <p class="text-sm text-gray-500 mt-1">Max size: 2MB. Recommended: 1200x800px</p>
+            <p class="text-sm text-gray-500 mt-1">Max size: 20MB. Recommended: 1200x800px</p>
 
             @if(isset($project) && $project->image)
                 <div class="mt-4">
@@ -225,7 +225,7 @@
                     id="gallery-input"
                 >
             </div>
-            <p class="text-sm text-gray-500 mt-2">Max size per image: 2MB. Supported formats: JPG, PNG, GIF</p>
+            <p class="text-sm text-gray-500 mt-2">Max size per image: 20MB. Supported formats: JPG, PNG, WEBP, GIF</p>
 
             <!-- Preview Area -->
             <div id="gallery-preview" class="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
@@ -372,14 +372,46 @@
         handleFiles(files);
     });
 
+    const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB per image
+    const featuredImageInput = document.querySelector('input[name="image"]');
+    if (featuredImageInput) {
+        featuredImageInput.addEventListener('change', function() {
+            if (this.files[0] && this.files[0].size > MAX_FILE_SIZE) {
+                alert('The selected featured image is ' + (this.files[0].size / 1024 / 1024).toFixed(1) + 'MB. Please choose an image under 20MB.');
+                this.value = '';
+            }
+        });
+    }
+
     function handleFiles(files) {
         files.forEach(file => {
             if (file.type.startsWith('image/')) {
+                if (file.size > MAX_FILE_SIZE) {
+                    alert('Skipped "' + file.name + '" (' + (file.size / 1024 / 1024).toFixed(1) + 'MB). Maximum allowed is 20MB per image.');
+                    return;
+                }
                 selectedFiles.push(file);
                 createPreview(file);
             }
         });
         updateFileInput();
+    }
+
+    // Protect against total payload overflow on form submit
+    const projectForm = document.querySelector('form');
+    if (projectForm) {
+        projectForm.addEventListener('submit', function(e) {
+            let totalBytes = 0;
+            if (featuredImageInput && featuredImageInput.files[0]) {
+                totalBytes += featuredImageInput.files[0].size;
+            }
+            selectedFiles.forEach(f => totalBytes += f.size);
+            if (totalBytes > 60 * 1024 * 1024) {
+                e.preventDefault();
+                alert('Total upload size (' + (totalBytes / 1024 / 1024).toFixed(1) + 'MB) exceeds the server limit (60MB). Please reduce image sizes or upload fewer images at once.');
+                return false;
+            }
+        });
     }
 
     function createPreview(file) {

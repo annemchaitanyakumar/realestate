@@ -29,7 +29,15 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // Redirect authenticated users to admin dashboard
         $middleware->redirectUsersTo(fn () => route('admin.dashboard'));
-    })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->render(function (\Illuminate\Http\Exceptions\PostTooLargeException $e, $request) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'The uploaded file or payload exceeds the server limit. Please upload images under 20MB.',
+                ], 413);
+            }
+
+            return back()->withInput()->with('error', 'The uploaded file or gallery is too large for the server. Please upload images under 20MB.');
+        });
     })->create();
