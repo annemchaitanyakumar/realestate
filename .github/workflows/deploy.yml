@@ -47,6 +47,7 @@ jobs:
             set -eu
 
             APP_DIR="/var/www/paanchajanyarealty.com"
+            ROOT_INDEX="$APP_DIR/index.php"
             DEPLOY_SCRIPT="$APP_DIR/.deploy-stablization.sh"
             TARGET_COMMIT="$GITHUB_SHA"
 
@@ -73,10 +74,30 @@ jobs:
               exit 1
             }
 
+            test -f "$ROOT_INDEX" || {
+              echo "ERROR: Root index.php is missing: $ROOT_INDEX"
+              exit 1
+            }
+
             test -f "$DEPLOY_SCRIPT" || {
               echo "ERROR: Stabilization script is missing: $DEPLOY_SCRIPT"
               exit 1
             }
+
+            # Hardcoded permission repair for the public root entry point.
+            # PHP-FPM runs as www-data and must be able to read this file.
+            echo "Setting permissions on root index.php"
+            sudo -n chmod 644 "$ROOT_INDEX"
+
+            ACTUAL_MODE="$(stat -c '%a' "$ROOT_INDEX")"
+            if [ "$ACTUAL_MODE" != "644" ]; then
+              echo "ERROR: Failed to set root index.php permissions."
+              echo "Actual mode: $ACTUAL_MODE"
+              exit 1
+            fi
+
+            echo "PASS: Root index.php permissions are 644."
+            ls -l "$ROOT_INDEX"
 
             # The stabilization script handles:
             # - repository and commit validation
@@ -88,6 +109,18 @@ jobs:
             # - privileged permission repair
             # - Laravel, Nginx and HTTP smoke tests
             bash "$DEPLOY_SCRIPT" "$TARGET_COMMIT"
+
+            # Reapply the hardcoded permission after deployment in case
+            # checkout or another deployment step changed file permissions.
+            echo "Reapplying root index.php permissions after stabilization"
+            sudo -n chmod 644 "$ROOT_INDEX"
+
+            ACTUAL_MODE="$(stat -c '%a' "$ROOT_INDEX")"
+            if [ "$ACTUAL_MODE" != "644" ]; then
+              echo "ERROR: Root index.php permissions are incorrect after deployment."
+              echo "Actual mode: $ACTUAL_MODE"
+              exit 1
+            fi
 
             # Confirm that the requested commit is still deployed.
             ACTUAL_COMMIT="$(git -C "$APP_DIR" rev-parse HEAD)"
@@ -101,5 +134,6 @@ jobs:
 
             echo "=========================================="
             echo "Deployment and stabilization completed."
+            echo "Root index.php mode: $ACTUAL_MODE"
             echo "Commit: $ACTUAL_COMMIT"
             echo "=========================================="
