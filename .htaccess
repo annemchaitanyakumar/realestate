@@ -11,6 +11,11 @@ RewriteRule ^admin$ admin/public/index.php [L]
 # Rewrite for news-detail/slug to news-detail.php?slug=slug
 RewriteRule ^news-detail/([^/]+)/?$ news-detail.php?slug=$1 [L,QSA]
 
+# Redirect /management, /founder, and /leadership to unified About Us page
+RewriteRule ^management/?$ /aboutus#management [R=301,L,NE]
+RewriteRule ^founder/?$ /aboutus#founder [R=301,L,NE]
+RewriteRule ^leadership/?$ /aboutus#leadership [R=301,L,NE]
+
 # Redirect /file.php to /file
 RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /([^.]+)\.php\ HTTP
 RewriteRule ^([^.]+)\.php$ /$1 [R=301,L]

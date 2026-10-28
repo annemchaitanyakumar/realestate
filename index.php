@@ -104,7 +104,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </ul>
           </li>
           <li><a href="#connectivity" class="lp-nav-link">Location</a></li>
-          <li><a href="#leadership" class="lp-nav-link">Management</a></li>
           <li><a href="#contact" class="lp-nav-link">Contact</a></li>
         </ul>
       </nav>
@@ -131,8 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <li><a href="projects/rj-retreat/" class="lp-mobile-link lp-mobile-sublink">RJ Retreat</a></li>
       <li><a href="project.php" class="lp-mobile-link lp-mobile-sublink">Urban Trilla Apartments</a></li>
       <li><a href="#completed-projects" class="lp-mobile-link lp-mobile-sublink">Completed Projects (166.8 Acres)</a></li>
-      <li><a href="#connectivity" class="lp-mobile-link">Location & Route</a></li>
-      <li><a href="#leadership" class="lp-mobile-link">Management</a></li>
+      <li><a href="#connectivity" class="lp-mobile-link">Location &amp; Route</a></li>
       <li><a href="#contact" class="lp-mobile-link">Contact Us</a></li>
     </ul>
     <div class="lp-mobile-footer">
@@ -185,10 +183,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </section>
 
   <!-- ==========================================================================
-       3. ABOUT US / BRAND STORY (La Perla "State of Mind")
+       3. ABOUT US & FOUNDER PROFILE (Company Story, Legacy & Leadership)
        ========================================================================== -->
   <section class="lp-philosophy" id="about">
+    <!-- Anchor targets for leadership and management -->
+    <span id="leadership" style="display:block; position:relative; top:-90px; visibility:hidden;"></span>
+    <span id="management" style="display:block; position:relative; top:-90px; visibility:hidden;"></span>
+    <span id="founder" style="display:block; position:relative; top:-90px; visibility:hidden;"></span>
+
     <div class="container">
+      <!-- Part 1: Philosophy & Story -->
       <div class="lp-philosophy-grid">
         <div>
           <span class="lp-section-tag">About Paanchajanya</span>
@@ -220,6 +224,63 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           </div>
         </div>
       </div>
+
+      <!-- Part 2: Founder Spotlight & Management (Unified in About Us) -->
+      <div style="margin-top: 4.5rem; padding-top: 3.5rem; border-top: 1px solid var(--border-light);">
+        <div style="text-align:center; margin-bottom: 2.5rem;">
+          <span class="lp-section-tag" style="margin-bottom:0.5rem;">Leadership &amp; Management</span>
+          <h3 style="font-family: var(--font-serif); font-size: clamp(1.8rem, 2.5vw, 2.4rem); color: var(--text-primary); margin:0;">
+            Founder &amp; Managing Director
+          </h3>
+        </div>
+
+        <div class="lp-leadership-grid">
+          <!-- Founder Spotlight Card -->
+          <div class="lp-leader-card">
+            <img src="assests/image/Rajender.png" alt="Mr. Rajender Reddy Dasari" class="lp-leader-img">
+            <div class="lp-leader-info">
+              <span class="lp-leader-role">Founder &amp; Chairman</span>
+              <h3 class="lp-leader-name">Mr. Rajender Reddy</h3>
+              <p class="lp-leader-bio">
+                With over 25 years of hands-on experience in Hyderabad real estate, Mr. Rajender Reddy has built Paanchajanya Realty on honesty, clear documentation, and on-time project execution, earning the trust of thousands of plot buyers and families.
+              </p>
+              <div style="margin-top: 1.25rem;">
+                <a href="aboutus" class="lp-btn-card-view" style="font-size:0.85rem; padding: 0.6rem 1.3rem;">
+                  Read Complete Story &rarr;
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Track Record -->
+          <div class="lp-track-record">
+            <div class="lp-record-item">
+              <div class="lp-record-num">25+</div>
+              <div>
+                <div class="lp-record-title">Years of Experience</div>
+                <div class="lp-record-desc">Serving buyers and investors across Hyderabad and Telangana since 2001.</div>
+              </div>
+            </div>
+
+            <div class="lp-record-item">
+              <div class="lp-record-num">50+</div>
+              <div>
+                <div class="lp-record-title">Delivered Projects</div>
+                <div class="lp-record-desc">Over 50 completed residential layouts delivered with 100% clear passbooks.</div>
+              </div>
+            </div>
+
+            <div class="lp-record-item">
+              <div class="lp-record-num">2,750+</div>
+              <div>
+                <div class="lp-record-title">Satisfied Landowners</div>
+                <div class="lp-record-desc">Happy customers who have seen their investment multiply across growth corridors.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -721,53 +782,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
   </section>
 
-  <!-- ==========================================================================
-       7. MANAGEMENT & TRUST (Founder Spotlight)
-       ========================================================================== -->
-  <section class="lp-leadership" id="leadership">
-    <div class="container">
-      <div class="lp-leadership-grid">
-        <!-- Founder Spotlight -->
-        <div class="lp-leader-card">
-          <img src="assests/image/Rajender.png" alt="Mr. Rajender Reddy" class="lp-leader-img">
-          <div class="lp-leader-info">
-            <span class="lp-leader-role">Founder &amp; Managing Director</span>
-            <h3 class="lp-leader-name">Mr. Rajender Reddy</h3>
-            <p class="lp-leader-bio">
-              With over 25 years of hands-on experience in Hyderabad real estate, Mr. Rajender Reddy has built Paanchajanya Realty on honesty, clear documentation, and on-time project execution, earning the trust of thousands of plot buyers and families.
-            </p>
-          </div>
-        </div>
-
-        <!-- Track Record -->
-        <div class="lp-track-record">
-          <div class="lp-record-item">
-            <div class="lp-record-num">25+</div>
-            <div>
-              <div class="lp-record-title">Years of Experience</div>
-              <div class="lp-record-desc">Serving buyers and investors across Hyderabad and Telangana since 2001.</div>
-            </div>
-          </div>
-
-          <div class="lp-record-item">
-            <div class="lp-record-num">50+</div>
-            <div>
-              <div class="lp-record-title">Delivered Projects</div>
-              <div class="lp-record-desc">Over 50 completed residential layouts delivered with 100% clear passbooks.</div>
-            </div>
-          </div>
-
-          <div class="lp-record-item">
-            <div class="lp-record-num">2,750+</div>
-            <div>
-              <div class="lp-record-title">Satisfied Landowners</div>
-              <div class="lp-record-desc">Happy customers who have seen their investment multiply across growth corridors.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
 
   <!-- ==========================================================================
@@ -897,7 +911,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <li><a href="#ventures" class="lp-footer-link">Ongoing Projects</a></li>
             <li><a href="#completed-projects" class="lp-footer-link">Completed Projects (7)</a></li>
             <li><a href="#connectivity" class="lp-footer-link">Location Highlights</a></li>
-            <li><a href="#leadership" class="lp-footer-link">Management</a></li>
+            <li><a href="#contact" class="lp-footer-link">Contact &amp; Site Visit</a></li>
           </ul>
         </div>
 

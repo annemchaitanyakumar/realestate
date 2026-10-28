@@ -13,9 +13,9 @@ $seo_data = [
         'keywords' => 'Luxury Apartments Hyderabad, Villas in Hyderabad, Real Estate Developers Hyderabad, Paanchajanya Reality, Urban Elite, Premium County'
     ],
     'aboutus.php' => [
-        'title' => 'About Us - Paanchajanya Reality | Real Estate Developers in Hyderabad',
-        'description' => 'Learn more about Paanchajanya Reality, our vision, mission, and our commitment to building sustainable and luxury living spaces in Hyderabad.',
-        'keywords' => 'About Paanchajanya Reality, Real Estate Company Hyderabad, Sustainable Living Hyderabad'
+        'title' => 'About Us & Management - Paanchajanya Realty | Real Estate Developers Hyderabad',
+        'description' => 'Discover Paanchajanya Realty, our 25+ years track record, vision, and leadership under Founder & Chairman Mr. Rajender Reddy Dasari.',
+        'keywords' => 'About Paanchajanya Realty, Management, Founder Rajender Reddy, Real Estate Developers Hyderabad, Open Plots'
     ],
     'contactus.php' => [
         'title' => 'Contact Us - Paanchajanya Reality | Get in Touch Today',
