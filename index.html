@@ -45,11 +45,11 @@
                 </a>
               </li>
               <li>
-                <a href="project.php" class="lp-dropdown-link">
+                <a href="#ventures" class="lp-dropdown-link">
                   <div class="lp-dropdown-header-row">
-                    <span class="lp-dropdown-badge" style="color: #0d7f5b;">Ongoing • Apartments</span>
+                    <span class="lp-dropdown-badge" style="color: #c59b27;">Upcoming • Kadthal</span>
                   </div>
-                  <span class="lp-dropdown-name">Urban Trilla Apartments <span class="lp-dropdown-arrow">&rarr;</span></span>
+                  <span class="lp-dropdown-name">Premium County <span class="lp-dropdown-arrow">&rarr;</span></span>
                 </a>
               </li>
               <li>
@@ -95,7 +95,7 @@
       <li><a href="#ventures" class="lp-mobile-link">Ongoing Projects</a></li>
       <li><a href="projects/greenleaf/" class="lp-mobile-link lp-mobile-sublink" style="color:var(--accent-gold); font-weight:700;">GreenLeaf Villa Plots (Shamirpet)</a></li>
       <li><a href="projects/rj-retreat/" class="lp-mobile-link lp-mobile-sublink">RJ Retreat</a></li>
-      <li><a href="project.php" class="lp-mobile-link lp-mobile-sublink">Urban Trilla Apartments</a></li>
+      <li><a href="#ventures" class="lp-mobile-link lp-mobile-sublink">Premium County (Upcoming)</a></li>
       <li><a href="#completed-projects" class="lp-mobile-link lp-mobile-sublink">Completed Projects (166.8 Acres)</a></li>
       <li><a href="#connectivity" class="lp-mobile-link">Location &amp; Route</a></li>
       <li><a href="#contact" class="lp-mobile-link">Contact Us</a></li>
@@ -262,8 +262,8 @@
   <section class="lp-ventures" id="ventures">
     <div class="container">
       <div class="lp-section-header">
-        <span class="lp-section-tag">Current Projects</span>
-        <h2 class="lp-section-title">Our Ongoing <span>Ventures</span></h2>
+        <span class="lp-section-tag">Featured Portfolio</span>
+        <h2 class="lp-section-title">Our Ongoing &amp; Upcoming <span>Ventures</span></h2>
         <p class="lp-section-subtitle">
           Explore our open plot layouts and residential projects in prime growth areas of Hyderabad.
         </p>
@@ -343,45 +343,9 @@
           </div>
         </article>
 
-        <!-- Project 2: Urban Trilla Apartments -->
+        <!-- Project 2: Premium County (Upcoming) -->
         <article class="lp-project-card">
-          <img src="assests/image/slide1.png" alt="Urban Trilla Luxury Apartments" class="lp-card-bg">
-          <div class="lp-card-gradient"></div>
-          
-          <div class="lp-card-top">
-            <span class="lp-card-badge">GHMC APPROVED</span>
-            <span class="lp-card-status ongoing">ONGOING</span>
-          </div>
-
-          <div class="lp-card-bottom">
-            <h3 class="lp-card-title">Urban Trilla Living</h3>
-            <p class="lp-card-location">📍 Prime Hyderabad Growth Hub</p>
-            
-            <div class="lp-chips-row">
-              <div class="lp-chip">
-                <span class="lp-chip-val">2 &amp; 3 BHK</span>
-                <span class="lp-chip-label">Apartments</span>
-              </div>
-              <div class="lp-chip">
-                <span class="lp-chip-val">100% Vastu</span>
-                <span class="lp-chip-label">Compliant</span>
-              </div>
-              <div class="lp-chip">
-                <span class="lp-chip-val">Clubhouse</span>
-                <span class="lp-chip-label">Gym &amp; Pool</span>
-              </div>
-            </div>
-
-            <div class="lp-card-actions">
-              <a href="project.php" class="lp-btn-card-view">Go to Project &rarr;</a>
-              <button class="lp-btn-card-visit" data-open-modal data-project="Urban Trilla Apartments">Book Visit</button>
-            </div>
-          </div>
-        </article>
-
-        <!-- Project 3: Future City Enclave -->
-        <article class="lp-project-card">
-          <img src="assests/image/future-city.jpg.jpg" alt="Future City Enclave" class="lp-card-bg">
+          <img src="assests/image/future-city.jpg.jpg" alt="Premium County" class="lp-card-bg">
           <div class="lp-card-gradient"></div>
           
           <div class="lp-card-top">
@@ -390,8 +354,8 @@
           </div>
 
           <div class="lp-card-bottom">
-            <h3 class="lp-card-title">Future City Enclave</h3>
-            <p class="lp-card-location">📍 Proposed 6-Lane Srisailam Highway</p>
+            <h3 class="lp-card-title">Premium County</h3>
+            <p class="lp-card-location">📍 Kadthal, Srisailam Highway</p>
             
             <div class="lp-chips-row">
               <div class="lp-chip">
@@ -409,8 +373,8 @@
             </div>
 
             <div class="lp-card-actions">
-              <a href="#contact" class="lp-btn-card-view" data-open-modal data-project="Future City Enclave">Get Details &rarr;</a>
-              <button class="lp-btn-card-visit" data-open-modal data-project="Future City Enclave">Brochure</button>
+              <a href="#contact" class="lp-btn-card-view" data-open-modal data-project="Premium County">Get Details &rarr;</a>
+              <button class="lp-btn-card-visit" data-open-modal data-project="Premium County">Brochure</button>
             </div>
           </div>
         </article>
@@ -832,10 +796,12 @@
                 <label class="lp-form-label" for="venture_select">Select Venture of Interest</label>
                 <select id="venture_select" name="venture" class="lp-form-select">
                   <optgroup label="Ongoing Ventures">
+                    <option value="GreenLeaf (Shamirpet)">GreenLeaf Villa Plots (Shamirpet, ORR Exit 7)</option>
                     <option value="RJ Retreat (Kadthal)">RJ Retreat (Kadthal, Srisailam Highway)</option>
-                    <option value="Urban Trilla Luxury Living">Urban Trilla Luxury Living</option>
-                    <option value="Future City Enclave">Future City Enclave (Near AI Fourth City)</option>
                     <option value="Free Weekend Site Visit">Free Weekend Site Visit (Any Venture)</option>
+                  </optgroup>
+                  <optgroup label="Upcoming Projects">
+                    <option value="Premium County (Kadthal)">Premium County (Kadthal, Srisailam Highway)</option>
                   </optgroup>
                   <optgroup label="Completed Projects (Resale / Future Expansion Inquiry)">
                     <option value="NBR Enclave (Completed Project)">NBR Enclave - Turkapally (20 Acres)</option>
@@ -895,8 +861,7 @@
           <ul class="lp-footer-links">
             <li><a href="projects/greenleaf/" class="lp-footer-link" style="color:var(--accent-gold); font-weight:700;">GreenLeaf Villa Plots (Shamirpet)</a></li>
             <li><a href="projects/rj-retreat/" class="lp-footer-link">RJ Retreat</a></li>
-            <li><a href="project.php" class="lp-footer-link">Urban Trilla Living</a></li>
-            <li><a href="#ventures" class="lp-footer-link">Future City Enclave</a></li>
+            <li><a href="#ventures" class="lp-footer-link">Premium County (Upcoming)</a></li>
             <li><a href="#completed-projects" class="lp-footer-link">Completed Layouts (166.8 Acres)</a></li>
           </ul>
         </div>

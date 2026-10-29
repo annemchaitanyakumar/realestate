@@ -1385,7 +1385,7 @@
                                 </svg></a>
                     </div>
                     <div class="footer-bottom text-center">
-                        <small>© 2026 Urban Trilla. All rights reserved.</small>
+                        <small>© 2026 RJ Retreat by Paanchajanya Realty. All rights reserved.</small>
                     </div>
                     <style>
                         .modern-footer {
