@@ -40,21 +40,31 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // 3. Cinematic Hero Slider
+  // 3. Editorial Architectural Hero Slider
   const slides = document.querySelectorAll('.lp-hero-slide');
+  const indicatorBtns = document.querySelectorAll('.lp-hero-indicator-btn');
   const counterEl = document.querySelector('.lp-hero-counter');
   const prevBtn = document.querySelector('.lp-prev-slide');
   const nextBtn = document.querySelector('.lp-next-slide');
+  const heroSection = document.querySelector('.lp-hero');
 
   if (slides.length > 0) {
     let currentSlide = 0;
     const totalSlides = slides.length;
     let slideInterval;
+    const SLIDE_DURATION = 7500;
 
     function showSlide(index) {
       slides.forEach(s => s.classList.remove('active'));
+      indicatorBtns.forEach(b => b.classList.remove('active'));
+
       currentSlide = (index + totalSlides) % totalSlides;
       slides[currentSlide].classList.add('active');
+
+      if (indicatorBtns[currentSlide]) {
+        indicatorBtns[currentSlide].classList.add('active');
+      }
+
       if (counterEl) {
         const currentStr = String(currentSlide + 1).padStart(2, '0');
         const totalStr = String(totalSlides).padStart(2, '0');
@@ -73,8 +83,29 @@ document.addEventListener('DOMContentLoaded', function () {
     if (nextBtn) nextBtn.addEventListener('click', () => { nextSlide(); resetInterval(); });
     if (prevBtn) prevBtn.addEventListener('click', () => { prevSlide(); resetInterval(); });
 
+    indicatorBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const targetIdx = parseInt(btn.getAttribute('data-slide-index'), 10);
+        if (!isNaN(targetIdx)) {
+          showSlide(targetIdx);
+          resetInterval();
+        }
+      });
+    });
+
+    if (heroSection) {
+      heroSection.addEventListener('mouseenter', () => clearInterval(slideInterval));
+      heroSection.addEventListener('mouseleave', () => resetInterval());
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (document.activeElement && ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
+      if (e.key === 'ArrowRight') { nextSlide(); resetInterval(); }
+      if (e.key === 'ArrowLeft') { prevSlide(); resetInterval(); }
+    });
+
     function startInterval() {
-      slideInterval = setInterval(nextSlide, 6500);
+      slideInterval = setInterval(nextSlide, SLIDE_DURATION);
     }
 
     function resetInterval() {

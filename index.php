@@ -169,6 +169,106 @@ function getSliderImage($slider, $index) {
   return $resolved;
 }
 
+// Helper to get structured editorial slide configuration
+function getSlideConfig($slider, $index) {
+  $templates = [
+    0 => [
+      'kicker' => 'Paanchajanya Realty &bull; Hyderabad',
+      'title_html' => 'Own Land. <br><span>Build Your Legacy.</span>',
+      'tag' => 'DTCP & HMDA Approved Open Plots in Hyderabad',
+      'description' => 'Over 25 years of delivering legally clear, high-appreciation residential land with 100% Vastu and spot registrations across prime growth corridors.',
+      'specs' => [
+        '25+ Years Experience',
+        '50+ Delivered Ventures',
+        '100% Clear Title Passbooks',
+      ],
+      'primary_cta' => [
+        'text' => 'Explore Ventures &rarr;',
+        'url' => '#ventures',
+        'attrs' => '',
+      ],
+      'secondary_cta' => [
+        'text' => 'Book Free Site Visit',
+        'url' => '#contact',
+        'attrs' => 'data-open-modal data-project="Free Weekend Site Visit"',
+      ],
+      'nav_name' => 'Paanchajanya',
+    ],
+    1 => [
+      'kicker' => 'Flagship Township &bull; ORR Exit 7, Shamirpet',
+      'title_html' => 'GreenLeaf. <br><span>A 64-Acre Luxury Sanctuary.</span>',
+      'tag' => 'HMDA & TS RERA Approved Villa Plots',
+      'description' => 'Resort-style plotted living adjacent to Genome Valley. Features 866 villa plots, a private 10,000 Sft clubhouse, 5 themed parks, and 40ft avenue roads.',
+      'specs' => [
+        '64 Acres Extent',
+        '866 Villa Plots',
+        '10,000 Sft Clubhouse',
+        'HMDA & RERA Approved',
+      ],
+      'primary_cta' => [
+        'text' => 'Explore GreenLeaf &rarr;',
+        'url' => 'projects/greenleaf/',
+        'attrs' => '',
+      ],
+      'secondary_cta' => [
+        'text' => 'Schedule Site Visit',
+        'url' => '#contact',
+        'attrs' => 'data-open-modal data-project="GreenLeaf (Shamirpet)"',
+      ],
+      'nav_name' => 'GreenLeaf',
+    ],
+    2 => [
+      'kicker' => 'Srisailam Highway &bull; Next to Upcoming AI City',
+      'title_html' => 'RJ Retreat. <br><span>Where Growth Meets Solitude.</span>',
+      'tag' => 'DTCP Approved Gated Plotted Community',
+      'description' => 'Strategically positioned in Kadthal along Hyderabad’s prime southern corridor, just minutes from the upcoming AI Fourth City, Pharma Hub, and RRR.',
+      'specs' => [
+        '17 Acres Extent',
+        '150–500 Sq. Yds',
+        'DTCP Approved',
+        'Spot Registrations',
+      ],
+      'primary_cta' => [
+        'text' => 'Explore RJ Retreat &rarr;',
+        'url' => 'projects/rj-retreat/',
+        'attrs' => '',
+      ],
+      'secondary_cta' => [
+        'text' => 'Schedule Site Visit',
+        'url' => '#contact',
+        'attrs' => 'data-open-modal data-project="RJ Retreat (Kadthal)"',
+      ],
+      'nav_name' => 'RJ Retreat',
+    ],
+    3 => [
+      'kicker' => 'Upcoming Pre-Launch &bull; 6-Lane Highway Facing',
+      'title_html' => 'Premium County. <br><span>Prime Highway Frontage.</span>',
+      'tag' => 'Exclusive Pre-Launch Plotted Living',
+      'description' => 'Direct 6-lane Srisailam Highway road-facing open plots engineered for maximum capital appreciation. Register now for inaugural investor pricing.',
+      'specs' => [
+        '6-Lane Road Facing',
+        '100% Vastu Compliant',
+        'Early Bird Pricing',
+        'Kadthal Growth Hub',
+      ],
+      'primary_cta' => [
+        'text' => 'Register for Pre-Launch &rarr;',
+        'url' => '#contact',
+        'attrs' => 'data-open-modal data-project="Premium County (Pre-Launch)"',
+      ],
+      'secondary_cta' => [
+        'text' => 'View Location & Route',
+        'url' => '#connectivity',
+        'attrs' => '',
+      ],
+      'nav_name' => 'Premium County',
+    ],
+  ];
+
+  return $templates[$index % count($templates)];
+}
+
+
 // Handle contact form submission
 $form_success = false;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -301,39 +401,73 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <!-- ==========================================================================
        2. HERO SECTION (La Perla Editorial Fullscreen Slider)
        ========================================================================== -->
-  <section class="lp-hero" id="hero">
-        <div class="lp-hero-slides">
+      <section class="lp-hero" id="hero">
+    <div class="lp-hero-slides">
       <?php 
       $displaySliders = !empty($sliders) ? $sliders : $sliderFallbacks;
       foreach ($displaySliders as $index => $slider): 
         $slideSrc = getSliderImage($slider, $index);
-        $slideTitle = $slider['title'] ?? ($sliderFallbacks[$index % count($sliderFallbacks)]['title'] ?? 'Paanchajanya Realty');
+        $slideCfg = getSlideConfig($slider, $index);
       ?>
-        <div class="lp-hero-slide <?php echo $index === 0 ? 'active' : ''; ?>">
-          <img src="<?php echo htmlspecialchars($slideSrc); ?>" alt="<?php echo htmlspecialchars($slideTitle); ?>" class="lp-hero-slide-img">
+        <div class="lp-hero-slide <?php echo $index === 0 ? 'active' : ''; ?>" data-slide-index="<?php echo $index; ?>">
+          <img src="<?php echo htmlspecialchars($slideSrc); ?>" alt="<?php echo strip_tags($slideCfg['title_html']); ?>" class="lp-hero-slide-img">
+          <div class="lp-hero-slide-overlay"></div>
+
+          <div class="container lp-hero-content-container">
+            <div class="lp-hero-content">
+              <div class="lp-hero-kicker"><?php echo htmlspecialchars($slideCfg['kicker']); ?></div>
+              <h1 class="lp-hero-title"><?php echo $slideCfg['title_html']; ?></h1>
+              <p class="lp-hero-tag"><?php echo htmlspecialchars($slideCfg['tag']); ?></p>
+              <p class="lp-hero-desc"><?php echo htmlspecialchars($slideCfg['description']); ?></p>
+
+              <div class="lp-hero-spec-bar">
+                <?php foreach ($slideCfg['specs'] as $spec): ?>
+                  <div class="lp-spec-item"><?php echo htmlspecialchars($spec); ?></div>
+                <?php endforeach; ?>
+              </div>
+
+              <div class="lp-hero-actions">
+                <a href="<?php echo htmlspecialchars($slideCfg['primary_cta']['url']); ?>" 
+                   class="lp-btn-primary" 
+                   <?php echo $slideCfg['primary_cta']['attrs']; ?>>
+                  <?php echo $slideCfg['primary_cta']['text']; ?>
+                </a>
+                <a href="<?php echo htmlspecialchars($slideCfg['secondary_cta']['url']); ?>" 
+                   class="lp-btn-secondary" 
+                   <?php echo $slideCfg['secondary_cta']['attrs']; ?>>
+                  <?php echo $slideCfg['secondary_cta']['text']; ?>
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       <?php endforeach; ?>
     </div>
-    <div class="lp-hero-overlay"></div>
 
-    <div class="container lp-hero-content">
-      <div class="lp-hero-badge">Welcome to Paanchajanya Realty</div>
-      <h1 class="lp-hero-title">Own Land. <span>Build Your Dream Home.</span></h1>
-      <p class="lp-hero-address">DTCP & HMDA APPROVED OPEN PLOTS IN HYDERABAD</p>
-      <p class="lp-hero-desc">
-        Premium open plots and gated community ventures on Srisailam Highway, Kadthal, and near the upcoming AI Fourth City. 100% Vastu, clear titles, and spot registration available.
-      </p>
-      <div class="lp-hero-actions">
-        <a href="#ventures" class="lp-btn-primary">View Our Projects &rarr;</a>
-        <a href="#contact" class="lp-btn-secondary" data-open-modal data-project="Free Weekend Site Visit">Book Free Site Visit</a>
+    <!-- Minimalist Luxury Navigation Bar -->
+    <div class="lp-hero-nav-bar">
+      <div class="container lp-hero-nav-inner">
+        <div class="lp-hero-indicators">
+          <?php foreach ($displaySliders as $navIdx => $navSlide): 
+            $navCfg = getSlideConfig($navSlide, $navIdx);
+          ?>
+            <button class="lp-hero-indicator-btn <?php echo $navIdx === 0 ? 'active' : ''; ?>" 
+                    data-slide-index="<?php echo $navIdx; ?>" 
+                    type="button" 
+                    aria-label="View <?php echo htmlspecialchars($navCfg['nav_name']); ?>">
+              <span class="lp-indicator-line"></span>
+              <span class="lp-indicator-num">0<?php echo $navIdx + 1; ?></span>
+              <span class="lp-indicator-name"><?php echo htmlspecialchars($navCfg['nav_name']); ?></span>
+            </button>
+          <?php endforeach; ?>
+        </div>
+
+        <div class="lp-hero-controls">
+          <button class="lp-hero-arrow lp-prev-slide" aria-label="Previous slide">&#10094;</button>
+          <span class="lp-hero-counter">01 / <?php echo str_pad(max(1, count($displaySliders)), 2, "0", STR_PAD_LEFT); ?></span>
+          <button class="lp-hero-arrow lp-next-slide" aria-label="Next slide">&#10095;</button>
+        </div>
       </div>
-    </div>
-
-    <!-- Hero Controls -->
-    <div class="lp-hero-controls">
-      <button class="lp-hero-arrow lp-prev-slide" aria-label="Previous slide">&#10094;</button>
-      <span class="lp-hero-counter">01 / <?php echo str_pad(max(1, count($sliders)), 2, "0", STR_PAD_LEFT); ?></span>
-      <button class="lp-hero-arrow lp-next-slide" aria-label="Next slide">&#10095;</button>
     </div>
   </section>
 
