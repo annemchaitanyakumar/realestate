@@ -16,29 +16,157 @@ try {
   // Graceful fallback
 }
 
+// Known high-fidelity generated project imagery (mapped by project slug)
+$knownProjectImages = [
+  'greenleaf-shamirpet' => 'assests/image/generated/ventures/venture-greenleaf-entrance.jpg',
+  'rj-retreat'          => 'assests/image/generated/ventures/venture-rj-retreat-entrance.jpg',
+  'premium-county'      => 'assests/image/generated/ventures/venture-premium-county-entrance.jpg',
+  'nbr-enclave'         => 'assests/image/generated/completed/nbr-enclave.jpg',
+  'vidarbha-ext'        => 'assests/image/generated/completed/vidarbha-ext.jpg',
+  'atrium-shamirpet'    => 'assests/image/generated/completed/atrium-shamirpet.jpg',
+  'nandana-habitat'     => 'assests/image/generated/completed/nandana-habitat.jpg',
+  'arya-nagar'          => 'assests/image/generated/completed/arya-nagar.jpg',
+  'northend-valley'     => 'assests/image/generated/completed/northend-valley.jpg',
+  'mango-leaf'          => 'assests/image/generated/completed/mango-leaf.jpg',
+];
+
+// Fallback sliders with authentic Telangana landscape & entrance arches
+$sliderFallbacks = [
+  0 => [
+    'title' => 'Own Land. Build Dreams. Create Legacy.',
+    'subtitle' => 'DTCP & HMDA Approved Open Plots in Hyderabad',
+    'image' => 'assests/image/generated/sliders/slider-1-paanchajanya-heritage.jpg',
+  ],
+  1 => [
+    'title' => 'Paanchajanya Venture - Shamirpet',
+    'subtitle' => 'Premium Plots Near ORR Exit 7, Shamirpet',
+    'image' => 'assests/image/generated/sliders/slider-2-greenleaf-shamirpet.jpg',
+  ],
+  2 => [
+    'title' => 'RJ Retreat - Kadthal Srisailam Highway',
+    'subtitle' => 'Near Upcoming AI City & Pharma Hub',
+    'image' => 'assests/image/generated/sliders/slider-3-rj-retreat-kadthal.jpg',
+  ],
+  3 => [
+    'title' => 'Premium County - Kadthal Growth Zone',
+    'subtitle' => 'Strategic Plotted Living on Srisailam Highway',
+    'image' => 'assests/image/generated/sliders/slider-4-premium-county.jpg',
+  ],
+];
+
 // Robust image resolver that supports uploaded admin/storage paths and version-controlled assets
 function resolveImageSrc($path, $fallback = '') {
   if (empty($path)) return $fallback;
+  
+  // Direct file check (e.g. assests/...)
   if (file_exists(__DIR__ . '/' . $path)) {
     return $path;
   }
-  $adminStoragePath = 'admin/storage/' . $path;
+  
+  // Clean up any leading slashes or admin prefixes
+  $clean = ltrim($path, '/');
+  if (strpos($clean, 'admin/public/storage/') === 0) {
+    $clean = substr($clean, strlen('admin/public/storage/'));
+  } elseif (strpos($clean, 'admin/storage/') === 0) {
+    $clean = substr($clean, strlen('admin/storage/'));
+  }
+  
+  // In Nginx, the public alias is ALWAYS admin/storage/, NEVER admin/public/storage/
+  $adminStoragePath = 'admin/storage/' . $clean;
+  $appPublicDisk = __DIR__ . '/admin/storage/app/public/' . $clean;
+  if (file_exists($appPublicDisk)) {
+    return $adminStoragePath;
+  }
+  
   if (file_exists(__DIR__ . '/' . $adminStoragePath)) {
     return $adminStoragePath;
   }
-  $adminPublicStoragePath = 'admin/public/storage/' . $path;
-  if (file_exists(__DIR__ . '/' . $adminPublicStoragePath)) {
-    return $adminPublicStoragePath;
-  }
+  
   return !empty($fallback) ? $fallback : $adminStoragePath;
 }
 
 // Helper to resolve project image from DB with fallback
 function getProjectImage($slug, $fallback, $projectsBySlug) {
+  global $knownProjectImages;
+  $defaultAsset = isset($knownProjectImages[$slug]) ? $knownProjectImages[$slug] : $fallback;
+
   if (isset($projectsBySlug[$slug]['image']) && !empty($projectsBySlug[$slug]['image'])) {
-    return resolveImageSrc($projectsBySlug[$slug]['image'], $fallback);
+    $dbImg = trim($projectsBySlug[$slug]['image']);
+    
+    // Legacy placeholders: rj-retreat.jpg was a tiny 51KB dark logo, others were old stock photos
+    $legacyPlaceholders = [
+      'projects/rj-retreat.jpg',
+      'projects/greenleaf.jpg',
+      'projects/future-city.jpg',
+      'projects/urban-trilla.png',
+    ];
+    if (in_array($dbImg, $legacyPlaceholders, true)) {
+      return $defaultAsset;
+    }
+    
+    // If the database references our generated assets
+    if (strpos($dbImg, 'venture-') !== false || strpos($dbImg, 'completed/') !== false) {
+      $resolved = resolveImageSrc($dbImg, $defaultAsset);
+      if (file_exists(__DIR__ . '/' . $resolved) || file_exists(__DIR__ . '/admin/storage/app/public/' . $dbImg)) {
+        return $resolved;
+      }
+      return $defaultAsset;
+    }
+    
+    // User uploaded new image through backend admin
+    $resolved = resolveImageSrc($dbImg, '');
+    if (!empty($resolved)) {
+      $checkFile = file_exists(__DIR__ . '/' . $resolved) ? (__DIR__ . '/' . $resolved) : (__DIR__ . '/admin/storage/app/public/' . $dbImg);
+      // Ensure file exists and is a valid photo (>60KB, not the tiny logo)
+      if (file_exists($checkFile) && filesize($checkFile) > 60000) {
+        return $resolved;
+      }
+    }
   }
-  return $fallback;
+
+  return $defaultAsset;
+}
+
+// Helper to resolve slider image
+function getSliderImage($slider, $index) {
+  global $sliderFallbacks;
+  $fallback = $sliderFallbacks[$index % count($sliderFallbacks)]['image'];
+  
+  if (empty($slider['image'])) {
+    return $fallback;
+  }
+  
+  $img = trim($slider['image']);
+  
+  // Filter out the legacy hashed filenames that produced 404s or client disliked
+  $legacySliderHashes = [
+    'oPATvX2IdTjPZgwVsORezMsUJwTaSvT1kOb4n7QQ',
+    'EQPGfdUnx673VnSY6Jf6gIcrNFGnboUUlA3ML6VQ',
+    'Suxyj1I0XGj3FCuEAvORbU2SlwJa9hUU6UhSqpmW',
+    'BSMDbnLZJXxBvKtswYhifkqsZlVL5qaxkDyjhkOb',
+    'TRpDV0gZbxM0oyPK9likbBaLF9lj52RoYT8ulfvL',
+    'vk26wV2J5HoRuLCXa36hN1PdxGStEA0GYqPfeVq6',
+  ];
+  foreach ($legacySliderHashes as $hash) {
+    if (strpos($img, $hash) !== false) {
+      return $fallback;
+    }
+  }
+  
+  // If points to generated slider asset
+  if (strpos($img, 'slider-') !== false) {
+    if (file_exists(__DIR__ . '/' . $img)) {
+      return $img;
+    }
+    $possibleAsset = 'assests/image/generated/sliders/' . basename($img);
+    if (file_exists(__DIR__ . '/' . $possibleAsset)) {
+      return $possibleAsset;
+    }
+  }
+  
+  // New backend admin upload
+  $resolved = resolveImageSrc($img, $fallback);
+  return $resolved;
 }
 
 // Handle contact form submission
@@ -174,27 +302,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
        2. HERO SECTION (La Perla Editorial Fullscreen Slider)
        ========================================================================== -->
   <section class="lp-hero" id="hero">
-    <div class="lp-hero-slides">
-      <?php if (!empty($sliders)): ?>
-        <?php foreach ($sliders as $index => $slider): ?>
-          <div class="lp-hero-slide <?php echo $index === 0 ? 'active' : ''; ?>">
-            <img src="<?php echo htmlspecialchars(resolveImageSrc($slider['image'], 'assests/image/generated/sliders/slider-1-paanchajanya-heritage.jpg')); ?>" alt="<?php echo htmlspecialchars($slider['title'] ?? 'Paanchajanya Venture'); ?>" class="lp-hero-slide-img">
-          </div>
-        <?php endforeach; ?>
-      <?php else: ?>
-        <div class="lp-hero-slide active">
-          <img src="assests/image/generated/sliders/slider-1-paanchajanya-heritage.jpg" alt="Paanchajanya Realty" class="lp-hero-slide-img">
+        <div class="lp-hero-slides">
+      <?php 
+      $displaySliders = !empty($sliders) ? $sliders : $sliderFallbacks;
+      foreach ($displaySliders as $index => $slider): 
+        $slideSrc = getSliderImage($slider, $index);
+        $slideTitle = $slider['title'] ?? ($sliderFallbacks[$index % count($sliderFallbacks)]['title'] ?? 'Paanchajanya Realty');
+      ?>
+        <div class="lp-hero-slide <?php echo $index === 0 ? 'active' : ''; ?>">
+          <img src="<?php echo htmlspecialchars($slideSrc); ?>" alt="<?php echo htmlspecialchars($slideTitle); ?>" class="lp-hero-slide-img">
         </div>
-        <div class="lp-hero-slide">
-          <img src="assests/image/generated/sliders/slider-2-greenleaf-shamirpet.jpg" alt="GreenLeaf Villa Plots Shamirpet" class="lp-hero-slide-img">
-        </div>
-        <div class="lp-hero-slide">
-          <img src="assests/image/generated/sliders/slider-3-rj-retreat-kadthal.jpg" alt="RJ Retreat Kadthal" class="lp-hero-slide-img">
-        </div>
-        <div class="lp-hero-slide">
-          <img src="assests/image/generated/sliders/slider-4-premium-county.jpg" alt="Premium County Kadthal" class="lp-hero-slide-img">
-        </div>
-      <?php endif; ?>
+      <?php endforeach; ?>
     </div>
     <div class="lp-hero-overlay"></div>
 
