@@ -16,10 +16,27 @@ try {
   // Graceful fallback
 }
 
+// Robust image resolver that supports uploaded admin/storage paths and version-controlled assets
+function resolveImageSrc($path, $fallback = '') {
+  if (empty($path)) return $fallback;
+  if (file_exists(__DIR__ . '/' . $path)) {
+    return $path;
+  }
+  $adminStoragePath = 'admin/storage/' . $path;
+  if (file_exists(__DIR__ . '/' . $adminStoragePath)) {
+    return $adminStoragePath;
+  }
+  $adminPublicStoragePath = 'admin/public/storage/' . $path;
+  if (file_exists(__DIR__ . '/' . $adminPublicStoragePath)) {
+    return $adminPublicStoragePath;
+  }
+  return !empty($fallback) ? $fallback : $adminStoragePath;
+}
+
 // Helper to resolve project image from DB with fallback
 function getProjectImage($slug, $fallback, $projectsBySlug) {
   if (isset($projectsBySlug[$slug]['image']) && !empty($projectsBySlug[$slug]['image'])) {
-    return 'admin/storage/' . htmlspecialchars($projectsBySlug[$slug]['image']);
+    return resolveImageSrc($projectsBySlug[$slug]['image'], $fallback);
   }
   return $fallback;
 }
@@ -161,15 +178,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <?php if (!empty($sliders)): ?>
         <?php foreach ($sliders as $index => $slider): ?>
           <div class="lp-hero-slide <?php echo $index === 0 ? 'active' : ''; ?>">
-            <img src="admin/storage/<?php echo htmlspecialchars($slider['image']); ?>" alt="<?php echo htmlspecialchars($slider['title'] ?? 'Paanchajanya Venture'); ?>" class="lp-hero-slide-img">
+            <img src="<?php echo htmlspecialchars(resolveImageSrc($slider['image'], 'assests/image/generated/sliders/slider-1-paanchajanya-heritage.jpg')); ?>" alt="<?php echo htmlspecialchars($slider['title'] ?? 'Paanchajanya Venture'); ?>" class="lp-hero-slide-img">
           </div>
         <?php endforeach; ?>
       <?php else: ?>
         <div class="lp-hero-slide active">
-          <img src="assests/image/banner.jpg" alt="Paanchajanya Venture" class="lp-hero-slide-img">
+          <img src="assests/image/generated/sliders/slider-1-paanchajanya-heritage.jpg" alt="Paanchajanya Realty" class="lp-hero-slide-img">
         </div>
         <div class="lp-hero-slide">
-          <img src="assests/image/banner2.jpg" alt="RJ Retreat Kadthal" class="lp-hero-slide-img">
+          <img src="assests/image/generated/sliders/slider-2-greenleaf-shamirpet.jpg" alt="GreenLeaf Villa Plots Shamirpet" class="lp-hero-slide-img">
+        </div>
+        <div class="lp-hero-slide">
+          <img src="assests/image/generated/sliders/slider-3-rj-retreat-kadthal.jpg" alt="RJ Retreat Kadthal" class="lp-hero-slide-img">
+        </div>
+        <div class="lp-hero-slide">
+          <img src="assests/image/generated/sliders/slider-4-premium-county.jpg" alt="Premium County Kadthal" class="lp-hero-slide-img">
         </div>
       <?php endif; ?>
     </div>
@@ -315,7 +338,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <!-- Featured Project: GreenLeaf Luxury Villa Plots (Shamirpet) -->
         <article class="lp-project-card">
-          <img src="<?php echo getProjectImage('greenleaf-shamirpet', 'assests/projects/greenleaf/greenleaf-entrance.jpg', $projectsBySlug); ?>" alt="GreenLeaf Luxury Villa Plots Shamirpet" class="lp-card-bg">
+          <img src="<?php echo getProjectImage('greenleaf-shamirpet', 'assests/image/generated/ventures/venture-greenleaf-entrance.jpg', $projectsBySlug); ?>" alt="GreenLeaf Luxury Villa Plots Shamirpet" class="lp-card-bg">
           <div class="lp-card-gradient"></div>
           
           <div class="lp-card-top">
@@ -351,7 +374,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <!-- Project 1: RJ Retreat -->
         <article class="lp-project-card">
-          <img src="<?php echo getProjectImage('rj-retreat', 'admin/storage/projects/venture-rj-retreat-entrance.jpg', $projectsBySlug); ?>" alt="RJ Retreat Kadthal" class="lp-card-bg">
+          <img src="<?php echo getProjectImage('rj-retreat', 'assests/image/generated/ventures/venture-rj-retreat-entrance.jpg', $projectsBySlug); ?>" alt="RJ Retreat Kadthal" class="lp-card-bg">
           <div class="lp-card-gradient"></div>
           
           <div class="lp-card-top">
@@ -387,7 +410,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <!-- Project 2: Premium County (Upcoming) -->
         <article class="lp-project-card">
-          <img src="<?php echo getProjectImage('premium-county', 'admin/storage/projects/venture-premium-county-entrance.jpg', $projectsBySlug); ?>" alt="Premium County" class="lp-card-bg">
+          <img src="<?php echo getProjectImage('premium-county', 'assests/image/generated/ventures/venture-premium-county-entrance.jpg', $projectsBySlug); ?>" alt="Premium County" class="lp-card-bg">
           <div class="lp-card-gradient"></div>
           
           <div class="lp-card-top">
@@ -451,7 +474,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <!-- 1. NBR Enclave - Turkapally, Karimnagar Highway - 20 acres -->
         <article class="lp-comp-card" data-category="shamirpet">
           <div class="lp-comp-media">
-            <img src="<?php echo getProjectImage('nbr-enclave', 'assests/image/projects/nbr-enclave.jpg', $projectsBySlug); ?>" alt="NBR Enclave Turkapally Karimnagar Highway" class="lp-comp-img" loading="lazy">
+            <img src="<?php echo getProjectImage('nbr-enclave', 'assests/image/generated/completed/nbr-enclave.jpg', $projectsBySlug); ?>" alt="NBR Enclave Turkapally Karimnagar Highway" class="lp-comp-img" loading="lazy">
             <div class="lp-comp-overlay"></div>
             <div class="lp-comp-top-badges">
               <span class="lp-comp-badge-type">DTCP APPROVED</span>
@@ -487,7 +510,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <!-- 2. Vidarbha Ext. - Shamirpet - 13 acres -->
         <article class="lp-comp-card" data-category="shamirpet">
           <div class="lp-comp-media">
-            <img src="<?php echo getProjectImage('vidarbha-ext', 'assests/image/projects/vidarbha-ext.jpg', $projectsBySlug); ?>" alt="Vidarbha Ext Shamirpet" class="lp-comp-img" loading="lazy">
+            <img src="<?php echo getProjectImage('vidarbha-ext', 'assests/image/generated/completed/vidarbha-ext.jpg', $projectsBySlug); ?>" alt="Vidarbha Ext Shamirpet" class="lp-comp-img" loading="lazy">
             <div class="lp-comp-overlay"></div>
             <div class="lp-comp-top-badges">
               <span class="lp-comp-badge-type">LAKE VIEW LAYOUT</span>
@@ -523,7 +546,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <!-- 3. Atrium - Shamirpet Village - HMDA - 13.8 Acres -->
         <article class="lp-comp-card" data-category="shamirpet">
           <div class="lp-comp-media">
-            <img src="<?php echo getProjectImage('atrium-shamirpet', 'assests/image/projects/atrium-shamirpet.jpg', $projectsBySlug); ?>" alt="Atrium Shamirpet Village HMDA" class="lp-comp-img" loading="lazy">
+            <img src="<?php echo getProjectImage('atrium-shamirpet', 'assests/image/generated/completed/atrium-shamirpet.jpg', $projectsBySlug); ?>" alt="Atrium Shamirpet Village HMDA" class="lp-comp-img" loading="lazy">
             <div class="lp-comp-overlay"></div>
             <div class="lp-comp-top-badges">
               <span class="lp-comp-badge-type">HMDA APPROVED</span>
@@ -559,7 +582,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <!-- 4. Nandana Habitat - Bomma Rasipet - 6 acres -->
         <article class="lp-comp-card" data-category="east">
           <div class="lp-comp-media">
-            <img src="<?php echo getProjectImage('nandana-habitat', 'assests/image/projects/nandana-habitat.jpg', $projectsBySlug); ?>" alt="Nandana Habitat Bomma Rasipet" class="lp-comp-img" loading="lazy">
+            <img src="<?php echo getProjectImage('nandana-habitat', 'assests/image/generated/completed/nandana-habitat.jpg', $projectsBySlug); ?>" alt="Nandana Habitat Bomma Rasipet" class="lp-comp-img" loading="lazy">
             <div class="lp-comp-overlay"></div>
             <div class="lp-comp-top-badges">
               <span class="lp-comp-badge-type">ECO HABITAT</span>
@@ -595,7 +618,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <!-- 5. Arya Nagar - Upperpally, Shamirpet - 54 Acres -->
         <article class="lp-comp-card" data-category="shamirpet">
           <div class="lp-comp-media">
-            <img src="<?php echo getProjectImage('arya-nagar', 'assests/image/projects/arya-nagar.jpg', $projectsBySlug); ?>" alt="Arya Nagar Upperpally Shamirpet" class="lp-comp-img" loading="lazy">
+            <img src="<?php echo getProjectImage('arya-nagar', 'assests/image/generated/completed/arya-nagar.jpg', $projectsBySlug); ?>" alt="Arya Nagar Upperpally Shamirpet" class="lp-comp-img" loading="lazy">
             <div class="lp-comp-overlay"></div>
             <div class="lp-comp-top-badges">
               <span class="lp-comp-badge-type">54-ACRE TOWNSHIP</span>
@@ -631,7 +654,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <!-- 6. Northend Valley - Lalgadi, Malakpet - 50 acres -->
         <article class="lp-comp-card" data-category="shamirpet">
           <div class="lp-comp-media">
-            <img src="<?php echo getProjectImage('northend-valley', 'assests/image/projects/northend-valley.jpg', $projectsBySlug); ?>" alt="Northend Valley Lalgadi Malakpet" class="lp-comp-img" loading="lazy">
+            <img src="<?php echo getProjectImage('northend-valley', 'assests/image/generated/completed/northend-valley.jpg', $projectsBySlug); ?>" alt="Northend Valley Lalgadi Malakpet" class="lp-comp-img" loading="lazy">
             <div class="lp-comp-overlay"></div>
             <div class="lp-comp-top-badges">
               <span class="lp-comp-badge-type">HIGHWAY FRONTAGE</span>
@@ -667,7 +690,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <!-- 7. Mango Leaf - Kadthal, Srisailam Highway - 10 acres -->
         <article class="lp-comp-card" data-category="srisailam">
           <div class="lp-comp-media">
-            <img src="<?php echo getProjectImage('mango-leaf', 'assests/image/projects/mango-leaf.jpg', $projectsBySlug); ?>" alt="Mango Leaf Kadthal Srisailam Highway" class="lp-comp-img" loading="lazy">
+            <img src="<?php echo getProjectImage('mango-leaf', 'assests/image/generated/completed/mango-leaf.jpg', $projectsBySlug); ?>" alt="Mango Leaf Kadthal Srisailam Highway" class="lp-comp-img" loading="lazy">
             <div class="lp-comp-overlay"></div>
             <div class="lp-comp-top-badges">
               <span class="lp-comp-badge-type">VILLA &amp; FARM PLOTS</span>
