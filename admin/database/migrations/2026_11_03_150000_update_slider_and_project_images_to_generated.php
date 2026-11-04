@@ -48,8 +48,8 @@ return new class extends Migration
                 'image' => 'sliders/slider-2-greenleaf-shamirpet.jpg'
             ],
             3 => [
-                'title' => 'RJ Retreat - Kadthal Srisailam Highway',
-                'subtitle' => 'Near Upcoming AI City & Pharma Hub',
+                'title' => 'RJ Retreat - Shamirpet',
+                'subtitle' => 'Near ORR Exit 7 & Genome Valley',
                 'image' => 'sliders/slider-3-rj-retreat-kadthal.jpg'
             ],
             4 => [
@@ -80,6 +80,7 @@ return new class extends Migration
             ]);
             DB::table('projects')->where('slug', 'rj-retreat')->update([
                 'image' => 'projects/venture-rj-retreat-entrance.jpg',
+                'location' => 'Shamirpet, Hyderabad',
                 'updated_at' => now(),
             ]);
             DB::table('projects')->where('slug', 'premium-county')->update([

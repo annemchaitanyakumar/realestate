@@ -40,9 +40,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // 3. Editorial Architectural Hero Slider
+  // 3. Cinematic Hero Slider with 4-Project Navigation Bar
   const slides = document.querySelectorAll('.lp-hero-slide');
-  const indicatorBtns = document.querySelectorAll('.lp-hero-indicator-btn');
+  const navItems = document.querySelectorAll('.lp-hero-indicator-btn, .lp-slider-nav-item');
   const counterEl = document.querySelector('.lp-hero-counter');
   const prevBtn = document.querySelector('.lp-prev-slide');
   const nextBtn = document.querySelector('.lp-next-slide');
@@ -52,17 +52,17 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentSlide = 0;
     const totalSlides = slides.length;
     let slideInterval;
-    const SLIDE_DURATION = 7500;
+    const SLIDE_DURATION = 6500;
 
     function showSlide(index) {
       slides.forEach(s => s.classList.remove('active'));
-      indicatorBtns.forEach(b => b.classList.remove('active'));
+      navItems.forEach(n => n.classList.remove('active'));
 
       currentSlide = (index + totalSlides) % totalSlides;
       slides[currentSlide].classList.add('active');
 
-      if (indicatorBtns[currentSlide]) {
-        indicatorBtns[currentSlide].classList.add('active');
+      if (navItems[currentSlide]) {
+        navItems[currentSlide].classList.add('active');
       }
 
       if (counterEl) {
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (nextBtn) nextBtn.addEventListener('click', () => { nextSlide(); resetInterval(); });
     if (prevBtn) prevBtn.addEventListener('click', () => { prevSlide(); resetInterval(); });
 
-    indicatorBtns.forEach((btn) => {
+    navItems.forEach((btn) => {
       btn.addEventListener('click', () => {
         const targetIdx = parseInt(btn.getAttribute('data-slide-index'), 10);
         if (!isNaN(targetIdx)) {
@@ -97,12 +97,6 @@ document.addEventListener('DOMContentLoaded', function () {
       heroSection.addEventListener('mouseenter', () => clearInterval(slideInterval));
       heroSection.addEventListener('mouseleave', () => resetInterval());
     }
-
-    document.addEventListener('keydown', (e) => {
-      if (document.activeElement && ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
-      if (e.key === 'ArrowRight') { nextSlide(); resetInterval(); }
-      if (e.key === 'ArrowLeft') { prevSlide(); resetInterval(); }
-    });
 
     function startInterval() {
       slideInterval = setInterval(nextSlide, SLIDE_DURATION);
@@ -201,6 +195,72 @@ document.addEventListener('DOMContentLoaded', function () {
         });
       });
     });
+  }
+
+  // 7. Animate On Scroll (AOS) Engine
+  if ('IntersectionObserver' in window) {
+    const aosObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('aos-animate');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    document.querySelectorAll('[data-aos]').forEach(el => {
+      aosObserver.observe(el);
+    });
+  } else {
+    // Fallback for older browsers
+    document.querySelectorAll('[data-aos]').forEach(el => {
+      el.classList.add('aos-animate');
+    });
+  }
+
+  // 8. GPU-Accelerated Parallax Engine
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!prefersReducedMotion) {
+    let ticking = false;
+    const heroSlides = document.querySelectorAll('.lp-hero-slide-img');
+    const parallaxItems = document.querySelectorAll('[data-parallax]');
+
+    function onScrollParallax() {
+      const scrollY = window.pageYOffset;
+      const windowH = window.innerHeight;
+
+      // Hero Subtle Parallax
+      if (scrollY < windowH) {
+        heroSlides.forEach(img => {
+          img.style.transform = `translate3d(0, ${(scrollY * 0.28).toFixed(1)}px, 0)`;
+        });
+      }
+
+      // Card & Media Parallax
+      parallaxItems.forEach(item => {
+        const rect = item.getBoundingClientRect();
+        if (rect.top < windowH && rect.bottom > 0) {
+          const speed = parseFloat(item.getAttribute('data-parallax-speed')) || 0.12;
+          const centerDelta = (windowH / 2) - (rect.top + rect.height / 2);
+          const offsetY = (centerDelta * speed).toFixed(1);
+          item.style.transform = `translate3d(0, ${offsetY}px, 0)`;
+        }
+      });
+
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', function () {
+      if (!ticking) {
+        window.requestAnimationFrame(onScrollParallax);
+        ticking = true;
+      }
+    }, { passive: true });
+
+    onScrollParallax();
   }
 });
 

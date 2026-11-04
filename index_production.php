@@ -1,19 +1,29 @@
 <?php 
-include 'includes/db.php'; 
+try {
+  include_once 'includes/db.php';
+} catch (\Throwable $e) {
+  $pdo = null;
+} 
 
 // Fetch active sliders and projects dynamically from database
 $sliders = [];
 $projectsBySlug = [];
-try {
-  $stmt = $pdo->query("SELECT * FROM sliders WHERE is_active = 1 ORDER BY `order` ASC");
-  $sliders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+if (isset($pdo) && $pdo instanceof PDO) {
+  try {
+    $stmt = $pdo->query("SELECT * FROM sliders WHERE is_active = 1 ORDER BY `order` ASC");
+    if ($stmt) {
+      $sliders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
-  $pStmt = $pdo->query("SELECT slug, title, image, status FROM projects WHERE is_active = 1");
-  while ($p = $pStmt->fetch(PDO::FETCH_ASSOC)) {
-    $projectsBySlug[$p['slug']] = $p;
+    $pStmt = $pdo->query("SELECT slug, title, image, status FROM projects WHERE is_active = 1");
+    if ($pStmt) {
+      while ($p = $pStmt->fetch(PDO::FETCH_ASSOC)) {
+        $projectsBySlug[$p['slug']] = $p;
+      }
+    }
+  } catch (\Throwable $e) {
+    // Graceful fallback
   }
-} catch (Exception $e) {
-  // Graceful fallback
 }
 
 // Known high-fidelity generated project imagery (mapped by project slug)
@@ -43,8 +53,8 @@ $sliderFallbacks = [
     'image' => 'assests/image/generated/sliders/slider-2-greenleaf-shamirpet.jpg',
   ],
   2 => [
-    'title' => 'RJ Retreat - Kadthal Srisailam Highway',
-    'subtitle' => 'Near Upcoming AI City & Pharma Hub',
+    'title' => 'RJ Retreat - Shamirpet',
+    'subtitle' => 'Near ORR Exit 7 & Genome Valley',
     'image' => 'assests/image/generated/sliders/slider-3-rj-retreat-kadthal.jpg',
   ],
   3 => [
@@ -71,18 +81,31 @@ function resolveImageSrc($path, $fallback = '') {
     $clean = substr($clean, strlen('admin/storage/'));
   }
   
-  // In Nginx, the public alias is ALWAYS admin/storage/, NEVER admin/public/storage/
-  $adminStoragePath = 'admin/storage/' . $clean;
+  // Check if matches generated static asset in assests/
+  $base = basename($clean);
+  if (strpos($base, 'slider-') !== false && file_exists(__DIR__ . '/assests/image/generated/sliders/' . $base)) {
+    return 'assests/image/generated/sliders/' . $base;
+  }
+  if (strpos($base, 'venture-') !== false && file_exists(__DIR__ . '/assests/image/generated/ventures/' . $base)) {
+    return 'assests/image/generated/ventures/' . $base;
+  }
+  if (file_exists(__DIR__ . '/assests/image/generated/completed/' . $base)) {
+    return 'assests/image/generated/completed/' . $base;
+  }
+
+  // Direct file check on cleaned path
+  if (file_exists(__DIR__ . '/' . $clean)) {
+    return $clean;
+  }
+  
+  // Public web path to Laravel storage symlink
+  $publicStoragePath = 'admin/public/storage/' . $clean;
   $appPublicDisk = __DIR__ . '/admin/storage/app/public/' . $clean;
   if (file_exists($appPublicDisk)) {
-    return $adminStoragePath;
+    return $publicStoragePath;
   }
   
-  if (file_exists(__DIR__ . '/' . $adminStoragePath)) {
-    return $adminStoragePath;
-  }
-  
-  return !empty($fallback) ? $fallback : $adminStoragePath;
+  return !empty($fallback) ? $fallback : $path;
 }
 
 // Helper to resolve project image from DB with fallback
@@ -90,38 +113,16 @@ function getProjectImage($slug, $fallback, $projectsBySlug) {
   global $knownProjectImages;
   $defaultAsset = isset($knownProjectImages[$slug]) ? $knownProjectImages[$slug] : $fallback;
 
+  // If a known generated high-resolution asset is mapped and exists on disk, ALWAYS prefer it!
+  // This guarantees that all ongoing ventures and completed landmarks display immediately without 404s.
+  if (!empty($defaultAsset) && file_exists(__DIR__ . '/' . $defaultAsset)) {
+    return $defaultAsset;
+  }
+
+  // Otherwise, if database has a custom image path
   if (isset($projectsBySlug[$slug]['image']) && !empty($projectsBySlug[$slug]['image'])) {
     $dbImg = trim($projectsBySlug[$slug]['image']);
-    
-    // Legacy placeholders: rj-retreat.jpg was a tiny 51KB dark logo, others were old stock photos
-    $legacyPlaceholders = [
-      'projects/rj-retreat.jpg',
-      'projects/greenleaf.jpg',
-      'projects/future-city.jpg',
-      'projects/urban-trilla.png',
-    ];
-    if (in_array($dbImg, $legacyPlaceholders, true)) {
-      return $defaultAsset;
-    }
-    
-    // If the database references our generated assets
-    if (strpos($dbImg, 'venture-') !== false || strpos($dbImg, 'completed/') !== false) {
-      $resolved = resolveImageSrc($dbImg, $defaultAsset);
-      if (file_exists(__DIR__ . '/' . $resolved) || file_exists(__DIR__ . '/admin/storage/app/public/' . $dbImg)) {
-        return $resolved;
-      }
-      return $defaultAsset;
-    }
-    
-    // User uploaded new image through backend admin
-    $resolved = resolveImageSrc($dbImg, '');
-    if (!empty($resolved)) {
-      $checkFile = file_exists(__DIR__ . '/' . $resolved) ? (__DIR__ . '/' . $resolved) : (__DIR__ . '/admin/storage/app/public/' . $dbImg);
-      // Ensure file exists and is a valid photo (>60KB, not the tiny logo)
-      if (file_exists($checkFile) && filesize($checkFile) > 60000) {
-        return $resolved;
-      }
-    }
+    return resolveImageSrc($dbImg, $defaultAsset);
   }
 
   return $defaultAsset;
@@ -138,14 +139,14 @@ function getSliderImage($slider, $index) {
   
   $img = trim($slider['image']);
   
-  // Filter out the legacy hashed filenames that produced 404s or client disliked
+  // Filter out the legacy hashed filenames that produced 404s
   $legacySliderHashes = [
-    'oPATvX2IdTjPZgwVsORezMsUJwTaSvT1kOb4n7QQ',
-    'EQPGfdUnx673VnSY6Jf6gIcrNFGnboUUlA3ML6VQ',
-    'Suxyj1I0XGj3FCuEAvORbU2SlwJa9hUU6UhSqpmW',
-    'BSMDbnLZJXxBvKtswYhifkqsZlVL5qaxkDyjhkOb',
-    'TRpDV0gZbxM0oyPK9likbBaLF9lj52RoYT8ulfvL',
-    'vk26wV2J5HoRuLCXa36hN1PdxGStEA0GYqPfeVq6',
+    'oPAT',
+    'EQPG',
+    'Suxy',
+    'BSMD',
+    'TRpD',
+    'vk26',
   ];
   foreach ($legacySliderHashes as $hash) {
     if (strpos($img, $hash) !== false) {
@@ -155,117 +156,18 @@ function getSliderImage($slider, $index) {
   
   // If points to generated slider asset
   if (strpos($img, 'slider-') !== false) {
-    if (file_exists(__DIR__ . '/' . $img)) {
-      return $img;
-    }
-    $possibleAsset = 'assests/image/generated/sliders/' . basename($img);
+    $base = basename($img);
+    $possibleAsset = 'assests/image/generated/sliders/' . $base;
     if (file_exists(__DIR__ . '/' . $possibleAsset)) {
       return $possibleAsset;
     }
+    if (file_exists(__DIR__ . '/' . $img)) {
+      return $img;
+    }
   }
   
-  // New backend admin upload
   $resolved = resolveImageSrc($img, $fallback);
   return $resolved;
-}
-
-// Helper to get structured editorial slide configuration
-function getSlideConfig($slider, $index) {
-  $templates = [
-    0 => [
-      'kicker' => 'Paanchajanya Realty &bull; Hyderabad',
-      'title_html' => 'Own Land. <br><span>Build Your Legacy.</span>',
-      'tag' => 'DTCP & HMDA Approved Open Plots in Hyderabad',
-      'description' => 'Over 25 years of delivering legally clear, high-appreciation residential land with 100% Vastu and spot registrations across prime growth corridors.',
-      'specs' => [
-        '25+ Years Experience',
-        '50+ Delivered Ventures',
-        '100% Clear Title Passbooks',
-      ],
-      'primary_cta' => [
-        'text' => 'Explore Ventures &rarr;',
-        'url' => '#ventures',
-        'attrs' => '',
-      ],
-      'secondary_cta' => [
-        'text' => 'Book Free Site Visit',
-        'url' => '#contact',
-        'attrs' => 'data-open-modal data-project="Free Weekend Site Visit"',
-      ],
-      'nav_name' => 'Paanchajanya',
-    ],
-    1 => [
-      'kicker' => 'Flagship Township &bull; ORR Exit 7, Shamirpet',
-      'title_html' => 'GreenLeaf. <br><span>A 64-Acre Luxury Sanctuary.</span>',
-      'tag' => 'HMDA & TS RERA Approved Villa Plots',
-      'description' => 'Resort-style plotted living adjacent to Genome Valley. Features 866 villa plots, a private 10,000 Sft clubhouse, 5 themed parks, and 40ft avenue roads.',
-      'specs' => [
-        '64 Acres Extent',
-        '866 Villa Plots',
-        '10,000 Sft Clubhouse',
-        'HMDA & RERA Approved',
-      ],
-      'primary_cta' => [
-        'text' => 'Explore GreenLeaf &rarr;',
-        'url' => 'projects/greenleaf/',
-        'attrs' => '',
-      ],
-      'secondary_cta' => [
-        'text' => 'Schedule Site Visit',
-        'url' => '#contact',
-        'attrs' => 'data-open-modal data-project="GreenLeaf (Shamirpet)"',
-      ],
-      'nav_name' => 'GreenLeaf',
-    ],
-    2 => [
-      'kicker' => 'Srisailam Highway &bull; Next to Upcoming AI City',
-      'title_html' => 'RJ Retreat. <br><span>Where Growth Meets Solitude.</span>',
-      'tag' => 'DTCP Approved Gated Plotted Community',
-      'description' => 'Strategically positioned in Kadthal along Hyderabad’s prime southern corridor, just minutes from the upcoming AI Fourth City, Pharma Hub, and RRR.',
-      'specs' => [
-        '17 Acres Extent',
-        '150–500 Sq. Yds',
-        'DTCP Approved',
-        'Spot Registrations',
-      ],
-      'primary_cta' => [
-        'text' => 'Explore RJ Retreat &rarr;',
-        'url' => 'projects/rj-retreat/',
-        'attrs' => '',
-      ],
-      'secondary_cta' => [
-        'text' => 'Schedule Site Visit',
-        'url' => '#contact',
-        'attrs' => 'data-open-modal data-project="RJ Retreat (Kadthal)"',
-      ],
-      'nav_name' => 'RJ Retreat',
-    ],
-    3 => [
-      'kicker' => 'Upcoming Pre-Launch &bull; 6-Lane Highway Facing',
-      'title_html' => 'Premium County. <br><span>Prime Highway Frontage.</span>',
-      'tag' => 'Exclusive Pre-Launch Plotted Living',
-      'description' => 'Direct 6-lane Srisailam Highway road-facing open plots engineered for maximum capital appreciation. Register now for inaugural investor pricing.',
-      'specs' => [
-        '6-Lane Road Facing',
-        '100% Vastu Compliant',
-        'Early Bird Pricing',
-        'Kadthal Growth Hub',
-      ],
-      'primary_cta' => [
-        'text' => 'Register for Pre-Launch &rarr;',
-        'url' => '#contact',
-        'attrs' => 'data-open-modal data-project="Premium County (Pre-Launch)"',
-      ],
-      'secondary_cta' => [
-        'text' => 'View Location & Route',
-        'url' => '#connectivity',
-        'attrs' => '',
-      ],
-      'nav_name' => 'Premium County',
-    ],
-  ];
-
-  return $templates[$index % count($templates)];
 }
 
 
@@ -331,7 +233,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <li>
                 <a href="projects/rj-retreat/" class="lp-dropdown-link">
                   <div class="lp-dropdown-header-row">
-                    <span class="lp-dropdown-badge" style="color: #0d7f5b;">Ongoing • Kadthal</span>
+                    <span class="lp-dropdown-badge" style="color: #0d7f5b;">Ongoing • Shamirpet</span>
                   </div>
                   <span class="lp-dropdown-name">RJ Retreat <span class="lp-dropdown-arrow">&rarr;</span></span>
                 </a>
@@ -398,66 +300,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
   </aside>
 
-  <!-- ==========================================================================
+    <!-- ==========================================================================
        2. HERO SECTION (La Perla Editorial Fullscreen Slider)
        ========================================================================== -->
-      <section class="lp-hero" id="hero">
+  <section class="lp-hero" id="hero">
     <div class="lp-hero-slides">
       <?php 
       $displaySliders = !empty($sliders) ? $sliders : $sliderFallbacks;
       foreach ($displaySliders as $index => $slider): 
         $slideSrc = getSliderImage($slider, $index);
-        $slideCfg = getSlideConfig($slider, $index);
+        $slideTitle = $slider['title'] ?? ($sliderFallbacks[$index % count($sliderFallbacks)]['title'] ?? 'Paanchajanya Realty');
       ?>
-        <div class="lp-hero-slide <?php echo $index === 0 ? 'active' : ''; ?>" data-slide-index="<?php echo $index; ?>">
-          <img src="<?php echo htmlspecialchars($slideSrc); ?>" alt="<?php echo strip_tags($slideCfg['title_html']); ?>" class="lp-hero-slide-img">
-          <div class="lp-hero-slide-overlay"></div>
-
-          <div class="container lp-hero-content-container">
-            <div class="lp-hero-content">
-              <div class="lp-hero-kicker"><?php echo htmlspecialchars($slideCfg['kicker']); ?></div>
-              <h1 class="lp-hero-title"><?php echo $slideCfg['title_html']; ?></h1>
-              <p class="lp-hero-tag"><?php echo htmlspecialchars($slideCfg['tag']); ?></p>
-              <p class="lp-hero-desc"><?php echo htmlspecialchars($slideCfg['description']); ?></p>
-
-              <div class="lp-hero-spec-bar">
-                <?php foreach ($slideCfg['specs'] as $spec): ?>
-                  <div class="lp-spec-item"><?php echo htmlspecialchars($spec); ?></div>
-                <?php endforeach; ?>
-              </div>
-
-              <div class="lp-hero-actions">
-                <a href="<?php echo htmlspecialchars($slideCfg['primary_cta']['url']); ?>" 
-                   class="lp-btn-primary" 
-                   <?php echo $slideCfg['primary_cta']['attrs']; ?>>
-                  <?php echo $slideCfg['primary_cta']['text']; ?>
-                </a>
-                <a href="<?php echo htmlspecialchars($slideCfg['secondary_cta']['url']); ?>" 
-                   class="lp-btn-secondary" 
-                   <?php echo $slideCfg['secondary_cta']['attrs']; ?>>
-                  <?php echo $slideCfg['secondary_cta']['text']; ?>
-                </a>
-              </div>
-            </div>
-          </div>
+        <div class="lp-hero-slide <?php echo $index === 0 ? 'active' : ''; ?>">
+          <img src="<?php echo htmlspecialchars($slideSrc); ?>" alt="<?php echo htmlspecialchars($slideTitle); ?>" class="lp-hero-slide-img">
         </div>
       <?php endforeach; ?>
     </div>
+    <div class="lp-hero-overlay"></div>
 
-    <!-- Minimalist Luxury Navigation Bar -->
+    <div class="container lp-hero-content">
+      <div class="lp-hero-badge">Welcome to Paanchajanya Realty</div>
+      <h1 class="lp-hero-title">Own Land. <span>Build Your Dream Home.</span></h1>
+      <p class="lp-hero-address">DTCP & HMDA APPROVED OPEN PLOTS IN HYDERABAD</p>
+      <p class="lp-hero-desc">
+        Premium open plots and gated community ventures on Srisailam Highway, Kadthal, and near the upcoming AI Fourth City. 100% Vastu, clear titles, and spot registration available.
+      </p>
+      <div class="lp-hero-actions">
+        <a href="#ventures" class="lp-btn-primary">View Our Projects &rarr;</a>
+        <a href="#contact" class="lp-btn-secondary" data-open-modal data-project="Free Weekend Site Visit">Book Free Site Visit</a>
+      </div>
+    </div>
+
+        <!-- Minimalist Luxury Editorial Navigation Bar (Plain Lettering & Expanding Hyphen/Line Indicators) -->
     <div class="lp-hero-nav-bar">
       <div class="container lp-hero-nav-inner">
         <div class="lp-hero-indicators">
-          <?php foreach ($displaySliders as $navIdx => $navSlide): 
-            $navCfg = getSlideConfig($navSlide, $navIdx);
+          <?php 
+          $sliderNames = [
+            0 => 'Paanchajanya',
+            1 => 'GreenLeaf',
+            2 => 'RJ Retreat',
+            3 => 'Premium County'
+          ];
+          foreach ($displaySliders as $navIdx => $navSlide): 
+            $projName = $sliderNames[$navIdx % count($sliderNames)];
           ?>
             <button class="lp-hero-indicator-btn <?php echo $navIdx === 0 ? 'active' : ''; ?>" 
                     data-slide-index="<?php echo $navIdx; ?>" 
                     type="button" 
-                    aria-label="View <?php echo htmlspecialchars($navCfg['nav_name']); ?>">
+                    aria-label="Slide to <?php echo htmlspecialchars($projName); ?>">
               <span class="lp-indicator-line"></span>
               <span class="lp-indicator-num">0<?php echo $navIdx + 1; ?></span>
-              <span class="lp-indicator-name"><?php echo htmlspecialchars($navCfg['nav_name']); ?></span>
+              <span class="lp-indicator-name"><?php echo htmlspecialchars($projName); ?></span>
             </button>
           <?php endforeach; ?>
         </div>
@@ -482,7 +376,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="container">
       <!-- Part 1: Philosophy & Story -->
-      <div class="lp-philosophy-grid">
+      <div class="lp-philosophy-grid" data-aos="fade-up">
         <div>
           <span class="lp-section-tag">About Paanchajanya</span>
           <h2 class="lp-philosophy-headline">
@@ -497,7 +391,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             From our major residential ventures on Srisailam Highway to prime land parcels near the <strong>upcoming AI Fourth City</strong>, we develop projects with wide BT roads, underground electricity, water pipelines, and 100% Vastu compliance. Our goal is simple: clear documentation, spot registration, and complete peace of mind for every buyer.
           </p>
 
-          <div class="lp-philosophy-stats-row">
+          <div class="lp-philosophy-stats-row" data-aos="fade-up" data-aos-delay="150">
             <div>
               <div class="lp-mini-stat-num">25<span>+</span></div>
               <div class="lp-mini-stat-label">Years of Experience</div>
@@ -525,8 +419,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <div class="lp-leadership-grid">
           <!-- Founder Spotlight Card -->
-          <div class="lp-leader-card">
-            <img src="assests/image/Rajender.png" alt="Mr. Rajender Reddy Dasari" class="lp-leader-img">
+          <div class="lp-leader-card" data-aos="fade-right" data-aos-delay="100">
+            <img src="assests/image/Rajender.png" alt="Mr. Rajender Reddy Dasari" class="lp-leader-img lp-parallax-media" data-parallax="media" data-parallax-speed="0.08">
             <div class="lp-leader-info">
               <span class="lp-leader-role">Founder &amp; Chairman</span>
               <h3 class="lp-leader-name">Mr. Rajender Reddy</h3>
@@ -542,7 +436,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           </div>
 
           <!-- Track Record -->
-          <div class="lp-track-record">
+          <div class="lp-track-record" data-aos="fade-left" data-aos-delay="200">
             <div class="lp-record-item">
               <div class="lp-record-num">25+</div>
               <div>
@@ -578,7 +472,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
        ========================================================================== -->
   <section class="lp-ventures" id="ventures">
     <div class="container">
-      <div class="lp-section-header">
+      <div class="lp-section-header" data-aos="fade-up">
         <span class="lp-section-tag">Featured Portfolio</span>
         <h2 class="lp-section-title">Our Ongoing &amp; Upcoming <span>Ventures</span></h2>
         <p class="lp-section-subtitle">
@@ -589,7 +483,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <div class="lp-ventures-grid">
 
         <!-- Featured Project: GreenLeaf Luxury Villa Plots (Shamirpet) -->
-        <article class="lp-project-card">
+        <article class="lp-project-card" data-aos="fade-up" data-aos-delay="100">
           <img src="<?php echo getProjectImage('greenleaf-shamirpet', 'assests/image/generated/ventures/venture-greenleaf-entrance.jpg', $projectsBySlug); ?>" alt="GreenLeaf Luxury Villa Plots Shamirpet" class="lp-card-bg">
           <div class="lp-card-gradient"></div>
           
@@ -625,8 +519,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </article>
 
         <!-- Project 1: RJ Retreat -->
-        <article class="lp-project-card">
-          <img src="<?php echo getProjectImage('rj-retreat', 'assests/image/generated/ventures/venture-rj-retreat-entrance.jpg', $projectsBySlug); ?>" alt="RJ Retreat Kadthal" class="lp-card-bg">
+        <article class="lp-project-card" data-aos="fade-up" data-aos-delay="200">
+          <img src="<?php echo getProjectImage('rj-retreat', 'assests/image/generated/ventures/venture-rj-retreat-entrance.jpg', $projectsBySlug); ?>" alt="RJ Retreat Shamirpet" class="lp-card-bg">
           <div class="lp-card-gradient"></div>
           
           <div class="lp-card-top">
@@ -636,7 +530,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
           <div class="lp-card-bottom">
             <h3 class="lp-card-title">RJ Retreat</h3>
-            <p class="lp-card-location">📍 Kadthal, Srisailam Highway</p>
+            <p class="lp-card-location">📍 Shamirpet, Hyderabad</p>
             
             <div class="lp-chips-row">
               <div class="lp-chip">
@@ -655,13 +549,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <div class="lp-card-actions">
               <a href="projects/rj-retreat/" class="lp-btn-card-view">Go to Project &rarr;</a>
-              <button class="lp-btn-card-visit" data-open-modal data-project="RJ Retreat (Kadthal)">Book Visit</button>
+              <button class="lp-btn-card-visit" data-open-modal data-project="RJ Retreat (Shamirpet)">Book Visit</button>
             </div>
           </div>
         </article>
 
         <!-- Project 2: Premium County (Upcoming) -->
-        <article class="lp-project-card">
+        <article class="lp-project-card" data-aos="fade-up" data-aos-delay="300">
           <img src="<?php echo getProjectImage('premium-county', 'assests/image/generated/ventures/venture-premium-county-entrance.jpg', $projectsBySlug); ?>" alt="Premium County" class="lp-card-bg">
           <div class="lp-card-gradient"></div>
           
@@ -672,7 +566,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
           <div class="lp-card-bottom">
             <h3 class="lp-card-title">Premium County</h3>
-            <p class="lp-card-location">📍 Kadthal, Srisailam Highway</p>
+            <p class="lp-card-location">📍 Shamirpet, Hyderabad</p>
             
             <div class="lp-chips-row">
               <div class="lp-chip">
@@ -705,7 +599,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
        ========================================================================== -->
   <section class="lp-completed-ventures" id="completed-projects">
     <div class="container">
-      <div class="lp-section-header">
+      <div class="lp-section-header" data-aos="fade-up">
         <span class="lp-section-tag">Track Record &amp; Delivered Landmarks</span>
         <h2 class="lp-section-title">Our Completed <span>Projects</span></h2>
         <p class="lp-section-subtitle">
@@ -714,7 +608,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </div>
 
       <!-- Category Filter Pills -->
-      <div class="lp-filter-nav">
+      <div class="lp-filter-nav" data-aos="fade-up" data-aos-delay="100">
         <button class="lp-filter-pill active" data-filter="all">All Completed <span class="lp-filter-count">7</span></button>
         <button class="lp-filter-pill" data-filter="shamirpet">Shamirpet &amp; North Corridor <span class="lp-filter-count">5</span></button>
         <button class="lp-filter-pill" data-filter="srisailam">Srisailam Highway <span class="lp-filter-count">1</span></button>
@@ -724,7 +618,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <div class="lp-completed-grid">
 
         <!-- 1. NBR Enclave - Turkapally, Karimnagar Highway - 20 acres -->
-        <article class="lp-comp-card" data-category="shamirpet">
+        <article class="lp-comp-card" data-category="shamirpet" data-aos="fade-up" data-aos-delay="100">
           <div class="lp-comp-media">
             <img src="<?php echo getProjectImage('nbr-enclave', 'assests/image/generated/completed/nbr-enclave.jpg', $projectsBySlug); ?>" alt="NBR Enclave Turkapally Karimnagar Highway" class="lp-comp-img" loading="lazy">
             <div class="lp-comp-overlay"></div>
@@ -760,7 +654,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </article>
 
         <!-- 2. Vidarbha Ext. - Shamirpet - 13 acres -->
-        <article class="lp-comp-card" data-category="shamirpet">
+        <article class="lp-comp-card" data-category="shamirpet" data-aos="fade-up" data-aos-delay="150">
           <div class="lp-comp-media">
             <img src="<?php echo getProjectImage('vidarbha-ext', 'assests/image/generated/completed/vidarbha-ext.jpg', $projectsBySlug); ?>" alt="Vidarbha Ext Shamirpet" class="lp-comp-img" loading="lazy">
             <div class="lp-comp-overlay"></div>
@@ -796,7 +690,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </article>
 
         <!-- 3. Atrium - Shamirpet Village - HMDA - 13.8 Acres -->
-        <article class="lp-comp-card" data-category="shamirpet">
+        <article class="lp-comp-card" data-category="shamirpet" data-aos="fade-up" data-aos-delay="200">
           <div class="lp-comp-media">
             <img src="<?php echo getProjectImage('atrium-shamirpet', 'assests/image/generated/completed/atrium-shamirpet.jpg', $projectsBySlug); ?>" alt="Atrium Shamirpet Village HMDA" class="lp-comp-img" loading="lazy">
             <div class="lp-comp-overlay"></div>
@@ -832,7 +726,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </article>
 
         <!-- 4. Nandana Habitat - Bomma Rasipet - 6 acres -->
-        <article class="lp-comp-card" data-category="east">
+        <article class="lp-comp-card" data-category="east" data-aos="fade-up" data-aos-delay="250">
           <div class="lp-comp-media">
             <img src="<?php echo getProjectImage('nandana-habitat', 'assests/image/generated/completed/nandana-habitat.jpg', $projectsBySlug); ?>" alt="Nandana Habitat Bomma Rasipet" class="lp-comp-img" loading="lazy">
             <div class="lp-comp-overlay"></div>
@@ -868,7 +762,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </article>
 
         <!-- 5. Arya Nagar - Upperpally, Shamirpet - 54 Acres -->
-        <article class="lp-comp-card" data-category="shamirpet">
+        <article class="lp-comp-card" data-category="shamirpet" data-aos="fade-up" data-aos-delay="300">
           <div class="lp-comp-media">
             <img src="<?php echo getProjectImage('arya-nagar', 'assests/image/generated/completed/arya-nagar.jpg', $projectsBySlug); ?>" alt="Arya Nagar Upperpally Shamirpet" class="lp-comp-img" loading="lazy">
             <div class="lp-comp-overlay"></div>
@@ -904,7 +798,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </article>
 
         <!-- 6. Northend Valley - Lalgadi, Malakpet - 50 acres -->
-        <article class="lp-comp-card" data-category="shamirpet">
+        <article class="lp-comp-card" data-category="shamirpet" data-aos="fade-up" data-aos-delay="350">
           <div class="lp-comp-media">
             <img src="<?php echo getProjectImage('northend-valley', 'assests/image/generated/completed/northend-valley.jpg', $projectsBySlug); ?>" alt="Northend Valley Lalgadi Malakpet" class="lp-comp-img" loading="lazy">
             <div class="lp-comp-overlay"></div>
@@ -940,7 +834,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </article>
 
         <!-- 7. Mango Leaf - Kadthal, Srisailam Highway - 10 acres -->
-        <article class="lp-comp-card" data-category="srisailam">
+        <article class="lp-comp-card" data-category="srisailam" data-aos="fade-up" data-aos-delay="400">
           <div class="lp-comp-media">
             <img src="<?php echo getProjectImage('mango-leaf', 'assests/image/generated/completed/mango-leaf.jpg', $projectsBySlug); ?>" alt="Mango Leaf Kadthal Srisailam Highway" class="lp-comp-img" loading="lazy">
             <div class="lp-comp-overlay"></div>
@@ -982,7 +876,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <!-- ==========================================================================
        5. STATEMENT QUOTE (La Perla Minimalist Centerpiece)
        ========================================================================== -->
-  <section class="lp-quote-section">
+  <section class="lp-quote-section" data-aos="zoom-in" data-aos-delay="100">
     <div class="container">
       <div class="lp-quote-box">
         <div class="lp-quote-icon">“</div>
@@ -999,7 +893,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
        ========================================================================== -->
   <section class="lp-connectivity" id="connectivity">
     <div class="container">
-      <div class="lp-section-header">
+      <div class="lp-section-header" data-aos="fade-up">
         <span class="lp-section-tag">Location Highlights</span>
         <h2 class="lp-section-title">Prime Highway <span>Connectivity</span></h2>
         <p class="lp-section-subtitle">
@@ -1008,25 +902,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </div>
 
       <div class="lp-connectivity-grid">
-        <div class="lp-metric-card">
+        <div class="lp-metric-card" data-aos="fade-up" data-aos-delay="100">
           <div class="lp-metric-number">05<span>Min</span></div>
           <div class="lp-metric-label">AI Fourth City &amp; Maha Pyramid</div>
           <div class="lp-metric-sub">Quick drive to upcoming government innovation hub and landmark center.</div>
         </div>
 
-        <div class="lp-metric-card">
+        <div class="lp-metric-card" data-aos="fade-up" data-aos-delay="200">
           <div class="lp-metric-number">10<span>Min</span></div>
           <div class="lp-metric-label">Outer Ring Road &amp; RRR</div>
           <div class="lp-metric-sub">Fast connectivity to the Regional Ring Road and ORR Exit junctions.</div>
         </div>
 
-        <div class="lp-metric-card">
+        <div class="lp-metric-card" data-aos="fade-up" data-aos-delay="300">
           <div class="lp-metric-number">15<span>Min</span></div>
           <div class="lp-metric-label">RGIA International Airport</div>
           <div class="lp-metric-sub">Direct, signal-free drive to Hyderabad International Airport at Shamshabad.</div>
         </div>
 
-        <div class="lp-metric-card">
+        <div class="lp-metric-card" data-aos="fade-up" data-aos-delay="400">
           <div class="lp-metric-number">25<span>Min</span></div>
           <div class="lp-metric-label">Gachibowli &amp; Financial District</div>
           <div class="lp-metric-sub">Smooth expressway commute to Hitec City, top IT companies, and schools.</div>
@@ -1044,7 +938,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="container">
       <div class="lp-contact-wrapper">
         <!-- Left Panel -->
-        <div class="lp-contact-info-panel">
+        <div class="lp-contact-info-panel" data-aos="fade-right">
           <div>
             <span class="lp-section-tag" style="color: var(--accent-gold);">Free Weekend Site Visit</span>
             <h2 class="lp-section-title">Visit The Site <br><span style="color: #f7d896;">This Weekend</span></h2>
@@ -1079,7 +973,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <!-- Right Panel Form -->
-        <div class="lp-contact-form-panel">
+        <div class="lp-contact-form-panel" data-aos="fade-left" data-aos-delay="150">
           <h3 class="lp-form-title">Enquire Now</h3>
           <p class="lp-form-sub">Please fill in your details and our team will get back to you promptly.</p>
 
@@ -1111,7 +1005,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <select id="venture_select" name="venture" class="lp-form-select">
                   <optgroup label="Ongoing Ventures">
                     <option value="GreenLeaf (Shamirpet)">GreenLeaf Villa Plots (Shamirpet, ORR Exit 7)</option>
-                    <option value="RJ Retreat (Kadthal)">RJ Retreat (Kadthal, Srisailam Highway)</option>
+                    <option value="RJ Retreat (Shamirpet)">RJ Retreat (Shamirpet, Hyderabad)</option>
                     <option value="Free Weekend Site Visit">Free Weekend Site Visit (Any Venture)</option>
                   </optgroup>
                   <optgroup label="Upcoming Projects">
