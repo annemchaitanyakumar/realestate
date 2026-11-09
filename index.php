@@ -241,7 +241,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <li>
                 <a href="#ventures" class="lp-dropdown-link">
                   <div class="lp-dropdown-header-row">
-                    <span class="lp-dropdown-badge" style="color: #c59b27;">Upcoming • Kadthal</span>
+                    <span class="lp-dropdown-badge" style="color: #c59b27;">Upcoming • Kadthal, Srisailam Highway</span>
                   </div>
                   <span class="lp-dropdown-name">Premium County <span class="lp-dropdown-arrow">&rarr;</span></span>
                 </a>
@@ -566,7 +566,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
           <div class="lp-card-bottom">
             <h3 class="lp-card-title">Premium County</h3>
-            <p class="lp-card-location">📍 Shamirpet, Hyderabad</p>
+            <p class="lp-card-location">📍 Kadthal, Srisailam Highway</p>
             
             <div class="lp-chips-row">
               <div class="lp-chip">

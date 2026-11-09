@@ -95,7 +95,7 @@ class ProjectsSeeder extends Seeder
                 'title' => 'Premium County',
                 'slug' => 'premium-county',
                 'client' => 'Paanchajanya Reality',
-                'location' => 'Shamirpet, Hyderabad',
+                'location' => 'Kadthal, Srisailam Highway',
                 'category' => 'Mega Plotted Township',
                 'description' => 'Prime Residential Open Plots Facing Proposed 6-Lane Srisailam Highway in Kadthal near Upcoming AI Fourth City.',
                 'full_description' => '<p><strong>Upcoming Mega Plotted Township at Kadthal, Srisailam Highway</strong></p><p>Premium County is positioned directly along the proposed 6-lane Srisailam Highway growth corridor in Kadthal, right next to the upcoming AI Fourth City. Exceptional capital appreciation potential for smart investors.</p><ul><li>Direct 6-Lane Srisailam Highway Facing Access</li><li>Close Proximity to AI Fourth City, Amazon Data Center & Pharma City</li><li>Proposed Wide BT Roads, Underground Infrastructure & Avenue Plantations</li><li>Clear Title & Assured Legal Verification with Spot Registration</li><li>High-Tech Gated Entry with Security Post & Surveillance</li></ul>',
