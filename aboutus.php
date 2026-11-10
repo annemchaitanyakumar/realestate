@@ -75,7 +75,7 @@
         background-color: var(--lp-light-bg);
     }
     .about-section-white {
-        background-color: #ffffff;
+        background-color: #FFFFF0;
     }
     .about-section-tag {
         display: inline-block;
@@ -164,7 +164,7 @@
         gap: 24px;
     }
     .about-stat-card {
-        background: #ffffff;
+        background: #FFFFF0;
         border: 1px solid rgba(0, 0, 0, 0.06);
         border-radius: 14px;
         padding: 32px 24px;
@@ -212,7 +212,7 @@
     /* Feature / Core Values Box */
     .about-feature-box {
         padding: 40px 30px;
-        background: #ffffff;
+        background: #FFFFF0;
         border-radius: 14px;
         box-shadow: 0 8px 26px rgba(0, 0, 0, 0.05);
         text-align: center;
@@ -258,7 +258,7 @@
        LEADERSHIP & MANAGEMENT / FOUNDER PROFILE SECTION
        ========================================================================= */
     .about-management-card {
-        background: #ffffff;
+        background: #FFFFF0;
         border-radius: 20px;
         box-shadow: 0 15px 45px rgba(0, 0, 0, 0.06);
         border: 1px solid rgba(201, 164, 92, 0.25);

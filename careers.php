@@ -3,8 +3,17 @@ include 'includes/header.php';
 require_once 'includes/db.php';
 
 // Fetch active jobs from database
-$stmt = $pdo->query("SELECT * FROM careers WHERE is_active = 1 ORDER BY `order` ASC, created_at DESC");
-$jobs = $stmt->fetchAll();
+$jobs = [];
+if (isset($pdo) && $pdo instanceof PDO) {
+    try {
+        $stmt = $pdo->query("SELECT * FROM careers WHERE is_active = 1 ORDER BY `order` ASC, created_at DESC");
+        if ($stmt) {
+            $jobs = $stmt->fetchAll();
+        }
+    } catch (\Throwable $e) {
+        $jobs = [];
+    }
+}
 ?>
 
 <!-- Custom Styles for Careers Page -->
@@ -41,7 +50,7 @@ $jobs = $stmt->fetchAll();
     }
 
     .job-card {
-        background: #fff;
+        background: #FFFFF0;
         border-radius: 12px;
         padding: 30px;
         box-shadow: 0 10px 30px rgba(0,0,0,0.05);
@@ -77,7 +86,7 @@ $jobs = $stmt->fetchAll();
     .benefit-box {
         text-align: center;
         padding: 40px 20px;
-        background: #fff;
+        background: #FFFFF0;
         border-radius: 15px;
         box-shadow: 0 5px 20px rgba(0,0,0,0.05);
         height: 100%;

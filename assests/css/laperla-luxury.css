@@ -9,7 +9,7 @@
   /* Color Palette */
   --bg-primary: #fbfaf7;
   --bg-secondary: #f4f1ea;
-  --bg-surface: #ffffff;
+  --bg-surface: #FFFFF0;
   --bg-dark: #0a0d11;
   --bg-dark-card: #13171d;
   --bg-dark-elevated: #1a2028;
@@ -116,7 +116,7 @@ button {
 }
 
 .lp-header.scrolled {
-  background: rgba(255, 255, 255, 0.98);
+  background: rgba(255, 255, 240, 0.98);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   height: 76px;
@@ -199,7 +199,7 @@ button {
   top: calc(100% + 14px);
   left: 50%;
   transform: translateX(-50%) translateY(10px);
-  background: #ffffff;
+  background: #FFFFF0;
   min-width: 350px;
   box-shadow: 0 24px 60px rgba(10, 13, 18, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.06);
   border-radius: 16px;
@@ -350,7 +350,7 @@ button {
   display: block;
   height: 2px;
   width: 100%;
-  background-color: #ffffff;
+  background-color: #FFFFF0;
   border-radius: 2px;
   transition: var(--transition-smooth);
 }
@@ -376,7 +376,7 @@ button {
   width: 100%;
   max-width: 400px;
   height: 100vh;
-  background: #ffffff;
+  background: #FFFFF0;
   z-index: 1000;
   padding: 110px 32px 50px;
   display: flex;
@@ -634,9 +634,9 @@ button {
 }
 
 .lp-btn-secondary:hover {
-  background: #ffffff;
+  background: #FFFFF0;
   color: var(--text-primary);
-  border-color: #ffffff;
+  border-color: #FFFFF0;
   transform: translateY(-3px);
 }
 
@@ -960,7 +960,7 @@ button {
 }
 
 .lp-card-badge {
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 240, 0.95);
   backdrop-filter: blur(8px);
   color: var(--text-primary);
   font-size: 0.72rem;
@@ -1070,7 +1070,7 @@ button {
   gap: 8px;
   padding: 10px 22px;
   border-radius: var(--radius-full);
-  background: #ffffff;
+  background: #FFFFF0;
   border: 1px solid rgba(0, 0, 0, 0.1);
   color: var(--text-secondary);
   font-size: 0.85rem;
@@ -1125,7 +1125,7 @@ button {
 
 /* Elevated Architectural Completed Card */
 .lp-comp-card {
-  background: #ffffff;
+  background: #FFFFF0;
   border-radius: var(--radius-lg);
   overflow: hidden;
   border: 1px solid rgba(0, 0, 0, 0.08);
@@ -1245,7 +1245,7 @@ button {
   display: flex;
   flex-direction: column;
   flex: 1;
-  background: #ffffff;
+  background: #FFFFF0;
 }
 
 .lp-comp-location {
@@ -1409,9 +1409,9 @@ button {
 }
 
 .lp-btn-card-visit:hover {
-  background: #ffffff;
+  background: #FFFFF0;
   color: var(--text-primary);
-  border-color: #ffffff;
+  border-color: #FFFFF0;
 }
 
 /* ==========================================================================
@@ -1419,7 +1419,7 @@ button {
    ========================================================================== */
 .lp-quote-section {
   padding: 110px 0;
-  background: #ffffff;
+  background: #FFFFF0;
   text-align: center;
   border-bottom: 1px solid var(--border-light);
 }
@@ -1477,7 +1477,7 @@ button {
 }
 
 .lp-metric-card {
-  background: #ffffff;
+  background: #FFFFF0;
   border: 1px solid var(--border-light);
   border-radius: var(--radius-md);
   padding: 3rem 2rem;
@@ -1537,7 +1537,7 @@ button {
 }
 
 .lp-leader-card {
-  background: #ffffff;
+  background: #FFFFF0;
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
@@ -1594,7 +1594,7 @@ button {
   align-items: flex-start;
   gap: 1.5rem;
   padding: 1.5rem;
-  background: #ffffff;
+  background: #FFFFF0;
   border-radius: var(--radius-md);
   border: 1px solid var(--border-light);
   transition: var(--transition-smooth);
@@ -1700,7 +1700,7 @@ button {
 }
 
 .lp-contact-wrapper {
-  background: #ffffff;
+  background: #FFFFF0;
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
@@ -1822,7 +1822,7 @@ button {
 .lp-form-input:focus, .lp-form-select:focus, .lp-form-textarea:focus {
   outline: none;
   border-color: var(--accent-gold);
-  background: #ffffff;
+  background: #FFFFF0;
   box-shadow: 0 0 0 4px var(--accent-gold-light);
 }
 
@@ -1989,7 +1989,7 @@ button {
 }
 
 .lp-modal-window {
-  background: #ffffff;
+  background: #FFFFF0;
   width: 100%;
   max-width: 560px;
   border-radius: var(--radius-lg);
@@ -2126,5 +2126,277 @@ button {
   }
   .lp-parallax-media {
     transform: none !important;
+  }
+}
+
+/* ==========================================================================
+   BLOGS & INSIGHTS (Homepage Editorial Luxury Grid)
+   ========================================================================== */
+.lp-blogs-section {
+  padding: 120px 0;
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.lp-blogs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.25rem;
+  margin-top: 3.5rem;
+}
+
+.lp-blog-card {
+  background: #FFFFF0;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.lp-blog-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.1);
+  border-color: var(--accent-gold-border);
+}
+
+.lp-blog-img-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background-color: #1a2028;
+}
+
+.lp-blog-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lp-blog-card:hover .lp-blog-img {
+  transform: scale(1.06);
+}
+
+.lp-blog-date-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(10, 13, 17, 0.85);
+  backdrop-filter: blur(8px);
+  color: var(--accent-gold);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.05em;
+  border: 1px solid rgba(197, 155, 78, 0.3);
+}
+
+.lp-blog-body {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background: #FFFFF0;
+}
+
+.lp-blog-category {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--accent-gold);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin-bottom: 0.65rem;
+  display: block;
+}
+
+.lp-blog-title {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.35;
+  margin-bottom: 0.85rem;
+}
+
+.lp-blog-excerpt {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin-bottom: 1.75rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.lp-blog-footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.lp-blog-link {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: var(--transition-smooth);
+}
+
+.lp-blog-link:hover {
+  color: var(--accent-gold-hover);
+  transform: translateX(4px);
+}
+
+.lp-blogs-cta {
+  text-align: center;
+  margin-top: 3.5rem;
+}
+
+/* ==========================================================================
+   PARTNER WITH US (Homepage Luxury Dual-Column Section)
+   ========================================================================== */
+.lp-partner-section {
+  padding: 120px 0;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.lp-partner-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5rem;
+  margin-top: 3.5rem;
+}
+
+.lp-partner-card {
+  background: #FFFFF0;
+  border-radius: var(--radius-lg);
+  padding: 3.5rem 3rem;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.lp-partner-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.08);
+  border-color: var(--accent-gold-border);
+}
+
+.lp-partner-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--accent-gold);
+  margin-bottom: 0.75rem;
+}
+
+.lp-partner-title {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.lp-partner-desc {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.lp-partner-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.lp-partner-form .lp-form-group {
+  position: relative;
+}
+
+.lp-partner-form .lp-form-control {
+  width: 100%;
+  padding: 14px 18px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: var(--radius-sm);
+  background: #FFFFF0;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  transition: var(--transition-smooth);
+}
+
+.lp-partner-form .lp-form-control:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+  background: #FFFFF0;
+  box-shadow: 0 0 0 4px var(--accent-gold-light);
+}
+
+.lp-partner-form textarea.lp-form-control {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.lp-partner-btn {
+  padding: 16px 36px;
+  background: var(--accent-gold);
+  color: #FFFFF0;
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  box-shadow: 0 4px 16px rgba(197, 155, 78, 0.25);
+  margin-top: 0.5rem;
+  display: inline-block;
+  text-align: center;
+}
+
+.lp-partner-btn:hover {
+  background: var(--accent-gold-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(197, 155, 78, 0.35);
+}
+
+@media (max-width: 992px) {
+  .lp-blogs-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .lp-partner-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .lp-blogs-grid {
+    grid-template-columns: 1fr;
+  }
+  .lp-partner-card {
+    padding: 2.25rem 1.5rem;
   }
 }

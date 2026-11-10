@@ -62,7 +62,7 @@
         overflow: hidden;
         border-radius: 20px;
         margin-bottom: 30px;
-        background: #fff;
+        background: #FFFFF0;
         box-shadow: 0 15px 35px rgba(0,0,0,0.1);
         cursor: pointer;
         transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);

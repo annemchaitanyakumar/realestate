@@ -39,7 +39,7 @@
 
     .partner-section {
         padding: 140px 0;
-        background: #fff;
+        background: #FFFFF0;
     }
 
     .partner-intro {
@@ -57,7 +57,7 @@
         height: 100%;
         display: flex;
         flex-direction: column;
-        background: #fff;
+        background: #FFFFF0;
         transition: var(--transition);
         border-radius: 4px;
     }
@@ -92,7 +92,7 @@
         border-radius: 4px;
         padding: 10px 15px 10px 50px;
         font-size: 1rem;
-        background: #fff;
+        background: #FFFFF0;
         transition: var(--transition);
         box-shadow: none !important;
         color: #333;

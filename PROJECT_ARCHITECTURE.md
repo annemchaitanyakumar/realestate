@@ -129,6 +129,10 @@ paanchajanyarealty.com/
 ├── index.html              # Standalone static preview / Vercel demo
 ├── aboutus.php             # About Us page
 ├── contactus.php           # Contact Us page
+├── location.php            # Dedicated Strategic Location & Highway Connectivity page
+├── partner-with-us.php     # Partner With Us page (also integrated into Homepage)
+├── blog.php                # Blog and real estate news listing
+├── news-detail.php         # Individual blog article page
 ├── project.php             # Individual venture detail page
 └── PROJECT_ARCHITECTURE.md # This system architecture reference
 ```

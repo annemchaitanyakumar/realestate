@@ -262,5 +262,90 @@ document.addEventListener('DOMContentLoaded', function () {
 
     onScrollParallax();
   }
+
+  // 9. Interactive Homepage Partner Forms (Vendors & Channel Partners)
+  const homeVendorForm = document.getElementById('homeVendorForm');
+  if (homeVendorForm) {
+    homeVendorForm.addEventListener('submit', function (e) {
+      const btn = homeVendorForm.querySelector('button[type="submit"]');
+      const statusBox = homeVendorForm.querySelector('.vendor-status-msg');
+      const formData = new FormData(homeVendorForm);
+
+      btn.disabled = true;
+      const originalText = btn.innerHTML;
+      btn.innerHTML = 'Submitting...';
+
+      fetch('admin/public/api/vendor-submit', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          statusBox.style.display = 'block';
+          statusBox.style.background = '#e6f7ef';
+          statusBox.style.color = '#0d684d';
+          statusBox.style.border = '1px solid #b7ebd3';
+          statusBox.innerHTML = '✓ ' + (data.message || 'Thank you for your interest! We will contact you soon.');
+          homeVendorForm.reset();
+        } else {
+          throw new Error(data.message || 'Submission failed');
+        }
+      })
+      .catch(err => {
+        // Fallback: Submit via standard form submission if API is unreachable
+        homeVendorForm.submit();
+      })
+      .finally(() => {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+      });
+
+      e.preventDefault();
+    });
+  }
+
+  const homePartnerForm = document.getElementById('homePartnerForm');
+  if (homePartnerForm) {
+    homePartnerForm.addEventListener('submit', function (e) {
+      const btn = homePartnerForm.querySelector('button[type="submit"]');
+      const statusBox = homePartnerForm.querySelector('.partner-status-msg');
+      const formData = new FormData(homePartnerForm);
+
+      btn.disabled = true;
+      const originalText = btn.innerHTML;
+      btn.innerHTML = 'Submitting...';
+
+      fetch('admin/public/api/channel-partner-submit', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          statusBox.style.display = 'block';
+          statusBox.style.background = '#e6f7ef';
+          statusBox.style.color = '#0d684d';
+          statusBox.style.border = '1px solid #b7ebd3';
+          statusBox.innerHTML = '✓ ' + (data.message || 'Thank you for registering! We will contact you soon.');
+          homePartnerForm.reset();
+        } else {
+          throw new Error(data.message || 'Submission failed');
+        }
+      })
+      .catch(err => {
+        // Fallback: Submit via standard form submission if API is unreachable
+        homePartnerForm.submit();
+      })
+      .finally(() => {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+      });
+
+      e.preventDefault();
+    });
+  }
 });
 

@@ -1,7 +1,19 @@
-<?php include 'includes/db.php'; ?>
-<?php
-$stmt_count = $pdo->query("SELECT COUNT(*) FROM sliders WHERE is_active = 1");
-$slider_count = $stmt_count->fetchColumn();
+<?php 
+include_once __DIR__ . '/db.php'; 
+$slider_count = 3;
+if (isset($pdo) && $pdo instanceof PDO) {
+    try {
+        $stmt_count = $pdo->query("SELECT COUNT(*) FROM sliders WHERE is_active = 1");
+        if ($stmt_count) {
+            $val = $stmt_count->fetchColumn();
+            if ($val) {
+                $slider_count = (int)$val;
+            }
+        }
+    } catch (\Throwable $e) {
+        // Fallback to default
+    }
+}
 ?>
 <?php $current_page = basename($_SERVER['PHP_SELF']); 
 
@@ -21,6 +33,11 @@ $seo_data = [
         'title' => 'Contact Us - Paanchajanya Reality | Get in Touch Today',
         'description' => 'Have questions? Contact Paanchajanya Reality for inquiries about our luxury apartments and villas in Hyderabad. We are here to help you find your dream home.',
         'keywords' => 'Contact Real Estate Developer, Paanchajanya Contact, Real Estate Inquiry Hyderabad'
+    ],
+    'location.php' => [
+        'title' => 'Strategic Locations & Highway Connectivity | Paanchajanya Realty Hyderabad',
+        'description' => 'Explore the strategic locations and highway connectivity of Paanchajanya Realty ventures near ORR Exit 7 Shamirpet and Srisailam Highway Kadthal near AI Fourth City.',
+        'keywords' => 'Paanchajanya Locations, Shamirpet Open Plots, Kadthal Srisailam Highway, ORR Exit 7, Hyderabad Real Estate Connectivity'
     ],
     'blog.php' => [
         'title' => 'Blog - Real Estate Insights & News | Paanchajanya Reality',
@@ -931,6 +948,9 @@ if ($current_page == 'news-detail.php' && isset($article)) {
                 </li>
             </ul>
         </li>
+        <li id="menu-item-28265" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-28265">
+            <a href="location"><span style="color: #ffffff">Location</span></a>
+        </li>
         <li id="menu-item-28263" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-28263">
             <a href="partner-with-us"><span style="color: #ffffff">Partner with us</span></a>
         </li>
@@ -1050,7 +1070,7 @@ if ($current_page == 'news-detail.php' && isset($article)) {
         <li id="menu_mobile-item-28243" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-28243"><a href="projects/rj-retreat/"><span>RJ Retreat</span></a></li>
     </ul>
 </li></ul>
-</li><li id="menu_mobile-item-28264" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-28264"><a href="partner-with-us"><span style="color: #FFFFFF;">Partner with us</span></a></li><li id="menu_mobile-item-28263" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-28263"><a href="blog"><span style="color: #FFFFFF;">Blog</span></a></li> <li id="menu_mobile-item-28263" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-28263"><a href="contactus"><span style="color: #FFFFFF;">Contact Us</span></a></li></ul></nav><div class="socials_mobile"><a target="_blank" href="javascript:void(0);" class="social_item social_item_style_icons sc_icon_type_icons social_item_type_icons"><span class="social_icon social_icon_facebook-1" style=""><span class="icon-facebook-1"></span></span></a><a target="_blank" href="javascript:void(0);" class="social_item social_item_style_icons sc_icon_type_icons social_item_type_icons"><span class="social_icon social_icon_instagram" style=""><span class="icon-instagram"></span></span></a><a target="_blank" href="javascript:void(0);" class="social_item social_item_style_icons sc_icon_type_icons social_item_type_icons"><span class="social_icon social_icon_youtube2" style=""><span class="trx_addons_icon-youtube2"></span></span></a></div>            </div>
+</li><li id="menu_mobile-item-28265" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-28265"><a href="location"><span style="color: #FFFFFF;">Location</span></a></li><li id="menu_mobile-item-28264" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-28264"><a href="partner-with-us"><span style="color: #FFFFFF;">Partner with us</span></a></li><li id="menu_mobile-item-28263" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-28263"><a href="blog"><span style="color: #FFFFFF;">Blog</span></a></li> <li id="menu_mobile-item-28263" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-28263"><a href="contactus"><span style="color: #FFFFFF;">Contact Us</span></a></li></ul></nav><div class="socials_mobile"><a target="_blank" href="javascript:void(0);" class="social_item social_item_style_icons sc_icon_type_icons social_item_type_icons"><span class="social_icon social_icon_facebook-1" style=""><span class="icon-facebook-1"></span></span></a><a target="_blank" href="javascript:void(0);" class="social_item social_item_style_icons sc_icon_type_icons social_item_type_icons"><span class="social_icon social_icon_instagram" style=""><span class="icon-instagram"></span></span></a><a target="_blank" href="javascript:void(0);" class="social_item social_item_style_icons sc_icon_type_icons social_item_type_icons"><span class="social_icon social_icon_youtube2" style=""><span class="trx_addons_icon-youtube2"></span></span></a></div>            </div>
         </div><div class="menu_mobile_widgets_area"></div>
     </div>
 </div>

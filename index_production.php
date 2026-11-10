@@ -21,10 +21,43 @@ if (isset($pdo) && $pdo instanceof PDO) {
         $projectsBySlug[$p['slug']] = $p;
       }
     }
+
+    $bStmt = $pdo->query("SELECT * FROM news WHERE is_published = 1 ORDER BY published_at DESC LIMIT 3");
+    if ($bStmt) {
+      $latestBlogs = $bStmt->fetchAll(PDO::FETCH_ASSOC);
+    }
   } catch (\Throwable $e) {
     // Graceful fallback
   }
 }
+
+// Fallback high-impact real estate blogs
+$blogFallbacks = [
+  0 => [
+    'title' => 'Why Hyderabad’s Growth Corridors (Shamirpet & Srisailam) Offer Highest ROI',
+    'slug' => 'hyderabad-growth-corridors-shamirpet-srisailam',
+    'excerpt' => 'With the Telangana Government expanding the AI Fourth City in Mucherla and Genome Valley in Shamirpet, strategic open plots along the Outer Ring Road offer unparalleled multi-fold returns.',
+    'image' => 'assests/image/generated/ventures/venture-greenleaf-entrance.jpg',
+    'category' => 'Market Trends',
+    'published_at' => '2026-10-15',
+  ],
+  1 => [
+    'title' => 'DTCP vs HMDA Approvals: A Complete Guide for Plotted Land Buyers in Telangana',
+    'slug' => 'dtcp-vs-hmda-approvals-guide',
+    'excerpt' => 'Understanding layout permissions, 100% clear legal titles, RERA registrations, and spot registration procedures before investing in open plots around Hyderabad.',
+    'image' => 'assests/image/generated/ventures/venture-premium-county-entrance.jpg',
+    'category' => 'Investment Guide',
+    'published_at' => '2026-10-08',
+  ],
+  2 => [
+    'title' => 'Telangana AI Fourth City: What It Means for Land Values Along Srisailam Highway',
+    'slug' => 'telangana-ai-fourth-city-impact-real-estate',
+    'excerpt' => 'An in-depth analysis of the upcoming 10,000+ acre AI Fourth City and how it is revolutionizing land values, commercial demand, and living standards in Kadthal.',
+    'image' => 'assests/image/generated/ventures/venture-rj-retreat-entrance.jpg',
+    'category' => 'Infrastructure',
+    'published_at' => '2026-09-28',
+  ],
+];
 
 // Known high-fidelity generated project imagery (mapped by project slug)
 $knownProjectImages = [
@@ -171,23 +204,55 @@ function getSliderImage($slider, $index) {
 }
 
 
-// Handle contact form submission
+// Handle form submissions (site visit, vendor, channel partner)
 $form_success = false;
+$vendor_success = false;
+$partner_success = false;
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $partnerType = isset($_POST['partner_type']) ? trim($_POST['partner_type']) : '';
   $name = isset($_POST['name']) ? trim($_POST['name']) : '';
   $email = isset($_POST['email']) ? trim($_POST['email']) : '';
   $phone = isset($_POST['phone']) ? trim($_POST['phone']) : '';
-  $venture = isset($_POST['venture']) ? trim($_POST['venture']) : '';
   $user_msg = isset($_POST['message']) ? trim($_POST['message']) : '';
-  $combined_msg = "Interested Venture: " . $venture . " | " . $user_msg;
 
-  if ($name && $phone) {
-    try {
-      $insertStmt = $pdo->prepare("INSERT INTO contact_submissions (name, email, phone, message, status, created_at, updated_at) VALUES (?, ?, ?, ?, 'new', NOW(), NOW())");
-      $insertStmt->execute([$name, $email, $phone, $combined_msg]);
-      $form_success = true;
-    } catch (Exception $e) {
-      // Graceful fallback
+  if ($partnerType === 'vendor' && $name && $phone) {
+    if (isset($pdo) && $pdo instanceof PDO) {
+      try {
+        $vStmt = $pdo->prepare("INSERT INTO vendors (name, email, phone, message, created_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())");
+        $vStmt->execute([$name, $email, $phone, $user_msg]);
+      } catch (\Throwable $e) {
+        try {
+          $cStmt = $pdo->prepare("INSERT INTO contact_submissions (name, email, phone, message, status, created_at, updated_at) VALUES (?, ?, ?, ?, 'vendor', NOW(), NOW())");
+          $cStmt->execute([$name, $email, $phone, "Vendor Application: " . $user_msg]);
+        } catch (\Throwable $e2) {}
+      }
+    }
+    $vendor_success = true;
+  } elseif ($partnerType === 'channel_partner' && $name && $phone) {
+    if (isset($pdo) && $pdo instanceof PDO) {
+      try {
+        $cpStmt = $pdo->prepare("INSERT INTO channel_partners (name, email, phone, message, created_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())");
+        $cpStmt->execute([$name, $email, $phone, $user_msg]);
+      } catch (\Throwable $e) {
+        try {
+          $cStmt = $pdo->prepare("INSERT INTO contact_submissions (name, email, phone, message, status, created_at, updated_at) VALUES (?, ?, ?, ?, 'channel_partner', NOW(), NOW())");
+          $cStmt->execute([$name, $email, $phone, "Channel Partner Registration: " . $user_msg]);
+        } catch (\Throwable $e2) {}
+      }
+    }
+    $partner_success = true;
+  } else {
+    $venture = isset($_POST['venture']) ? trim($_POST['venture']) : '';
+    $combined_msg = "Interested Venture: " . $venture . " | " . $user_msg;
+    if ($name && $phone) {
+      try {
+        $insertStmt = $pdo->prepare("INSERT INTO contact_submissions (name, email, phone, message, status, created_at, updated_at) VALUES (?, ?, ?, ?, 'new', NOW(), NOW())");
+        $insertStmt->execute([$name, $email, $phone, $combined_msg]);
+        $form_success = true;
+      } catch (Exception $e) {
+        // Graceful fallback
+      }
     }
   }
 }
@@ -264,7 +329,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               </li>
             </ul>
           </li>
-          <li><a href="#connectivity" class="lp-nav-link">Location</a></li>
+          <li><a href="location.php" class="lp-nav-link">Location</a></li>
+          <li><a href="#blogs" class="lp-nav-link">Blogs</a></li>
+          <li><a href="#partner-with-us" class="lp-nav-link">Partner With Us</a></li>
           <li><a href="#contact" class="lp-nav-link">Contact</a></li>
         </ul>
       </nav>
@@ -291,7 +358,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <li><a href="projects/rj-retreat/" class="lp-mobile-link lp-mobile-sublink">RJ Retreat</a></li>
       <li><a href="#ventures" class="lp-mobile-link lp-mobile-sublink">Premium County (Upcoming)</a></li>
       <li><a href="#completed-projects" class="lp-mobile-link lp-mobile-sublink">Completed Projects (166.8 Acres)</a></li>
-      <li><a href="#connectivity" class="lp-mobile-link">Location &amp; Route</a></li>
+      <li><a href="location.php" class="lp-mobile-link">Location &amp; Connectivity</a></li>
+      <li><a href="#blogs" class="lp-mobile-link">Blogs &amp; Insights</a></li>
+      <li><a href="#partner-with-us" class="lp-mobile-link">Partner With Us</a></li>
       <li><a href="#contact" class="lp-mobile-link">Contact Us</a></li>
     </ul>
     <div class="lp-mobile-footer">
@@ -889,41 +958,148 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </section>
 
   <!-- ==========================================================================
-       6. LOCATION & CONNECTIVITY
+       6. LATEST BLOGS & INDUSTRY INSIGHTS
        ========================================================================== -->
-  <section class="lp-connectivity" id="connectivity">
+  <section class="lp-blogs-section" id="blogs">
     <div class="container">
       <div class="lp-section-header" data-aos="fade-up">
-        <span class="lp-section-tag">Location Highlights</span>
-        <h2 class="lp-section-title">Prime Highway <span>Connectivity</span></h2>
+        <span class="lp-section-tag">Market Knowledge &amp; Trends</span>
+        <h2 class="lp-section-title">Latest <span>Blogs &amp; Insights</span></h2>
         <p class="lp-section-subtitle">
-          Our projects are strategically located near major highways and key Hyderabad infrastructure.
+          Expert real estate perspectives, Hyderabad growth corridor analysis, and smart DTCP/HMDA plot investment guides.
         </p>
       </div>
 
-      <div class="lp-connectivity-grid">
-        <div class="lp-metric-card" data-aos="fade-up" data-aos-delay="100">
-          <div class="lp-metric-number">05<span>Min</span></div>
-          <div class="lp-metric-label">AI Fourth City &amp; Maha Pyramid</div>
-          <div class="lp-metric-sub">Quick drive to upcoming government innovation hub and landmark center.</div>
+      <div class="lp-blogs-grid">
+        <?php 
+        $displayBlogs = !empty($latestBlogs) ? $latestBlogs : $blogFallbacks;
+        foreach ($displayBlogs as $bIndex => $blog):
+          $bDate = !empty($blog['published_at']) ? date('M d, Y', strtotime($blog['published_at'])) : 'Oct 2026';
+          $bImg = !empty($blog['image']) ? $blog['image'] : 'assests/image/generated/ventures/venture-greenleaf-entrance.jpg';
+          if (strpos($bImg, 'news/') === 0) {
+            $bImg = 'admin/storage/' . $bImg;
+          }
+          $bTitle = $blog['title'] ?? 'Paanchajanya Realty Update';
+          $bExcerpt = $blog['excerpt'] ?? 'Discover key real estate insights, high-growth corridors, and legally clear DTCP/HMDA plot investments in Hyderabad.';
+          $bCategory = $blog['category'] ?? 'Market Trends';
+          $bSlug = $blog['slug'] ?? '';
+          $bLink = $bSlug ? ("news-detail.php?slug=" . urlencode($bSlug)) : "blog.php";
+        ?>
+          <article class="lp-blog-card" data-aos="fade-up" data-aos-delay="<?php echo ($bIndex + 1) * 100; ?>">
+            <div class="lp-blog-img-wrapper">
+              <img src="<?php echo htmlspecialchars($bImg); ?>" alt="<?php echo htmlspecialchars($bTitle); ?>" class="lp-blog-img" loading="lazy">
+              <div class="lp-blog-date-badge"><?php echo htmlspecialchars($bDate); ?></div>
+            </div>
+            <div class="lp-blog-body">
+              <span class="lp-blog-category"><?php echo htmlspecialchars($bCategory); ?></span>
+              <h3 class="lp-blog-title"><?php echo htmlspecialchars($bTitle); ?></h3>
+              <p class="lp-blog-excerpt"><?php echo htmlspecialchars($bExcerpt); ?></p>
+              <div class="lp-blog-footer">
+                <a href="<?php echo htmlspecialchars($bLink); ?>" class="lp-blog-link">
+                  Read Article <span>&rarr;</span>
+                </a>
+              </div>
+            </div>
+          </article>
+        <?php endforeach; ?>
+      </div>
+
+      <div class="lp-blogs-cta" data-aos="fade-up">
+        <a href="blog.php" class="lp-btn-secondary" style="border-color: rgba(0,0,0,0.18); color: var(--text-primary); background: #FFFFF0;">
+          Explore All Articles &amp; News &rarr;
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       7. PARTNER WITH US (Vendors & Channel Partners)
+       ========================================================================== -->
+  <section class="lp-partner-section" id="partner-with-us">
+    <div class="container">
+      <div class="lp-section-header" data-aos="fade-up">
+        <span class="lp-section-tag">Collaborative Excellence</span>
+        <h2 class="lp-section-title">Partner <span>With Us</span></h2>
+        <p class="lp-section-subtitle">
+          Join hands with Paanchajanya Realty. We forge high-value, mutually profitable partnerships with leading contractors, suppliers, and registered channel partners.
+        </p>
+      </div>
+
+      <?php if (!empty($vendor_success)): ?>
+        <div style="padding: 16px; background: #e6f7ef; color: #0d684d; border-radius: 8px; margin-bottom: 24px; font-weight: 600; border: 1px solid #b7ebd3; text-align: center;">
+          ✓ Thank you for your vendor application! Our procurement team will contact you shortly.
+        </div>
+      <?php endif; ?>
+
+      <?php if (!empty($partner_success)): ?>
+        <div style="padding: 16px; background: #e6f7ef; color: #0d684d; border-radius: 8px; margin-bottom: 24px; font-weight: 600; border: 1px solid #b7ebd3; text-align: center;">
+          ✓ Thank you for registering as a Channel Partner! Our business development team will reach out soon.
+        </div>
+      <?php endif; ?>
+
+      <div class="lp-partner-grid">
+        <!-- Vendors Card -->
+        <div class="lp-partner-card" data-aos="fade-right">
+          <span class="lp-partner-badge">🔨 Suppliers &amp; Contractors</span>
+          <h3 class="lp-partner-title">Vendors</h3>
+          <p class="lp-partner-desc">
+            We value high-integrity vendor relationships to ensure the finest infrastructure standards across our plotted communities. Submit your profile below to initiate empanelment.
+          </p>
+
+          <form id="homeVendorForm" class="lp-partner-form" action="index.php#partner-with-us" method="POST">
+            <input type="hidden" name="partner_type" value="vendor">
+            
+            <div class="lp-form-group">
+              <input type="text" name="name" class="lp-form-control" placeholder="Vendor / Contact Name *" required>
+            </div>
+            <div class="lp-form-group">
+              <input type="email" name="email" class="lp-form-control" placeholder="Business Email *" required>
+            </div>
+            <div class="lp-form-group">
+              <input type="tel" name="phone" class="lp-form-control" placeholder="Phone Number *" required>
+            </div>
+            <div class="lp-form-group">
+              <textarea name="message" class="lp-form-control" placeholder="Business profile, services provided, or message *" required></textarea>
+            </div>
+
+            <div class="vendor-status-msg" style="display:none; font-size:0.9rem; padding:12px; border-radius:6px; margin-top:5px;"></div>
+
+            <div>
+              <button type="submit" class="lp-partner-btn">Submit Vendor Profile &rarr;</button>
+            </div>
+          </form>
         </div>
 
-        <div class="lp-metric-card" data-aos="fade-up" data-aos-delay="200">
-          <div class="lp-metric-number">10<span>Min</span></div>
-          <div class="lp-metric-label">Outer Ring Road &amp; RRR</div>
-          <div class="lp-metric-sub">Fast connectivity to the Regional Ring Road and ORR Exit junctions.</div>
-        </div>
+        <!-- Channel Partners Card -->
+        <div class="lp-partner-card" data-aos="fade-left">
+          <span class="lp-partner-badge">🤝 Real Estate Associates</span>
+          <h3 class="lp-partner-title">Channel Partners</h3>
+          <p class="lp-partner-desc">
+            Expand your portfolio with Hyderabad’s most trusted DTCP and HMDA plotted developments. Enjoy industry-leading incentives, timely payouts, and transparent site visit assistance.
+          </p>
 
-        <div class="lp-metric-card" data-aos="fade-up" data-aos-delay="300">
-          <div class="lp-metric-number">15<span>Min</span></div>
-          <div class="lp-metric-label">RGIA International Airport</div>
-          <div class="lp-metric-sub">Direct, signal-free drive to Hyderabad International Airport at Shamshabad.</div>
-        </div>
+          <form id="homePartnerForm" class="lp-partner-form" action="index.php#partner-with-us" method="POST">
+            <input type="hidden" name="partner_type" value="channel_partner">
+            
+            <div class="lp-form-group">
+              <input type="text" name="name" class="lp-form-control" placeholder="Partner / Agency Name *" required>
+            </div>
+            <div class="lp-form-group">
+              <input type="email" name="email" class="lp-form-control" placeholder="Email Address *" required>
+            </div>
+            <div class="lp-form-group">
+              <input type="tel" name="phone" class="lp-form-control" placeholder="Phone Number *" required>
+            </div>
+            <div class="lp-form-group">
+              <textarea name="message" class="lp-form-control" placeholder="Agency details, RERA ID (if any), or inquiry *" required></textarea>
+            </div>
 
-        <div class="lp-metric-card" data-aos="fade-up" data-aos-delay="400">
-          <div class="lp-metric-number">25<span>Min</span></div>
-          <div class="lp-metric-label">Gachibowli &amp; Financial District</div>
-          <div class="lp-metric-sub">Smooth expressway commute to Hitec City, top IT companies, and schools.</div>
+            <div class="partner-status-msg" style="display:none; font-size:0.9rem; padding:12px; border-radius:6px; margin-top:5px;"></div>
+
+            <div>
+              <button type="submit" class="lp-partner-btn">Register As Channel Partner &rarr;</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -1058,8 +1234,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <ul class="lp-footer-links">
             <li><a href="#about" class="lp-footer-link">About Us</a></li>
             <li><a href="#ventures" class="lp-footer-link">Ongoing Projects</a></li>
-            <li><a href="#completed-projects" class="lp-footer-link">Completed Projects (7)</a></li>
-            <li><a href="#connectivity" class="lp-footer-link">Location Highlights</a></li>
+            <li><a href="location.php" class="lp-footer-link">Strategic Locations</a></li>
+            <li><a href="#blogs" class="lp-footer-link">Blogs &amp; News</a></li>
+            <li><a href="#partner-with-us" class="lp-footer-link">Partner With Us</a></li>
             <li><a href="#contact" class="lp-footer-link">Contact &amp; Site Visit</a></li>
           </ul>
         </div>
