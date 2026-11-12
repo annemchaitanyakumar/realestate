@@ -948,9 +948,7 @@ if ($current_page == 'news-detail.php' && isset($article)) {
                 </li>
             </ul>
         </li>
-        <li id="menu-item-28265" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-28265">
-            <a href="location"><span style="color: #ffffff">Location</span></a>
-        </li>
+
         <li id="menu-item-28263" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-28263">
             <a href="partner-with-us"><span style="color: #ffffff">Partner with us</span></a>
         </li>
@@ -1070,7 +1068,7 @@ if ($current_page == 'news-detail.php' && isset($article)) {
         <li id="menu_mobile-item-28243" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-28243"><a href="projects/rj-retreat/"><span>RJ Retreat</span></a></li>
     </ul>
 </li></ul>
-</li><li id="menu_mobile-item-28265" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-28265"><a href="location"><span style="color: #FFFFFF;">Location</span></a></li><li id="menu_mobile-item-28264" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-28264"><a href="partner-with-us"><span style="color: #FFFFFF;">Partner with us</span></a></li><li id="menu_mobile-item-28263" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-28263"><a href="blog"><span style="color: #FFFFFF;">Blog</span></a></li> <li id="menu_mobile-item-28263" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-28263"><a href="contactus"><span style="color: #FFFFFF;">Contact Us</span></a></li></ul></nav><div class="socials_mobile"><a target="_blank" href="javascript:void(0);" class="social_item social_item_style_icons sc_icon_type_icons social_item_type_icons"><span class="social_icon social_icon_facebook-1" style=""><span class="icon-facebook-1"></span></span></a><a target="_blank" href="javascript:void(0);" class="social_item social_item_style_icons sc_icon_type_icons social_item_type_icons"><span class="social_icon social_icon_instagram" style=""><span class="icon-instagram"></span></span></a><a target="_blank" href="javascript:void(0);" class="social_item social_item_style_icons sc_icon_type_icons social_item_type_icons"><span class="social_icon social_icon_youtube2" style=""><span class="trx_addons_icon-youtube2"></span></span></a></div>            </div>
+</li><li id="menu_mobile-item-28264" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-28264"><a href="partner-with-us"><span style="color: #FFFFFF;">Partner with us</span></a></li><li id="menu_mobile-item-28263" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-28263"><a href="blog"><span style="color: #FFFFFF;">Blog</span></a></li> <li id="menu_mobile-item-28263" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-28263"><a href="contactus"><span style="color: #FFFFFF;">Contact Us</span></a></li></ul></nav><div class="socials_mobile"><a target="_blank" href="javascript:void(0);" class="social_item social_item_style_icons sc_icon_type_icons social_item_type_icons"><span class="social_icon social_icon_facebook-1" style=""><span class="icon-facebook-1"></span></span></a><a target="_blank" href="javascript:void(0);" class="social_item social_item_style_icons sc_icon_type_icons social_item_type_icons"><span class="social_icon social_icon_instagram" style=""><span class="icon-instagram"></span></span></a><a target="_blank" href="javascript:void(0);" class="social_item social_item_style_icons sc_icon_type_icons social_item_type_icons"><span class="social_icon social_icon_youtube2" style=""><span class="trx_addons_icon-youtube2"></span></span></a></div>            </div>
         </div><div class="menu_mobile_widgets_area"></div>
     </div>
 </div>
