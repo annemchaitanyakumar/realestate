@@ -918,7 +918,7 @@ if ($current_page == 'news-detail.php' && isset($article)) {
 >
     <ul id="sc_layouts_menu_575918428" class="sc_layouts_menu_nav">
         <li id="menu-item-28238" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-28238">
-            <a href="aboutus"><span style="color: #ffffff">About Us</span></a>
+            <a href="aboutus.php"><span style="color: #ffffff">About Us</span></a>
         </li>
         <li
             id="menu-item-18327"
@@ -1061,7 +1061,7 @@ if ($current_page == 'news-detail.php' && isset($article)) {
             <a class="menu_mobile_close menu_button_close" tabindex="0"><span class="menu_button_close_text">Close</span><span class="menu_button_close_icon"></span></a>
         </div>
         <div class="menu_mobile_content_wrap content_wrap">
-            <div class="menu_mobile_content_wrap_inner"><nav class="menu_mobile_nav_area" itemscope="itemscope" itemtype="https://schema.org/SiteNavigationElement"><ul id="menu_mobile_252574338"><li id="menu_mobile-item-28238" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-28238"><a href="aboutus"><span style="color: #ffffff;">About Us</span></a></li><li id="menu_mobile-item-18327" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-18327"><a href="javascript:void(0);"><span style="color: #FFFFFF;">Projects</span></a>
+            <div class="menu_mobile_content_wrap_inner"><nav class="menu_mobile_nav_area" itemscope="itemscope" itemtype="https://schema.org/SiteNavigationElement"><ul id="menu_mobile_252574338"><li id="menu_mobile-item-28238" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-28238"><a href="aboutus.php"><span style="color: #ffffff;">About Us</span></a></li><li id="menu_mobile-item-18327" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-18327"><a href="javascript:void(0);"><span style="color: #FFFFFF;">Projects</span></a>
 <ul class="sub-menu"><li id="menu_mobile-item-30409" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-30409"><a href="#"><span>Current Projects</span></a>
     <ul class="sub-menu">
         <li id="menu_mobile-item-28242" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-28242"><a href="projects/greenleaf/"><span>GreenLeaf @ Shamirpet</span></a></li>

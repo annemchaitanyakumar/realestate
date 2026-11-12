@@ -487,21 +487,20 @@
 
                     <p class="about-lead-text">
                         Founded in 2009 by <strong>Mr. Rajender Reddy</strong>, Paanchajanya Realty Pvt. Ltd.
-                        began its journey as <strong>Sahaja Properties</strong> with a clear, enduring vision:
-                        to deliver secure, legally approved, and high-appreciation plotted land investments.
+                        began its journey as <strong>Sahaja Properties</strong> with a vision to redefine real estate through strategic marketing, quality development, and customer-focused solutions.
                     </p>
 
                     <p class="about-lead-text">
-                        Over the past decade and a half, the company has grown into a premier developer of open plots and residential villa communities across 
-                        <strong>Hyderabad, Bengaluru, Shirdi, and Bangkok</strong>. With more than <strong>11 lakh square yards</strong> successfully delivered, Paanchajanya has earned the lasting trust of thousands of families and NRI investors.
+                        With over <strong>25 years of industry expertise</strong> and more than <strong>11 lakh square yards</strong> successfully delivered, we have established our presence across
+                        <strong>Hyderabad, Bengaluru, Shirdi, and Bangkok</strong>, specialising in real estate marketing, plotted developments, and residential villa communities.
                     </p>
 
                     <p class="about-lead-text">
-                        Built upon the core tenets of <strong>quality, transparency, and customer-first pricing</strong>, Paanchajanya Realty develops thoughtfully planned layouts featuring wide BT roads, underground electricity, dependable water infrastructure, and strict 100% Vastu compliance.
+                        Driven by market insight, transparent practices, and a commitment to quality, we focus on identifying promising locations, developing well-planned communities, and creating long-term value for homebuyers and investors.
                     </p>
 
                     <p class="about-lead-text">
-                        Backed by over <strong>25 years of hands-on real estate expertise</strong>, we continue to shape landmark communities in high-growth corridors—including the Srisailam Highway, Shamirpet, and the upcoming Hyderabad AI Fourth City.
+                        Today, Paanchajanya Realty continues to shape opportunities in emerging growth corridors, building a legacy rooted in trust, excellence, and sustainable development.
                     </p>
                 </div>
 
@@ -640,19 +639,23 @@
 
                             <div class="founder-bio-text">
                                 <p>
-                                    <strong>Mr. Rajender Reddy Dasari</strong> is a visionary entrepreneur whose career reflects leadership, integrity, and a profound commitment to creating sustainable, long-term wealth for land buyers.
+                                    <strong>Mr. Rajender Reddy Dasari</strong> is an entrepreneur whose journey reflects visionary leadership, integrity, and a commitment to creating lasting value in real estate.
                                 </p>
 
                                 <p>
-                                    He began his professional journey in <strong>journalism</strong>, dedicating six years to both print and electronic media. This journalistic foundation instilled in him an uncompromising respect for facts, ethical transparency, and public accountability. He subsequently transitioned into Hyderabad's vibrant real estate sector, spending nearly a decade heading sales, market development, and client advisory.
+                                    Beginning his career in print and electronic journalism, he spent six years building a foundation in transparency and ethical practices before transitioning into real estate. With nearly a decade of experience in sales, marketing, and business development, he was actively involved in real estate marketing under Sahaja Properties, gaining valuable industry expertise.
                                 </p>
 
                                 <p>
-                                    Driven by an ambition to transform plotted land acquisitions into a safe, transparent, and rewarding experience, Mr. Dasari founded <strong>Sahaja Properties</strong> in 2009. His dedication to honest documentation, spot registration, and fair pricing laid the solid cornerstone for what is now <strong>Paanchajanya Realty Pvt. Ltd.</strong>
+                                    In 2009, driven by an independent vision, he established <strong>Paanchajanya Realty Pvt. Ltd.</strong>, with a focus on strategic real estate marketing, quality development, and customer-centric growth.
                                 </p>
 
                                 <p>
-                                    Under his stewardship, Paanchajanya Realty has successfully delivered over <strong>11 lakh square yards</strong> across major Indian and international hubs—including Hyderabad, Bengaluru, Shirdi, and Bangkok. His customer-first ethos continues to inspire our mission of developing communities that enrich lives and appreciate for generations.
+                                    Under his leadership, the company has successfully delivered over <strong>11 lakh square yards</strong> across Hyderabad, Bengaluru, Shirdi, and Bangkok.
+                                </p>
+
+                                <p>
+                                    His philosophy remains simple: <em>building trust, creating value, and developing communities that stand the test of time.</em>
                                 </p>
                             </div>
 

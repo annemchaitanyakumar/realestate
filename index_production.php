@@ -1,4 +1,14 @@
 <?php 
+// Clean URL router fallback (ensures /aboutus, /blog, /contactus work under php -S server)
+$requestUri = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
+$route = trim($requestUri, '/');
+if (!empty($route) && $route !== 'index' && $route !== 'index.php') {
+    if (file_exists(__DIR__ . '/' . $route . '.php')) {
+        include __DIR__ . '/' . $route . '.php';
+        exit;
+    }
+}
+
 try {
   include_once 'includes/db.php';
 } catch (\Throwable $e) {
@@ -283,7 +293,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <!-- Desktop Nav -->
       <nav>
         <ul class="lp-nav-menu">
-          <li><a href="#about" class="lp-nav-link">About Us</a></li>
+          <li><a href="aboutus.php" class="lp-nav-link">About Us</a></li>
           <li class="lp-nav-item-dropdown">
             <a href="#ventures" class="lp-nav-link">Our Projects ▾</a>
             <ul class="lp-nav-dropdown">
@@ -351,7 +361,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <div class="lp-mobile-nav-backdrop"></div>
   <aside class="lp-mobile-nav">
     <ul class="lp-mobile-menu">
-      <li><a href="#about" class="lp-mobile-link">About Us</a></li>
+      <li><a href="aboutus.php" class="lp-mobile-link">About Us</a></li>
       <li><a href="#ventures" class="lp-mobile-link">Ongoing Projects</a></li>
       <li><a href="projects/greenleaf/" class="lp-mobile-link lp-mobile-sublink" style="color:var(--accent-gold); font-weight:700;">GreenLeaf Villa Plots (Shamirpet)</a></li>
       <li><a href="projects/rj-retreat/" class="lp-mobile-link lp-mobile-sublink">RJ Retreat</a></li>
@@ -452,24 +462,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <div>
           <p class="lp-lead-text">
-            Paanchajanya Realty is one of Hyderabad’s most dependable real estate companies. For more than <strong>25 years</strong>, we have helped thousands of families and investors purchase <strong>clear-title, legally approved plots</strong> with high property appreciation.
+            Founded in 2009 by <strong>Mr. Rajender Reddy</strong>, Paanchajanya Realty Pvt. Ltd. began its journey as <strong>Sahaja Properties</strong> with a vision to redefine real estate through strategic marketing, quality development, and customer-focused solutions.
           </p>
           <p style="color: var(--text-secondary); line-height: 1.8; margin-bottom: 2rem;">
-            From our major residential ventures on Srisailam Highway to prime land parcels near the <strong>upcoming AI Fourth City</strong>, we develop projects with wide BT roads, underground electricity, water pipelines, and 100% Vastu compliance. Our goal is simple: clear documentation, spot registration, and complete peace of mind for every buyer.
+            With over <strong>25 years of industry expertise</strong> and more than <strong>11 lakh square yards</strong> successfully delivered across <strong>Hyderabad, Bengaluru, Shirdi, and Bangkok</strong>, we specialise in real estate marketing, plotted developments, and residential villa communities—building communities rooted in trust, excellence, and sustainable development.
           </p>
 
           <div class="lp-philosophy-stats-row" data-aos="fade-up" data-aos-delay="150">
             <div>
               <div class="lp-mini-stat-num">25<span>+</span></div>
-              <div class="lp-mini-stat-label">Years of Experience</div>
+              <div class="lp-mini-stat-label">Years Expertise</div>
             </div>
             <div>
-              <div class="lp-mini-stat-num">50<span>+</span></div>
-              <div class="lp-mini-stat-label">Delivered Projects</div>
+              <div class="lp-mini-stat-num">11L<span>+</span></div>
+              <div class="lp-mini-stat-label">Sq. Yds Delivered</div>
             </div>
             <div>
-              <div class="lp-mini-stat-num">527<span>+</span></div>
-              <div class="lp-mini-stat-label">Acres Developed</div>
+              <div class="lp-mini-stat-num">4</div>
+              <div class="lp-mini-stat-label">Key Hubs (HYD, BLR, Shirdi, BKK)</div>
             </div>
           </div>
         </div>
@@ -480,22 +490,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div style="text-align:center; margin-bottom: 2.5rem;">
           <span class="lp-section-tag" style="margin-bottom:0.5rem;">Leadership &amp; Management</span>
           <h3 style="font-family: var(--font-serif); font-size: clamp(1.8rem, 2.5vw, 2.4rem); color: var(--text-primary); margin:0;">
-            Founder &amp; Managing Director
+            Founder &amp; Chairman
           </h3>
         </div>
 
         <div class="lp-leadership-grid">
           <!-- Founder Spotlight Card -->
           <div class="lp-leader-card" data-aos="fade-right" data-aos-delay="100">
-            <img src="assests/image/Rajender.png" alt="Mr. Rajender Reddy Dasari" class="lp-leader-img lp-parallax-media" data-parallax="media" data-parallax-speed="0.08">
+            <img src="assests/image/Rajender.png" alt="Mr. Rajender Reddy Dasari - Founder & Chairman" class="lp-leader-img lp-parallax-media" data-parallax="media" data-parallax-speed="0.08">
             <div class="lp-leader-info">
               <span class="lp-leader-role">Founder &amp; Chairman</span>
-              <h3 class="lp-leader-name">Mr. Rajender Reddy</h3>
+              <h3 class="lp-leader-name">Mr. Rajender Reddy Dasari</h3>
               <p class="lp-leader-bio">
-                With over 25 years of hands-on experience in Hyderabad real estate, Mr. Rajender Reddy has built Paanchajanya Realty on honesty, clear documentation, and on-time project execution, earning the trust of thousands of plot buyers and families.
+                An entrepreneur whose journey reflects visionary leadership, integrity, and a commitment to creating lasting value in real estate. Starting in journalism, he built a foundation in transparency before founding Sahaja Properties and later establishing Paanchajanya Realty in 2009—delivering over 11 lakh square yards across Hyderabad, Bengaluru, Shirdi, and Bangkok.
               </p>
               <div style="margin-top: 1.25rem;">
-                <a href="aboutus" class="lp-btn-card-view" style="font-size:0.85rem; padding: 0.6rem 1.3rem;">
+                <a href="aboutus.php" class="lp-btn-card-view" style="font-size:0.85rem; padding: 0.6rem 1.3rem;">
                   Read Complete Story &rarr;
                 </a>
               </div>
@@ -507,24 +517,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="lp-record-item">
               <div class="lp-record-num">25+</div>
               <div>
-                <div class="lp-record-title">Years of Experience</div>
-                <div class="lp-record-desc">Serving buyers and investors across Hyderabad and Telangana since 2001.</div>
+                <div class="lp-record-title">Years Industry Expertise</div>
+                <div class="lp-record-desc">Rooted in strategic real estate marketing, market insight, and customer-focused solutions.</div>
               </div>
             </div>
 
             <div class="lp-record-item">
-              <div class="lp-record-num">50+</div>
+              <div class="lp-record-num">11L+</div>
               <div>
-                <div class="lp-record-title">Delivered Projects</div>
-                <div class="lp-record-desc">Over 50 completed residential layouts delivered with 100% clear passbooks.</div>
+                <div class="lp-record-title">Sq. Yards Delivered</div>
+                <div class="lp-record-desc">Successfully delivered across Hyderabad, Bengaluru, Shirdi, and Bangkok.</div>
               </div>
             </div>
 
             <div class="lp-record-item">
-              <div class="lp-record-num">2,750+</div>
+              <div class="lp-record-num">4</div>
               <div>
-                <div class="lp-record-title">Satisfied Landowners</div>
-                <div class="lp-record-desc">Happy customers who have seen their investment multiply across growth corridors.</div>
+                <div class="lp-record-title">Established Hubs</div>
+                <div class="lp-record-desc">Active footprint across Hyderabad, Bengaluru, Shirdi, and Bangkok.</div>
               </div>
             </div>
           </div>
@@ -1222,7 +1232,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div>
           <div class="lp-footer-col-title">Quick Links</div>
           <ul class="lp-footer-links">
-            <li><a href="#about" class="lp-footer-link">About Us</a></li>
+            <li><a href="aboutus.php" class="lp-footer-link">About Us</a></li>
             <li><a href="#ventures" class="lp-footer-link">Ongoing Projects</a></li>
             <li><a href="#blogs" class="lp-footer-link">Blogs &amp; News</a></li>
             <li><a href="#partner-with-us" class="lp-footer-link">Partner With Us</a></li>
