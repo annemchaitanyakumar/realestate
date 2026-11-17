@@ -17,14 +17,14 @@
         <meta property="og:url" content="https://paanchajanyareality.com/projects/rj-retreat/" />
         <meta property="og:title" content="DRR Premium County - Premium Plots in Hyderabad | Paanchajanya Reality" />
         <meta property="og:description" content="Explore DRR Premium County by Paanchajanya Reality. Premium residential plots in Hyderabad with modern amenities." />
-        <meta property="og:image" content="/assests/image/generated/ventures/venture-rj-retreat-entrance.jpg" />
+        <meta property="og:image" content="/assests/projects/Rj-retreat/rj-retreat-farmhouse-hero.jpg?v=20261117_farmhouse" />
 
         <!-- Twitter -->
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://paanchajanyareality.com/projects/rj-retreat/" />
-        <meta property="twitter:title" content="DRR Premium County - Premium Plots in Hyderabad | Paanchajanya Reality" />
-        <meta property="twitter:description" content="Explore DRR Premium County by Paanchajanya Reality. Premium residential plots in Hyderabad with modern amenities." />
-        <meta property="twitter:image" content="/assests/image/generated/ventures/venture-rj-retreat-entrance.jpg" />
+        <meta property="twitter:title" content="RJ Retreat - Countryside Living | Paanchajanya Realty" />
+        <meta property="twitter:description" content="Explore RJ Retreat by Paanchajanya Realty. Live closer to nature in Shamirpet, Hyderabad." />
+        <meta property="twitter:image" content="/assests/projects/Rj-retreat/rj-retreat-farmhouse-hero.jpg?v=20261117_farmhouse" />
 
         <link rel="canonical" href="https://paanchajanyareality.com/projects/rj-retreat/" />
         <meta name="robots" content="index, follow" />
@@ -41,7 +41,7 @@
                 flex-direction: column !important;
                 align-items: center !important;
                 justify-content: center !important;
-                background: url('/assests/image/generated/ventures/venture-rj-retreat-entrance.jpg') center center / cover no-repeat !important;
+                background: url('/assests/projects/Rj-retreat/rj-retreat-farmhouse-hero.jpg?v=20261117_farmhouse') center center / cover no-repeat !important;
                 overflow: hidden !important;
             }
             .video-bg {

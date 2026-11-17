@@ -63,7 +63,7 @@ $blogFallbacks = [
     'title' => 'Telangana AI Fourth City: What It Means for Land Values Along Srisailam Highway',
     'slug' => 'telangana-ai-fourth-city-impact-real-estate',
     'excerpt' => 'An in-depth analysis of the upcoming 10,000+ acre AI Fourth City and how it is revolutionizing land values, commercial demand, and living standards in Kadthal.',
-    'image' => 'assests/image/generated/ventures/venture-rj-retreat-entrance.jpg',
+    'image' => 'assests/image/generated/ventures/rj-retreat-farmhouse-hero.jpg?v=20261117_farmhouse',
     'category' => 'Infrastructure',
     'published_at' => '2026-09-28',
   ],
@@ -72,7 +72,7 @@ $blogFallbacks = [
 // Known high-fidelity generated project imagery (mapped by project slug)
 $knownProjectImages = [
   'greenleaf-shamirpet' => 'assests/image/generated/ventures/venture-greenleaf-entrance.jpg',
-  'rj-retreat'          => 'assests/image/generated/ventures/venture-rj-retreat-entrance.jpg',
+  'rj-retreat'          => 'assests/image/generated/ventures/rj-retreat-farmhouse-hero.jpg?v=20261117_farmhouse',
   'premium-county'      => 'assests/image/generated/ventures/venture-premium-county-entrance.jpg',
   'nbr-enclave'         => 'assests/image/generated/completed/nbr-enclave.jpg',
   'vidarbha-ext'        => 'assests/image/generated/completed/vidarbha-ext.jpg',
@@ -88,22 +88,22 @@ $sliderFallbacks = [
   0 => [
     'title' => 'Own Land. Build Dreams. Create Legacy.',
     'subtitle' => 'DTCP & HMDA Approved Open Plots in Hyderabad',
-    'image' => 'assests/image/generated/sliders/slider-1-paanchajanya-heritage.jpg',
+    'image' => 'assests/image/generated/sliders/banner-1-paanchajanya-heritage-2026.jpg?v=20261117_banners',
   ],
   1 => [
     'title' => 'Paanchajanya Venture - Shamirpet',
     'subtitle' => 'Premium Plots Near ORR Exit 7, Shamirpet',
-    'image' => 'assests/image/generated/sliders/slider-2-greenleaf-shamirpet.jpg',
+    'image' => 'assests/image/generated/sliders/banner-2-greenleaf-shamirpet-2026.jpg?v=20261117_banners',
   ],
   2 => [
     'title' => 'RJ Retreat - Shamirpet',
     'subtitle' => 'Near ORR Exit 7 & Genome Valley',
-    'image' => 'assests/image/generated/sliders/slider-3-rj-retreat-kadthal.jpg',
+    'image' => 'assests/image/generated/sliders/banner-3-rj-retreat-kadthal-2026.jpg?v=20261117_banners',
   ],
   3 => [
     'title' => 'Premium County - Kadthal Growth Zone',
     'subtitle' => 'Strategic Plotted Living on Srisailam Highway',
-    'image' => 'assests/image/generated/sliders/slider-4-premium-county.jpg',
+    'image' => 'assests/image/generated/sliders/banner-4-premium-county-2026.jpg?v=20261117_banners',
   ],
 ];
 
@@ -174,43 +174,9 @@ function getProjectImage($slug, $fallback, $projectsBySlug) {
 // Helper to resolve slider image
 function getSliderImage($slider, $index) {
   global $sliderFallbacks;
-  $fallback = $sliderFallbacks[$index % count($sliderFallbacks)]['image'];
-  
-  if (empty($slider['image'])) {
-    return $fallback;
-  }
-  
-  $img = trim($slider['image']);
-  
-  // Filter out the legacy hashed filenames that produced 404s
-  $legacySliderHashes = [
-    'oPAT',
-    'EQPG',
-    'Suxy',
-    'BSMD',
-    'TRpD',
-    'vk26',
-  ];
-  foreach ($legacySliderHashes as $hash) {
-    if (strpos($img, $hash) !== false) {
-      return $fallback;
-    }
-  }
-  
-  // If points to generated slider asset
-  if (strpos($img, 'slider-') !== false) {
-    $base = basename($img);
-    $possibleAsset = 'assests/image/generated/sliders/' . $base;
-    if (file_exists(__DIR__ . '/' . $possibleAsset)) {
-      return $possibleAsset;
-    }
-    if (file_exists(__DIR__ . '/' . $img)) {
-      return $img;
-    }
-  }
-  
-  $resolved = resolveImageSrc($img, $fallback);
-  return $resolved;
+  $idx = $index % count($sliderFallbacks);
+  // Prioritize verified 2026 hero banners to avoid stale CDN/DB images
+  return $sliderFallbacks[$idx]['image'];
 }
 
 
@@ -277,7 +243,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <link rel="icon" type="image/png" href="assests/image/paanchajanya-logo-new.png">
 
   <!-- Core Luxury Styling -->
-  <link rel="stylesheet" href="assests/css/laperla-luxury.css">
+  <link rel="stylesheet" href="assests/css/laperla-luxury.css?v=20261117_banners">
 </head>
 <body>
 
@@ -383,7 +349,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <section class="lp-hero" id="hero">
     <div class="lp-hero-slides">
       <?php 
-      $displaySliders = !empty($sliders) ? $sliders : $sliderFallbacks;
+      $displaySliders = !empty($sliders) ? array_slice($sliders, 0, 4) : $sliderFallbacks;
+      if (count($displaySliders) < 4) {
+        $displaySliders = $sliderFallbacks;
+      }
       foreach ($displaySliders as $index => $slider): 
         $slideSrc = getSliderImage($slider, $index);
         $slideTitle = $slider['title'] ?? ($sliderFallbacks[$index % count($sliderFallbacks)]['title'] ?? 'Paanchajanya Realty');
@@ -1318,6 +1287,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </div>
 
   <!-- Scripts -->
-  <script src="assests/js/laperla-luxury.js"></script>
+  <script src="assests/js/laperla-luxury.js?v=20261117_banners"></script>
 </body>
 </html>

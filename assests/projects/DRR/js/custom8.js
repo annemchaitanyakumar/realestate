@@ -24403,7 +24403,7 @@
                                     alignItems: "center",
                                     justifyContent: "center",
                                     overflow: "hidden",
-                                    background: "url('/assests/image/generated/ventures/venture-rj-retreat-entrance.jpg') center center / cover no-repeat",
+                                    background: "url('/assests/projects/Rj-retreat/rj-retreat-farmhouse-hero.jpg?v=20261117_farmhouse') center center / cover no-repeat",
                                 },
                                 children: [
                                     (0, St.jsx)("div", {
@@ -24429,7 +24429,7 @@
                                             zIndex: 2,
                                             opacity: 1,
                                             y: 0,
-                                            filter: "drop-shadow(0 4px 18px rgba(255, 255, 255, 0.95)) drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4))",
+                                            filter: "drop-shadow(0 4px 14px rgba(0, 0, 0, 0.85)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.95))",
                                         },
                                         loading: "eager",
                                         decoding: "async",
