@@ -29,8 +29,8 @@
         <link rel="canonical" href="https://paanchajanyareality.com/projects/rj-retreat/" />
         <meta name="robots" content="index, follow" />
         <script async="" src="https://scripts.clarity.ms/0.8.56/clarity.js"></script>
-        <script defer="defer" src="/assests/projects/DRR/js/custom8.js"></script>
-        <link href="/assests/projects/DRR/css/main.e54e2a16.css" rel="stylesheet" />
+        <script defer="defer" src="/assests/projects/DRR/js/custom8.js?v=20261117_wheat"></script>
+        <link href="/assests/projects/DRR/css/main.e54e2a16.css?v=20261117_wheat" rel="stylesheet" />
         <style>
             /* RJ Retreat Hero Banner Styling */
             #banner, .hero {
@@ -176,7 +176,7 @@
                 <section id="banner" class="hero">
                     <div class="overlay"></div>
                     <img
-                        src="/assests/projects/Rj-retreat/rj-retreat.png"
+                        src="/assests/projects/Rj-retreat/rj-retreat-wheat.png?v=20261117"
                         alt="RJ Retreat logo"
                         width="280"
                         height="105"

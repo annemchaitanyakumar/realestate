@@ -24386,7 +24386,7 @@
                                             : undefined,
                                     }),
                                     (0, St.jsx)(_u.img, {
-                                        src: "/assests/projects/Rj-retreat/rj-retreat.png",
+                                        src: "/assests/projects/Rj-retreat/rj-retreat-wheat.png?v=20261117",
                                         alt: "RJ Retreat logo",
                                         width: "160",
                                         height: "60",

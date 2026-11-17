@@ -24416,7 +24416,7 @@
                                         },
                                     }),
                                     (0, St.jsx)(_u.img, {
-                                        src: "/assests/projects/Rj-retreat/rj-retreat.png",
+                                        src: "/assests/projects/Rj-retreat/rj-retreat-wheat.png?v=20261117",
                                         alt: "RJ Retreat logo",
                                         width: "280",
                                         height: "105",
@@ -36198,7 +36198,7 @@
                         (0, St.jsx)("div", {
                             className: "footer-logo text-center mb-3",
                             children: (0, St.jsx)("img", {
-                                src: "/assests/projects/Rj-retreat/rj-retreat.png",
+                                src: "/assests/projects/Rj-retreat/rj-retreat-wheat.png?v=20261117",
                                 alt: "RJ Retreat logo",
                                 style: { width: "190px" },
                             }),
