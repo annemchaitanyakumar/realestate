@@ -423,8 +423,8 @@
                 <h3>Book a Free Weekend Site Visit</h3>
                 <p>We provide complimentary, private AC vehicle pickup and drop for you and your family directly from Hyderabad to our venture sites. Check the road widths, verified DTCP/HMDA layouts, and surrounding infrastructure firsthand.</p>
                 <div class="loc-cta-btns">
-                    <a href="tel:+917237997999" class="loc-btn-gold"><i class="fas fa-phone-alt"></i> Call +91 723 799 7999</a>
-                    <a href="https://wa.me/917237997999?text=Hello%2C%20I%20would%20like%20to%20book%20a%20free%20site%20visit%20to%20Paanchajanya%20ventures." target="_blank" class="loc-btn-outline"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
+                    <a href="tel:+919059050059" class="loc-btn-gold"><i class="fas fa-phone-alt"></i> Call +91 90590 50059</a>
+                    <a href="https://wa.me/919059050059?text=Hello%2C%20I%20would%20like%20to%20book%20a%20free%20site%20visit%20to%20Paanchajanya%20ventures." target="_blank" class="loc-btn-outline"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
                     <a href="contactus.php" class="loc-btn-outline">Send An Inquiry</a>
                 </div>
             </div>

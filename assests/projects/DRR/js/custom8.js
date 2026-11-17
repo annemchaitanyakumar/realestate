@@ -24394,153 +24394,48 @@
                             (0, St.jsxs)("section", {
                                 id: "banner",
                                 className: "hero",
-                                style: s ? { height: "100vh", minHeight: "100svh", position: "relative" } : undefined,
+                                style: {
+                                    minHeight: "85vh",
+                                    height: "85vh",
+                                    position: "relative",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    overflow: "hidden",
+                                    background: "url('/assests/image/generated/ventures/venture-rj-retreat-entrance.jpg') center center / cover no-repeat",
+                                },
                                 children: [
-                                    (0, St.jsx)("video", {
-                                        autoPlay: !0,
-                                        muted: !0,
-                                        loop: !0,
-                                        playsInline: !0,
-                                        preload: "metadata",
-                                        poster: "",
-                                        className: "video-bg",
-                                        style: s
-                                            ? {
-                                                  background: "#fff",
-                                              }
-                                            : undefined,
-                                        children: (0, St.jsx)("source", {
-                                            src: s ? "" : "",
-                                            type: "video/mp4",
-                                        }),
-                                    }),
                                     (0, St.jsx)("div", {
                                         className: "overlay",
-                                        style: s
-                                            ? {
-                                                  background: "transparent",
-                                              }
-                                            : undefined,
+                                        style: {
+                                            position: "absolute",
+                                            inset: 0,
+                                            background: "linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.05) 50%, rgba(0, 0, 0, 0.45) 100%)",
+                                            zIndex: 1,
+                                        },
                                     }),
                                     (0, St.jsx)(_u.img, {
                                         src: "/assests/projects/Rj-retreat/rj-retreat.png",
                                         alt: "RJ Retreat logo",
-                                        width: "160",
-                                        height: "60",
+                                        width: "280",
+                                        height: "105",
                                         className: "hero-logos",
                                         initial: { scale: 1 },
                                         animate: { scale: 1 },
                                         transition: { duration: 0 },
-                                        style: { opacity: s ? 1 : a, y: s ? -200 : -120 },
+                                        style: {
+                                            position: "relative",
+                                            zIndex: 2,
+                                            opacity: 1,
+                                            y: 0,
+                                            filter: "drop-shadow(0 4px 18px rgba(255, 255, 255, 0.95)) drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4))",
+                                        },
                                         loading: "eager",
                                         decoding: "async",
                                         fetchpriority: "high",
                                     }),
-                                    (0, St.jsxs)(_u.div, {
-                                        style: s
-                                            ? {
-                                                  position: "absolute",
-                                                  left: "18px",
-                                                  right: "18px",
-                                                  bottom: "29%",
-                                                  zIndex: 10,
-                                                  opacity: 1,
-                                                  padding: "24px 18px",
-                                                  border: "1px solid rgba(220, 184, 105, 0.6)",
-                                                  borderRadius: "20px",
-                                                  background: "rgba(14, 35, 28, 0.84)",
-                                                  boxShadow: "0 16px 42px rgba(0, 0, 0, 0.24)",
-                                                  color: "#fff",
-                                                  textAlign: "center",
-                                              }
-                                            : { display: "none" },
-                                        children: [
-                                            (0, St.jsx)("p", {
-                                                style: {
-                                                    margin: "0 0 10px",
-                                                    color: "#e3c274",
-                                                    fontSize: "11px",
-                                                    fontWeight: 700,
-                                                    letterSpacing: "2px",
-                                                },
-                                                children: "LIVE CLOSER TO NATURE",
-                                            }),
-                                            (0, St.jsx)("h1", {
-                                                style: {
-                                                    margin: "0 0 8px",
-                                                    color: "#fff",
-                                                    fontSize: "32px",
-                                                    fontWeight: 600,
-                                                    lineHeight: 1.1,
-                                                },
-                                                children: "RJ Retreat",
-                                            }),
-                                            (0, St.jsx)("p", {
-                                                style: {
-                                                    margin: "0 0 6px",
-                                                    color: "#fff",
-                                                    fontSize: "16px",
-                                                    lineHeight: 1.4,
-                                                },
-                                                children: "A Premium Countryside Retreat",
-                                            }),
-                                            (0, St.jsx)("p", {
-                                                style: {
-                                                    margin: "0 0 12px",
-                                                    color: "rgba(255, 255, 255, 0.82)",
-                                                    fontSize: "13px",
-                                                    lineHeight: 1.4,
-                                                },
-                                                children: "For Living, Leisure & Ownership",
-                                            }),
-                                            (0, St.jsx)("p", {
-                                                style: {
-                                                    margin: 0,
-                                                    color: "#e3c274",
-                                                    fontSize: "12px",
-                                                    lineHeight: 1.5,
-                                                },
-                                                children: "Gauraram · Shamirpet · Hyderabad",
-                                            }),
-                                        ],
-                                    }),
                                 ],
-                            }),
-                            (0, St.jsx)("section", {
-                                className: "banner_parallax_section",
-                                style: s ? { display: "none" } : undefined,
-                                children: (0, St.jsxs)("div", {
-                                    className: "sticky-wrap",
-                                    children: [
-                                        (0, St.jsxs)(_u.h1, {
-                                            style: { y: n, opacity: i },
-                                            className: "parallax-heading sticky-heading",
-                                            children: [
-                                                "",
-                                                (0, St.jsxs)("p", {
-                                                    className: "location_name",
-                                                    children: [
-                                                        (0, St.jsx)("span", { className: "at", children: "" }),
-                                                        "",
-                                                    ],
-                                                }),
-                                            ],
-                                        }),
-                                        (0, St.jsx)(_u.img, {
-                                            style: { y: s ? -80 : r, opacity: o },
-                                            src: s
-                                                ? "/assests/projects/Rj-retreat/punch4.png"
-                                                : "/assests/projects/Rj-retreat/punch4.png",
-                                            alt: "Project lifestyle image",
-                                            width: "800",
-                                            height: "600",
-                                            className: "parallax-img",
-                                            loading: "lazy",
-                                            decoding: "async",
-                                            fetchpriority: "low",
-                                        }),
-                                    ],
-                                }),
                             }),
                         ],
                     })

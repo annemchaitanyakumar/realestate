@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentSlide = 0;
     const totalSlides = slides.length;
     let slideInterval;
-    const SLIDE_DURATION = 6500;
+    const SLIDE_DURATION = 4500; // 4.5 seconds per banner auto-loop (smooth & comfortable)
 
     function showSlide(index) {
       slides.forEach(s => s.classList.remove('active'));
@@ -92,11 +92,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       });
     });
-
-    if (heroSection) {
-      heroSection.addEventListener('mouseenter', () => clearInterval(slideInterval));
-      heroSection.addEventListener('mouseleave', () => resetInterval());
-    }
 
     function startInterval() {
       slideInterval = setInterval(nextSlide, SLIDE_DURATION);

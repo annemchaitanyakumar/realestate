@@ -313,7 +313,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 <i class="fa-solid fa-headset"></i>
                                             </div>
                                             <h4>Quick Connect</h4>
-                                            <p>Call us: <a href="tel:+917237997999">+91 723 799 7999</a></p>
+                                            <p>Call us: <a href="tel:+919059050059">+91 90590 50059</a></p>
                                             <p>Support: <a href="mailto:Paanchajanyarealty@gmail.com">Paanchajanyarealty@gmail.com</a></p>
                                         </div>
                                     </div>
@@ -350,7 +350,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="cta-content">
                 <h2 style="color: aliceblue;">Ready to witness your future home?</h2>
                 <p style="color: #aaa; font-size: 1.2rem; max-width: 600px; margin: 0 auto 30px;">Book a personalized site visit with our experts and experience the Paanchajanya lifestyle firsthand.</p>
-                <a href="tel:+917237997999" class="cta-btn">Book a Site Visit</a>
+                <a href="tel:+919059050059" class="cta-btn">Book a Site Visit</a>
             </div>
         </div>
     </section>

@@ -491,7 +491,7 @@
                     </p>
 
                     <p class="about-lead-text">
-                        With over <strong>25 years of industry expertise</strong> and more than <strong>11 lakh square yards</strong> successfully delivered, we have established our presence across
+                        With over <strong>25 years of industry expertise</strong> and more than <strong>12 lakh square yards</strong> successfully delivered, we have established our presence across
                         <strong>Hyderabad, Bengaluru, Shirdi, and Bangkok</strong>, specialising in real estate marketing, plotted developments, and residential villa communities.
                     </p>
 
@@ -651,7 +651,7 @@
                                 </p>
 
                                 <p>
-                                    Under his leadership, the company has successfully delivered over <strong>11 lakh square yards</strong> across Hyderabad, Bengaluru, Shirdi, and Bangkok.
+                                    Under his leadership, the company has successfully delivered over <strong>12 lakh square yards</strong> across Hyderabad, Bengaluru, Shirdi, and Bangkok.
                                 </p>
 
                                 <p>

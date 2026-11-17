@@ -432,12 +432,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </button>
           <?php endforeach; ?>
         </div>
-
-        <div class="lp-hero-controls">
-          <button class="lp-hero-arrow lp-prev-slide" aria-label="Previous slide">&#10094;</button>
-          <span class="lp-hero-counter">01 / <?php echo str_pad(max(1, count($displaySliders)), 2, "0", STR_PAD_LEFT); ?></span>
-          <button class="lp-hero-arrow lp-next-slide" aria-label="Next slide">&#10095;</button>
-        </div>
       </div>
     </div>
   </section>
@@ -465,7 +459,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             Founded in 2009 by <strong>Mr. Rajender Reddy</strong>, Paanchajanya Realty Pvt. Ltd. began its journey as <strong>Sahaja Properties</strong> with a vision to redefine real estate through strategic marketing, quality development, and customer-focused solutions.
           </p>
           <p style="color: var(--text-secondary); line-height: 1.8; margin-bottom: 2rem;">
-            With over <strong>25 years of industry expertise</strong> and more than <strong>11 lakh square yards</strong> successfully delivered across <strong>Hyderabad, Bengaluru, Shirdi, and Bangkok</strong>, we specialise in real estate marketing, plotted developments, and residential villa communities—building communities rooted in trust, excellence, and sustainable development.
+            With over <strong>25 years of industry expertise</strong> and more than <strong>12 lakh square yards</strong> successfully delivered across <strong>Hyderabad, Bengaluru, Shirdi, and Bangkok</strong>, we specialise in real estate marketing, plotted developments, and residential villa communities—building communities rooted in trust, excellence, and sustainable development.
           </p>
 
           <div class="lp-philosophy-stats-row" data-aos="fade-up" data-aos-delay="150">
@@ -474,7 +468,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <div class="lp-mini-stat-label">Years Expertise</div>
             </div>
             <div>
-              <div class="lp-mini-stat-num">11L<span>+</span></div>
+              <div class="lp-mini-stat-num">12L<span>+</span></div>
               <div class="lp-mini-stat-label">Sq. Yds Delivered</div>
             </div>
             <div>
@@ -502,7 +496,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <span class="lp-leader-role">Founder &amp; Chairman</span>
               <h3 class="lp-leader-name">Mr. Rajender Reddy Dasari</h3>
               <p class="lp-leader-bio">
-                An entrepreneur whose journey reflects visionary leadership, integrity, and a commitment to creating lasting value in real estate. Starting in journalism, he built a foundation in transparency before founding Sahaja Properties and later establishing Paanchajanya Realty in 2009—delivering over 11 lakh square yards across Hyderabad, Bengaluru, Shirdi, and Bangkok.
+                An entrepreneur whose journey reflects visionary leadership, integrity, and a commitment to creating lasting value in real estate. Starting in journalism, he built a foundation in transparency before founding Sahaja Properties and later establishing Paanchajanya Realty in 2009—delivering over 12 lakh square yards across Hyderabad, Bengaluru, Shirdi, and Bangkok.
               </p>
               <div style="margin-top: 1.25rem;">
                 <a href="aboutus.php" class="lp-btn-card-view" style="font-size:0.85rem; padding: 0.6rem 1.3rem;">
@@ -523,7 +517,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <div class="lp-record-item">
-              <div class="lp-record-num">11L+</div>
+              <div class="lp-record-num">12L+</div>
               <div>
                 <div class="lp-record-title">Sq. Yards Delivered</div>
                 <div class="lp-record-desc">Successfully delivered across Hyderabad, Bengaluru, Shirdi, and Bangkok.</div>
@@ -1136,7 +1130,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <div class="lp-contact-icon">📞</div>
               <div>
                 <div class="lp-contact-label">Phone &amp; WhatsApp</div>
-                <div class="lp-contact-val">+91 723 799 7999</div>
+                <div class="lp-contact-val"><a href="tel:+919059050059" style="color:inherit; text-decoration:none;">+91 90590 50059</a></div>
               </div>
             </li>
             <li class="lp-contact-item">
@@ -1258,7 +1252,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           </div>
           <div class="lp-footer-contact-item">
             <span>📞</span>
-            <span>+91 723 799 7999</span>
+            <span>+91 90590 50059</span>
           </div>
           <div class="lp-footer-contact-item">
             <span>✉️</span>
@@ -1279,7 +1273,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
        ========================================================================== -->
     <!-- Floating WhatsApp CTA Only -->
   <div class="floating-actions">
-    <a href="https://wa.me/917237997999?text=Hello%20Paanchajanya%20Realty,%20I%20am%20interested%20in%20your%20open%20plots%20ventures." target="_blank" rel="noopener" class="floating-btn whatsapp" title="Chat on WhatsApp" aria-label="WhatsApp">
+    <a href="https://wa.me/919059050059?text=Hello%20Paanchajanya%20Realty,%20I%20am%20interested%20in%20your%20open%20plots%20ventures." target="_blank" rel="noopener" class="floating-btn whatsapp" title="Chat on WhatsApp" aria-label="WhatsApp">
       <svg width="28" height="28" viewBox="0 0 24 24" fill="#ffffff" aria-hidden="true"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.149.929 3.182 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.768-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.074-2.127-.508-1.725-.7-2.825-2.463-2.91-2.577-.087-.115-.698-.929-.698-1.772 0-.844.44-1.258.597-1.431.156-.173.342-.217.456-.217.114 0 .228.001.328.006.105.005.246-.04.385.293.144.346.49 1.196.533 1.283.043.088.072.191.014.306-.057.115-.087.187-.172.287-.086.101-.182.225-.26.302-.087.086-.177.18-.076.353.101.173.45 0.742.966 1.202.664.591 1.224.774 1.397.86.173.087.275.073.376-.044.102-.116.434-.505.549-.679.116-.173.232-.144.39-.086.159.057 1.008.475 1.181.562.173.086.289.13.332.202.044.072.044.419-.1 0.824zM12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.66 1.434 5.176L2 22l4.957-1.398A9.956 9.956 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
     </a>
   </div>

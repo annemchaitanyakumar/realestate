@@ -1485,8 +1485,8 @@
                                                     <i class="fas fa-phone-alt me-1 text-warning"></i> +91 91000 31999
                                                 </a>
                                                 <span class="text-muted d-none d-sm-inline">|</span>
-                                                <a href="tel:+917237997999" class="text-white text-decoration-none fw-bold fs-5 hover-gold">
-                                                    <i class="fas fa-phone-alt me-1 text-warning"></i> +91 723 799 7999
+                                                <a href="tel:+919059050059" class="text-white text-decoration-none fw-bold fs-5 hover-gold">
+                                                    <i class="fas fa-phone-alt me-1 text-warning"></i> +91 90590 50059
                                                 </a>
                                             </div>
                                         </div>
@@ -1713,7 +1713,7 @@
                     </div>
                 </div>
                 <div class="popup-footer">
-                    <a href="https://wa.me/917237997999?text=Hi,%20I%20am%20interested%20in%20GreenLeaf%20Villa%20Plots%20at%20Shamirpet." target="_blank" class="chat-btn">
+                    <a href="https://wa.me/919059050059?text=Hi,%20I%20am%20interested%20in%20GreenLeaf%20Villa%20Plots%20at%20Shamirpet." target="_blank" class="chat-btn">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
                         Chat on WhatsApp
                     </a>

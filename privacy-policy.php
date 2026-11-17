@@ -93,7 +93,7 @@
                         <h2>9. Contact Us</h2>
                         <p>If you have any questions or concerns about this Privacy Policy, please contact us at:</p>
                         <p><strong>Email:</strong> Paanchajanyarealty@gmail.com<br>
-                        <strong>Phone:</strong> +91 723 799 7999<br>
+                        <strong>Phone:</strong> +91 90590 50059<br>
                         <strong>Address:</strong> C9WX+HH8, Kakatiya Hills, Guttala_Begumpet, Kavuri Hills, Madhapur, Hyderabad, Telangana 500033</p>
                         
                         <p class="mt-5 text-muted"><em>Last updated: March 11, 2026</em></p>

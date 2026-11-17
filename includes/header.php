@@ -148,7 +148,7 @@ if ($current_page == 'news-detail.php' && isset($article)) {
           },
           "contactPoint": {
             "@type": "ContactPoint",
-            "telephone": "+91-XXXXXXXXXX",
+            "telephone": "+91-90590-50059",
             "contactType": "sales"
           },
           "sameAs": [

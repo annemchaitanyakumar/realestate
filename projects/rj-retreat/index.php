@@ -17,20 +17,62 @@
         <meta property="og:url" content="https://paanchajanyareality.com/projects/rj-retreat/" />
         <meta property="og:title" content="DRR Premium County - Premium Plots in Hyderabad | Paanchajanya Reality" />
         <meta property="og:description" content="Explore DRR Premium County by Paanchajanya Reality. Premium residential plots in Hyderabad with modern amenities." />
-        <meta property="og:image" content="/assests/projects/Rj-retreat/logo-rj-retreat.png" />
+        <meta property="og:image" content="/assests/image/generated/ventures/venture-rj-retreat-entrance.jpg" />
 
         <!-- Twitter -->
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://paanchajanyareality.com/projects/rj-retreat/" />
         <meta property="twitter:title" content="DRR Premium County - Premium Plots in Hyderabad | Paanchajanya Reality" />
         <meta property="twitter:description" content="Explore DRR Premium County by Paanchajanya Reality. Premium residential plots in Hyderabad with modern amenities." />
-        <meta property="twitter:image" content="/assests/projects/Rj-retreat/logo-rj-retreat.png" />
+        <meta property="twitter:image" content="/assests/image/generated/ventures/venture-rj-retreat-entrance.jpg" />
 
         <link rel="canonical" href="https://paanchajanyareality.com/projects/rj-retreat/" />
         <meta name="robots" content="index, follow" />
         <script async="" src="https://scripts.clarity.ms/0.8.56/clarity.js"></script>
         <script defer="defer" src="/assests/projects/DRR/js/custom8.js"></script>
         <link href="/assests/projects/DRR/css/main.e54e2a16.css" rel="stylesheet" />
+        <style>
+            /* RJ Retreat Hero Banner Styling */
+            #banner, .hero {
+                position: relative !important;
+                min-height: 85vh !important;
+                height: 85vh !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: center !important;
+                background: url('/assests/image/generated/ventures/venture-rj-retreat-entrance.jpg') center center / cover no-repeat !important;
+                overflow: hidden !important;
+            }
+            .video-bg {
+                display: none !important;
+            }
+            .overlay {
+                position: absolute !important;
+                inset: 0 !important;
+                background: linear-gradient(
+                    180deg,
+                    rgba(0, 0, 0, 0.2) 0%,
+                    rgba(0, 0, 0, 0.05) 50%,
+                    rgba(0, 0, 0, 0.45) 100%
+                ) !important;
+                z-index: 1 !important;
+            }
+            .hero-logos {
+                position: relative !important;
+                top: auto !important;
+                left: auto !important;
+                transform: none !important;
+                max-width: 280px !important;
+                width: 280px !important;
+                margin: 0 auto !important;
+                filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.85)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.95)) !important;
+                z-index: 2 !important;
+            }
+            .banner_parallax_section {
+                display: none !important;
+            }
+        </style>
     
        
         <link rel="stylesheet" href="/assests/css/whatsapp-widget.css">
@@ -131,24 +173,15 @@
                     </div>
                 </div>
                 
-                <section class="banner_parallax_section">
-                    <div class="sticky-wrap">
-                        <h1 class="parallax-heading sticky-heading" style="opacity: 0; transform: translateY(1000px)">
-                            Exclusive 4 Bhk Apartments
-                            <p class="location_name"><span class="at">at</span> Mokila</p>
-                        </h1>
-                        <img
-                            alt="Urban Trilla Apartments exterior view"
-                            width="800"
-                            height="600"
-                            class="parallax-img"
-                            loading="lazy"
-                            decoding="async"
-                            fetchpriority="low"
-                            src="/assests/projects/DRR/images/panch2.png"
-                            style="opacity: 0.5; transform: translateY(600px)"
-                        />
-                    </div>
+                <section id="banner" class="hero">
+                    <div class="overlay"></div>
+                    <img
+                        src="/assests/projects/Rj-retreat/rj-retreat.png"
+                        alt="RJ Retreat logo"
+                        width="280"
+                        height="105"
+                        class="hero-logos"
+                    />
                 </section>
                 <section
                     id="highlights"
@@ -1322,12 +1355,12 @@
                             <li><a href="#highlights">Projects Highlights</a></li>
                             <li><a href="#location">Location Highlights</a></li>
 
-                            <li><a href="Tel:+917237997999">Contact</a></li>
+                            <li><a href="tel:+919059050059">Contact</a></li>
                         </ul>
                     </nav>
                     <p><b>RERA NO:</b> </p>
-                    <a href="tel:+917237997999"
-                        ><p><b>Call:</b> +91 723 799 7999</p></a
+                    <a href="tel:+919059050059"
+                        ><p><b>Call:</b> +91 90590 50059</p></a
                     >
                     <div class="social-icons d-flex justify-content-center gap-3 mb-3">
                         <a target="_blank" href="https://www.facebook.com/AnkuraHomes1/" aria-label="Facebook"
@@ -1663,7 +1696,7 @@
             </div>
         </div>
         <div class="popup-footer">
-            <a href="https://wa.me/917237997999?text=Hi,%20I%20am%20coming%20from%20Paanchajanya%20Reality%20website%20for%20enquiry." target="_blank" class="chat-btn">
+            <a href="https://wa.me/919059050059?text=Hi,%20I%20am%20coming%20from%20Paanchajanya%20Reality%20website%20for%20enquiry." target="_blank" class="chat-btn">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
                 Chat on WhatsApp
             </a>

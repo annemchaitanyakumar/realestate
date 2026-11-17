@@ -495,7 +495,7 @@ $sliders = $stmt->fetchAll();
     <p>
         Today, the company is recognized as one of the leading developers of
         premium villa plots across <strong>Hyderabad, Bengaluru, Shirdi, and
-        Bangkok</strong>. With over <strong>11 lakh square yards</strong> of
+        Bangkok</strong>. With over <strong>12 lakh square yards</strong> of
         successfully developed plotted communities, Paanchajanya Realty has
         earned the trust of thousands of happy customers through quality
         developments and timely delivery.
