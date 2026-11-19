@@ -88,22 +88,22 @@ $sliderFallbacks = [
   0 => [
     'title' => 'Own Land. Build Dreams. Create Legacy.',
     'subtitle' => 'DTCP & HMDA Approved Open Plots in Hyderabad',
-    'image' => 'assests/image/generated/sliders/banner-1-paanchajanya-heritage-2026.jpg?v=20261117_banners',
+    'image' => 'assests/image/generated/sliders/banner-1-paanchajanya-heritage-2026.jpg?v=20261119_sliding',
   ],
   1 => [
-    'title' => 'Paanchajanya Venture - Shamirpet',
-    'subtitle' => 'Premium Plots Near ORR Exit 7, Shamirpet',
-    'image' => 'assests/image/generated/sliders/banner-2-greenleaf-shamirpet-2026.jpg?v=20261117_banners',
-  ],
-  2 => [
-    'title' => 'RJ Retreat - Shamirpet',
-    'subtitle' => 'Near ORR Exit 7 & Genome Valley',
-    'image' => 'assests/image/generated/sliders/banner-3-rj-retreat-kadthal-2026.jpg?v=20261117_banners',
-  ],
-  3 => [
     'title' => 'Premium County - Kadthal Growth Zone',
     'subtitle' => 'Strategic Plotted Living on Srisailam Highway',
-    'image' => 'assests/image/generated/sliders/banner-4-premium-county-2026.jpg?v=20261117_banners',
+    'image' => 'assests/image/generated/sliders/banner-4-premium-county-2026.jpg?v=20261119_sliding',
+  ],
+  2 => [
+    'title' => 'Paanchajanya Venture - Shamirpet',
+    'subtitle' => 'Premium Plots Near ORR Exit 7, Shamirpet',
+    'image' => 'assests/image/generated/sliders/banner-2-greenleaf-shamirpet-2026.jpg?v=20261119_sliding',
+  ],
+  3 => [
+    'title' => 'RJ Retreat - Shamirpet',
+    'subtitle' => 'Near ORR Exit 7 & Genome Valley',
+    'image' => 'assests/image/generated/sliders/banner-3-rj-retreat-kadthal-2026.jpg?v=20261119_sliding',
   ],
 ];
 
@@ -243,7 +243,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <link rel="icon" type="image/png" href="assests/image/paanchajanya-logo-new.png">
 
   <!-- Core Luxury Styling -->
-  <link rel="stylesheet" href="assests/css/laperla-luxury.css?v=20261117_banners">
+  <link rel="stylesheet" href="assests/css/laperla-luxury.css?v=20261119_sliding">
 </head>
 <body>
 
@@ -384,9 +384,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <?php 
           $sliderNames = [
             0 => 'Paanchajanya',
-            1 => 'GreenLeaf',
-            2 => 'RJ Retreat',
-            3 => 'Premium County'
+            1 => 'Premium County',
+            2 => 'GreenLeaf',
+            3 => 'RJ Retreat'
           ];
           foreach ($displaySliders as $navIdx => $navSlide): 
             $projName = $sliderNames[$navIdx % count($sliderNames)];
@@ -1287,6 +1287,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </div>
 
   <!-- Scripts -->
-  <script src="assests/js/laperla-luxury.js?v=20261117_banners"></script>
+  <script src="assests/js/laperla-luxury.js?v=20261119_sliding"></script>
 </body>
 </html>

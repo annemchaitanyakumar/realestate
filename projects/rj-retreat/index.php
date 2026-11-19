@@ -40,7 +40,8 @@
                 display: flex !important;
                 flex-direction: column !important;
                 align-items: center !important;
-                justify-content: center !important;
+                justify-content: flex-start !important;
+                padding-top: 50px !important;
                 background: url('/assests/projects/Rj-retreat/rj-retreat-farmhouse-hero.jpg?v=20261117_farmhouse') center center / cover no-repeat !important;
                 overflow: hidden !important;
             }
@@ -59,10 +60,10 @@
                 z-index: 1 !important;
             }
             .hero-logos {
-                position: relative !important;
-                top: auto !important;
-                left: auto !important;
-                transform: none !important;
+                position: absolute !important;
+                top: 50px !important;
+                left: 50% !important;
+                transform: translateX(-50%) !important;
                 max-width: 280px !important;
                 width: 280px !important;
                 margin: 0 auto !important;

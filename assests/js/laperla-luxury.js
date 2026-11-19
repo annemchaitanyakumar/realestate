@@ -41,6 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // 3. Cinematic Hero Slider with 4-Project Navigation Bar
+  const slidesContainer = document.querySelector('.lp-hero-slides');
   const slides = document.querySelectorAll('.lp-hero-slide');
   const navItems = document.querySelectorAll('.lp-hero-indicator-btn, .lp-slider-nav-item');
   const counterEl = document.querySelector('.lp-hero-counter');
@@ -60,6 +61,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
       currentSlide = (index + totalSlides) % totalSlides;
       slides[currentSlide].classList.add('active');
+
+      if (slidesContainer) {
+        slidesContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+      }
 
       if (navItems[currentSlide]) {
         navItems[currentSlide].classList.add('active');
